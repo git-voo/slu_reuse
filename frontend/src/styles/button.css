@@ -1,0 +1,19 @@
+.default-btn-settings {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    /* Prevent text wrapping */
+    white-space: nowrap;
+    /* Rounded corners */
+    border-radius: 25px;
+    cursor: pointer;
+    outline: none;
+    text-decoration: none;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
