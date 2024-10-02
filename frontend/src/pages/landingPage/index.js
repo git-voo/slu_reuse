@@ -1,4 +1,7 @@
+import ItemCard from "../../components/card/index.mjs"
 import Navbar from "../../components/navigation"
+import { itemsList } from "../../data/items"
+import "../../styles/landingPage/index.css"
 
 export default function LandingPage() {
 
@@ -7,6 +10,15 @@ export default function LandingPage() {
             <Navbar />
 
             <div className="items-list">
+                {
+                    itemsList.map((item) => {
+                        return <ItemCard
+                            key={item.id} userAvatar={item.userAvatar}
+                            userName={item.userName} itemImage={item.itemImage}
+                            title={item.title} description={item.description}
+                            location={item.location} />
+                    })
+                }
 
             </div>
 
