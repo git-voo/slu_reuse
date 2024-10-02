@@ -1,13 +1,15 @@
 import "./App.css";
-import ScrollToTop from "./utils/ScrollToTop";
+import Navigation from "./components/navigation";
+// import ScrollToTop from "./utils/ScrollToTop";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <BrowserRouter>
-      <ScrollToTop />
+      {/* <ScrollToTop /> */}
       <Routes>
         <Route path="/" element={<>you're here</>} />
+        <Route path="/order" element={<Navigation/>} />
       </Routes>
     </BrowserRouter>
   );
