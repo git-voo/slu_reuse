@@ -1,12 +1,16 @@
-/* Navbar container */
+ 
 .navbar {
-  background-color: #007bff;
-  /* Primary blue color */
+  background-color: #007bff; 
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
   color: white;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
 }
 
 .navbar-brand a {
@@ -39,8 +43,11 @@
   color: #007bff !important;
   border-radius: 5px;
   transition: background-color 0.3s;
-}
-.navbar-btn:hover {
-  background-color: #0056b3;
+
+  &:hover {
+    background-color: #0056b3;
   color: white;
-}/*# sourceMappingURL=navbar.css.map */
+  }
+}
+
+ 

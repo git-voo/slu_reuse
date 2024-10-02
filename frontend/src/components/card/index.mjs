@@ -1,6 +1,7 @@
 import '../../styles/cards/itemCard.css'
 import locationIcon from "../../assets/icons/location.png"
 import { GoDotFill } from "react-icons/go"
+import { PiWechatLogoThin } from "react-icons/pi";
 
 
 const ItemCard = ({ userAvatar, userName, itemImage, title, description, location }) => {
@@ -37,7 +38,7 @@ const ItemCard = ({ userAvatar, userName, itemImage, title, description, locatio
 
             <div className="item-card-footer">
                 <button className="item-card-btn">View Details</button>
-                <button className="item-card-btn message-btn">Message Donor</button>
+                <button className="item-card-btn message-btn"><PiWechatLogoThin className='icon' /> Message {userName?.split(" ")[0]}</button>
             </div>
         </div>
     )

@@ -24,12 +24,15 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
+  overflow: hidden;
 }
 .user-avatar img {
   -o-object-fit: cover;
      object-fit: cover;
   width: 100%;
   height: 100%;
+  -o-object-position: center top;
+     object-position: center top;
 }
 
 .user-name {
@@ -47,6 +50,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 10px;
 }
 .item-card-body .location {
   display: flex;
@@ -107,23 +111,26 @@
 }
 
 .item-card-btn {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 0px;
+  background-color: white;
+  color: #007bff;
+  padding: 5px 0px;
   width: 100%;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
   font-size: 12px;
-}
-.item-card-btn:hover {
-  background-color: #0056b3;
+  font-weight: 500;
 }
 
 .message-btn {
-  background-color: #28a745 !important;
+  background-color: rgba(0, 123, 255, 0.7);
+  color: #fff;
+}
+.message-btn .icon {
+  font-size: 20px;
 }
 .message-btn:hover {
-  background-color: #218838;
+  background-color: rgb(0, 123, 255);
+  color: white;
 }/*# sourceMappingURL=itemCard.css.map */
