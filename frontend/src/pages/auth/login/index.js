@@ -1,4 +1,5 @@
 import React, { useState }  from 'react'
+import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { FcGoogle } from 'react-icons/fc';
@@ -15,6 +16,14 @@ export default function Login() {
     const togglePasswordVisibility = () => {
       setPasswordVisible(!passwordVisible);
     };
+
+    const navigate = useNavigate();
+
+    const handleSignin = (e) => {
+        e.preventDefault();
+        // Redirect to landing page
+        navigate('/');
+      };
 
     return ( <div className="outer-container">
           <div className="form-container">
@@ -44,26 +53,26 @@ export default function Login() {
                 <Link to="/forgot-password">Forgot Password?</Link>
               </Form.Group>
              
-              <Button className="btn-join btn-blue default-btn-settings" variant="primary" type="submit">
+              <Button className="btn-join btn-blue default-btn-settings" variant="primary" type="submit" onClick={handleSignin}>
                 Sign in
               </Button>
 
               <div className="divider">or</div>
 
               {/* SLU Email Sign Up Button */}
-              <Button className="btn-auth slu-auth-btn default-btn-settings">
+              <Button className="btn-auth slu-auth-btn default-btn-settings" onClick={handleSignin}>
                 <img src={sluLogo} alt="SLU Logo" className="auth-icon" />
                 Continue with SLU Email
               </Button>
 
               {/* Google Sign Up Button */}
-              <Button className="btn-auth google-auth-btn default-btn-settings">
+              <Button className="btn-auth google-auth-btn default-btn-settings" onClick={handleSignin}>
                 <FcGoogle className="auth-icon" />
                 Continue with Google
               </Button>
 
               {/* Facebook Sign Up Button */}
-              <Button className="btn-auth facebook-auth-btn default-btn-settings">
+              <Button className="btn-auth facebook-auth-btn default-btn-settings" onClick={handleSignin}>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" className="auth-icon" />
                 Continue with Facebook
               </Button>
