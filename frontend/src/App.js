@@ -1,16 +1,17 @@
-import "./App.css";
-import ScrollToTop from "./utils/ScrollToTop";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./App.css"
+// import ScrollToTop from "./utils/ScrollToTop";
+import { BrowserRouter, Routes, Route } from "react-router-dom" 
+import LandingPage from "./pages/landingPage"
 
 function App() {
   return (
     <BrowserRouter>
-      <ScrollToTop />
+      {/* <ScrollToTop /> */}
       <Routes>
-        <Route path="/" element={<>you're here</>} />
-      </Routes>
+        <Route path="/" element={<LandingPage/>} />
+       </Routes>
     </BrowserRouter>
-  );
+  )
 }
 
-export default App;
+export default App
