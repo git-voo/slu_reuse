@@ -12,8 +12,6 @@ function App() {
        <BrowserRouter>
         {/*<ScrollToTop />*/}
       <Routes>
-      {/*<Route path="/" element={<LandingPage/>} />*/}
-      <Route path="/" element={<Register/>} />
         <Route path="/register" element={<Register/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/forgot-password" element={<Forgot_Password/>} />
