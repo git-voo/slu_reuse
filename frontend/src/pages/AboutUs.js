@@ -7,13 +7,15 @@ const teamMembers = [
         name: "Shagun Sharma",
         department: "Computer Science",
         email: "shagun.sharma@slu.edu",
-        photo: "" 
+        photo: "images/shagun.jpeg"
+
     },
     {
         name: "Victor Ojogbane Onoja",
         department: "Computer Science",
         email: "victor.onoja@slu.edu",
-        photo: "" 
+        photo: "images/victor.jpeg"
+
     },
     {
         name: "Mohammad Al-Hanoosh",
@@ -25,7 +27,7 @@ const teamMembers = [
         name: "Vishal Reddy Putta",
         department: "Computer Science",
         email: "vishalreddy.putta@slu.edu",
-        photo: "/Users/vishalputta/Downloads" 
+        photo: "" 
     },
     {
         name: "Leela Phanidhar Sai Teja Nalanagula",
