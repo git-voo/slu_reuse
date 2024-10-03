@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { FcGoogle } from 'react-icons/fc';
@@ -14,6 +15,14 @@ export default function Register() {
   // Function to toggle password visibility
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
+  };
+
+  const navigate = useNavigate();
+
+  const handleSignup = (e) => {
+    e.preventDefault();
+    // Redirect to landing page
+    navigate('/');
   };
 
     return ( 
@@ -48,26 +57,26 @@ export default function Register() {
                   <Form.Check type="checkbox" label="Remember me" />
                 </Form.Group>
 
-                  <Button className="btn-join btn-blue default-btn-settings" variant="primary" type="submit">
+                  <Button className="btn-join btn-blue default-btn-settings" variant="primary" type="submit" onClick={handleSignup}>
                   Sign Up
                 </Button>
 
                 <div className="divider">or</div>
 
                 {/* SLU Email Sign Up Button */}
-                <Button className="btn-auth slu-auth-btn default-btn-settings">
+                <Button className="btn-auth slu-auth-btn default-btn-settings" onClick={handleSignup}>
                   <img src={sluLogo} alt="SLU Logo" className="auth-icon" />
                   Continue with SLU Email
                 </Button>
 
                 {/* Google Sign Up Button */}
-                <Button className="btn-auth google-auth-btn default-btn-settings">
+                <Button className="btn-auth google-auth-btn default-btn-settings" onClick={handleSignup}>
                   <FcGoogle className="auth-icon" />
                   Continue with Google
                 </Button>
 
                 {/* Facebook Sign Up Button */}
-                <Button className="btn-auth facebook-auth-btn default-btn-settings">
+                <Button className="btn-auth facebook-auth-btn default-btn-settings" onClick={handleSignup}>
                   <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" className="auth-icon" />
                   Continue with Facebook
                 </Button>
