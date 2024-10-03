@@ -1,41 +1,44 @@
 import React from 'react';
 import '../styles/aboutUs.css'; 
 
+import victorIMG from "../assets/images/victor.jpeg"
+import vishalIMG from "../assets/images/vishal.JPG"
+import shagunIMG from "../assets/images/shagun.jpeg"
+import mohammedIMG from "../assets/images/mohammad.jpeg"
+import leelaIMG from "../assets/images/sai teja.jpeg"
 
 const teamMembers = [
-    {
-        name: "Shagun Sharma",
-        department: "Computer Science",
-        email: "shagun.sharma@slu.edu",
-        photo: "images/shagun.jpeg"
-
-    },
-    {
-        name: "Victor Ojogbane Onoja",
-        department: "Computer Science",
-        email: "victor.onoja@slu.edu",
-        photo: "images/victor.jpeg"
-
-    },
-    {
-        name: "Mohammad Al-Hanoosh",
-        department: "Computer Science",
-        email: "mohammad.alhanoosh@slu.edu",
-        photo: "" 
-    },
-    {
-        name: "Vishal Reddy Putta",
-        department: "Computer Science",
-        email: "vishalreddy.putta@slu.edu",
-        photo: "" 
-    },
-    {
-        name: "Leela Phanidhar Sai Teja Nalanagula",
-        department: "Computer Science",
-        email: "leelaphanidharsaiteja.nalanagula@slu.edu",
-        photo: "" 
-    }
-];
+  {
+    name: "Shagun Sharma",
+    department: "Computer Science",
+    email: "shagun.sharma@slu.edu",
+    photo: shagunIMG
+  },
+  {
+    name: "Victor Ojogbane Onoja",
+    department: "Computer Science",
+    email: "victor.onoja@slu.edu",
+    photo: victorIMG
+  },
+  {
+    name: "Mohammad Al-Hanoosh",
+    department: "Computer Science",
+    email: "mohammad.alhanoosh@slu.edu",
+    photo: mohammedIMG
+  },
+  {
+    name: "Vishal Reddy Putta",
+    department: "Computer Science",
+    email: "vishalreddy.putta@slu.edu",
+    photo: vishalIMG
+  },
+  {
+    name: "Leela Phanidhar Sai Teja Nalanagula",
+    department: "Computer Science",
+    email: "leelaphanidharsaiteja.nalanagula@slu.edu",
+    photo: leelaIMG
+  }
+]
 
 const AboutUs = () => {
     return (
