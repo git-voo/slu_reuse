@@ -12,3 +12,32 @@ SLU students often find themselves at the end of each semester with items that a
 SLUReuse is a web-based donation platform designed exclusively for SLU students. By facilitating the exchange of unused items, SLUReuse fosters a community-oriented approach to resource sharing and sustainability. The platform’s primary function is to connect students seeking items with generous donors willing to provide them. While anyone can donate, only SLU students, verified through their SLU email, are eligible to claim donated items. Features such as authentication, messaging, notifications, search, filtering, and a waitlist system ensure a seamless and efficient experience for both donors and recipients.
 
 Unlike traditional donation platforms, this software prioritizes a closed community for receiving items, ensuring that only verified students can claim donations. The system integrates various unique features, such as a map for location-based sorting, CMS for content management, and a waitlist feature for popular items. Its specific focus on SLU students with controlled access, enhanced by user-friendly tools like search/filters, and messaging, makes it stand out from typical donation or marketplace software.
+
+
+## Features
+- User Authentication
+- Donating Items
+- Requesting and Messaging (SLU Students)
+- Waitlist Management
+- Admin CMS Management
+
+## Technologies Used
+**Frontend:** React
+
+**Backend:** Node
+
+**Database:** MongoDB
+
+**Authentication:** JWT (via jsonwebtoken)
+
+**Styling:** Bootstrap, CSS, SCSS
+
+
+## Getting Started
+
+To get a local copy up and running, follow these steps.
+
+### Prerequisites
+
+- Node.js and npm installed on your local machine.
+
