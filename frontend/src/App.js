@@ -10,8 +10,7 @@ function App() {
     <BrowserRouter>
       {/* <ScrollToTop /> */}
       <Routes>
-        <Route path="/" element={<>you're here</>} />
-        <Route path="/order" element={<Navigation/>} />
+        <Route path="/" element={<>you're here</>} /> 
         <Route path="/contact" element={<Contactus/>} />
       </Routes>
     </BrowserRouter>
