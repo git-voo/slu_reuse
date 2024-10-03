@@ -1,0 +1,136 @@
+.item-card {
+  width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.item-card-user {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  background-color: #f7f7f7;
+  height: 60px;
+}
+
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.user-avatar img {
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 100%;
+  height: 100%;
+  -o-object-position: center top;
+     object-position: center top;
+}
+
+.user-name {
+  font-size: 1rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.item-card-body {
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+}
+.item-card-body .location {
+  display: flex;
+  font-size: 12px;
+  align-items: center;
+  gap: 10px;
+}
+.item-card-body .location .icon {
+  width: 15px;
+}
+.item-card-body .location .icon img {
+  width: 100%;
+}
+
+.item-card-image {
+  width: 100%;
+  height: 60%;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+.item-card-image img {
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+.item-card-image img:hover {
+  transition: transform 0.3s;
+  transform: scale(1.05);
+}
+
+.item-card-title {
+  font-size: 14px;
+  color: #007bff;
+  margin: 5px 0px;
+}
+
+.item-card-description {
+  font-size: 0.9rem;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  line-height: 15px;
+  height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.item-card-footer {
+  display: flex;
+  justify-content: space-around;
+  padding: 5px;
+  border-top: 1px solid #ddd;
+  background-color: #f7f7f7;
+  gap: 10px;
+}
+
+.item-card-btn {
+  background-color: white;
+  color: #007bff;
+  padding: 5px 0px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.message-btn {
+  background-color: rgba(0, 123, 255, 0.7);
+  color: #fff;
+}
+.message-btn .icon {
+  font-size: 20px;
+}
+.message-btn:hover {
+  background-color: rgb(0, 123, 255);
+  color: white;
+}/*# sourceMappingURL=itemCard.css.map */
