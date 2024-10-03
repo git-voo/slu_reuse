@@ -1,11 +1,10 @@
-import React from 'react';
-import '../styles/aboutUs.css'; 
+import '../../styles/aboutUs/aboutUs.css'; 
 
-import victorIMG from "../assets/images/victor.jpeg"
-import vishalIMG from "../assets/images/vishal.JPG"
-import shagunIMG from "../assets/images/shagun.jpeg"
-import mohammedIMG from "../assets/images/mohammad.jpeg"
-import leelaIMG from "../assets/images/sai teja.jpeg"
+import victorIMG from "../../assets/images/victor.jpeg"
+import vishalIMG from "../../assets/images/vishal.JPG"
+import shagunIMG from "../../assets/images/shagun.jpeg"
+import mohammedIMG from "../../assets/images/mohammad.jpeg"
+import leelaIMG from "../../assets/images/sai teja.jpeg"
 
 const teamMembers = [
   {
