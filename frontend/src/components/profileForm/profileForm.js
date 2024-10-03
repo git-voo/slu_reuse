@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './profileForm.css';
 
 const ProfileForm = ({ profile, onSave, onCancel }) => {
