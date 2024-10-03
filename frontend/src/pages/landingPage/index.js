@@ -1,4 +1,5 @@
 import ItemCard from "../../components/card/index.mjs"
+import Footer from "../../components/footer"
 import Navbar from "../../components/navigation"
 import { itemsList } from "../../data/items"
 import "../../styles/landingPage/index.css"
@@ -21,7 +22,7 @@ export default function LandingPage() {
                 }
 
             </div>
-
+            <Footer />
         </div>
     )
 
