@@ -1,16 +1,16 @@
-import "./App.css";
-import ScrollToTop from "./utils/ScrollToTop";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ProfileRoutes from './routes/profileRoutes';
 
 function App() {
-  return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<>you're here</>} />
-      </Routes>
-    </BrowserRouter>
-  );
+    return (
+    <Router>
+        <Routes>
+            <Route path="/profile/*" element={<ProfileRoutes />} />
+            <Route path="/" element={<h1>Welcome to SLU Reuse</h1>} />
+        </Routes>
+    </Router>
+    );
 }
 
 export default App;
