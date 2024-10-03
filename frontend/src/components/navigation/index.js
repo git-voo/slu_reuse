@@ -9,7 +9,10 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <Link to="/">SLU-Reuse</Link>
+        <Link to="/">SLUReuse</Link>
+      </div>
+      <div className="search-area">
+        <input type="search" placeholder='Find anything...' />
       </div>
       <ul className="navbar-links">
         <li><Link to="/about">About</Link></li>

@@ -19,6 +19,23 @@
   font-weight: bold;
 }
 
+.search-area {
+  width: 30%;
+}
+.search-area input {
+  width: 100%;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.3s;
+  background-color: rgb(208, 215, 216);
+  color: black;
+}
+.search-area input:focus {
+  background-color: white;
+}
+
 .navbar-links {
   list-style: none;
   display: flex;
