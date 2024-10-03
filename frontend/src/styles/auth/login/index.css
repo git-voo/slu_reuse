@@ -1,0 +1,19 @@
+.password-group {
+    position: relative;
+    display: flex;
+}
+
+.show-hide-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    text-decoration: none;
+    color: #1864c4;
+    padding: 0;
+    background: none;
+    border: none;
+    font-size: 0.875em;
+    outline: none;
+}
