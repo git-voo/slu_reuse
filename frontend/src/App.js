@@ -1,7 +1,8 @@
 import "./App.css";
 //import ScrollToTop from "./utils/ScrollToTop";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AboutUs from './pages/AboutUs'; 
+import AboutUs from "./pages/aboutUs/AboutUs"
+ 
 
 
 function App() {
