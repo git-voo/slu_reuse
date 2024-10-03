@@ -1,3 +1,5 @@
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ProfileRoutes from './routes/profileRoutes';
 import "./App.css"
 // ////import Navigation from "./components/navigation";
 import Contactus from "./pages/contactus";
