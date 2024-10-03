@@ -1,0 +1,59 @@
+/* Footer styles */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1a1a1a;
+  padding: 10px 20px;
+  color: #fff;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+
+/* Social icons container */
+.footer-left {
+  display: flex;
+  gap: 15px;
+}
+
+/* Styling each social icon */
+.social-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #fff;
+  color: #1a1a1a;
+  font-size: 1.5rem;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+.social-icon:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.instagram:hover {
+  background-color: #C23591;
+}
+
+.twitter:hover {
+  background-color: black;
+}
+
+.contact-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.contact-button:hover {
+  background-color: #0056b3;
+}/*# sourceMappingURL=index.css.map */
