@@ -7,15 +7,16 @@ import Login from './pages/auth/login';
 import Forgot_Password from './pages/auth/forgot_password';
 import AboutUs from "./pages/aboutUs/AboutUs"
 import ProfilePage from './pages/profile/profilePage';
+import Navigation from "./components/navigation";
 
-//import Navigation from "./components/navigation";
 // import ScrollToTop from "./utils/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter>
-      {/* <ScrollToTop /> */}
-        <Routes >
+        {/* <ScrollToTop /> */}
+        {<Navigation />}
+        <Routes>
             <Route path = "/register" element = { < Register/ > }/> 
             <Route path = "/login" element = { < Login/ > }/> 
             <Route path = "/forgot-password" element = { < Forgot_Password/ > }/> 
