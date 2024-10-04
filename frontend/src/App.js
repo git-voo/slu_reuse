@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import ProfileRoutes from './routes/profileRoutes';
 import "./App.css"
 import Contactus from "./pages/contactus";
 import LandingPage from "./pages/landingPage"
