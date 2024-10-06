@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import ProfileForm from '../../components/profileForm/profileForm';
-import profileService from '../../services/profileService';
+import ProfileForm from '../../../components/profile/profileForm';
+import profileService from '../../../services/profileService';
+
 import './profilePage.css';
 
 const ProfilePage = () => {
