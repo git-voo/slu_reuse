@@ -92,3 +92,26 @@
     width: 100%;
   }
 }
+
+
+/* Location Filter and Sort Styles */
+.location-filter, .sort-filter {
+  margin-left: 1rem;
+  padding: 0.3rem;
+  background-color: #f3f3f3;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  outline: none;
+}
+
+/* Adjust for mobile responsiveness */
+@media (max-width: 768px) {
+  .search-container {
+    width: 100%;
+  }
+  
+  .location-filter, .sort-filter {
+    margin-left: 0.5rem;
+    padding: 0.3rem;
+  }
+}

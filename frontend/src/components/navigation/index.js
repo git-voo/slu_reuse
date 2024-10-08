@@ -5,10 +5,21 @@ import avatar from "../../assets/images/avatar.png"
 import { FaSearch } from "react-icons/fa";
 
 export default function Navbar() {
-  const [loggedIn, setLoggedIn] = useState(false)
-  const navigate = useNavigate()
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState("All");
+  const [sortOption, setSortOption] = useState("newest");
+  const navigate = useNavigate();
 
   const categories = ["All", "Electronics", "Furniture", "Accessories", "Beauty", "Kitchen", "Books", "Toys"];
+  const locations = ["All Locations","Chesterfield","Manchester","St. Louis","St. Peters","Warson Woods","Maryland Heights","Overland"];
+
+  const handleLocationChange = (e) => {
+    setSelectedLocation(e.target.value);
+  };
+
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+  };
 
   return (
     <nav className="navbar">
@@ -31,6 +42,21 @@ export default function Navbar() {
             <FaSearch />
           </button>
         </div>
+
+        {/* Location Filter */}
+        <select className="location-filter" value={selectedLocation} onChange={handleLocationChange}>
+          {locations.map((location, index) => (
+            <option key={index} value={location}>
+              {location}
+            </option>
+          ))}
+        </select>
+
+        {/* Sort By Date */}
+        <select className="sort-filter" value={sortOption} onChange={handleSortChange}>
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+        </select>
       </div>
 
       <ul className="navbar-links">
