@@ -4,9 +4,10 @@
     display: flex;
     /* Ensure vertical stacking */
     flex-direction: column;
+    /* Center the form both vertically and horizontally */
+    justify-content: center;
     /* Align the form towards the top */
     align-items: center;
-    padding-top: 100px;
     background-color: #f3f2f0;
 }
 
