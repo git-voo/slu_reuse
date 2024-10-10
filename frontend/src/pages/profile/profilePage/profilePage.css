@@ -1,8 +1,9 @@
-.profilePage{
-    width: 100%;
+.profilePage {
+    width: calc(100% - 250px);
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
+    margin-left: 250px;
 }
 
 .profileDetails {
