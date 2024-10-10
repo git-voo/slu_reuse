@@ -1,5 +1,6 @@
 import "../../styles/footer/index.css"
-import { FaInstagram, FaFacebookF, FaTwitter } from "react-icons/fa";
+import { FaInstagram, FaFacebookF } from "react-icons/fa";
+import { FaXTwitter } from 'react-icons/fa6';
 export default function Footer() {
     return (
         <footer className="footer">
@@ -8,7 +9,7 @@ export default function Footer() {
                     <FaFacebookF />
                 </a>
                 <a href="https://www.twitter.com" className="social-icon twitter" target="_blank" rel="noopener noreferrer">
-                    <FaTwitter />
+                    <FaXTwitter />
                 </a>
                 <a href="https://www.instagram.com" className="social-icon instagram" target="_blank" rel="noopener noreferrer">
                     <FaInstagram />
