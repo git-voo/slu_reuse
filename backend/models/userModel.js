@@ -9,9 +9,13 @@ import mongoose, { Schema } from "mongoose";
 const msg = "Field is required";
 
 const userSchema = new Schema({
-    name: {
+    first_name: {
         type: String,
-        required: true
+        required: [true, msg]
+    },
+    last_name: {
+        type: String,
+        required: [true, msg]
     },
     email: {
         type: String,
@@ -19,25 +23,35 @@ const userSchema = new Schema({
         unique: true,
         match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     },
+    password: {
+        type: String,
+        required: true,
+    },
     phone: {
         type: String,
-        required: [true, msg]
-    },
-    emailVerificationCode: {
-        type: String,
-        required: [true, msg]
+        default: false
     },
     isEmailVerified: {
         type: Boolean,
         default: false
+    },
+    isDonor: {
+        type: Boolean,
+        default: false,
+    },
+    isStudent: {
+        type: Boolean,
+        default: false,
+    },
+    passwordResetCode: {
+        type: String,
+        required: false
     }
 });
 
 // We will include the email sending utility to send verification code everytime email is modified
 userSchema.pre('save', function(next) {
-    if (this.isModified('emailVerificationCode')) {
-        // sendMail() utility to be built later
-    }
+    // sendMail() utility to be built later
     next();
 });
 
