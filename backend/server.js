@@ -1,12 +1,13 @@
 import express from "express"
 import bodyParser from "body-parser"
 import path from "path"
-import cors from "cors" 
+import cors from "cors"
 import connectDB from "./DB/connectDB.js"
 import { configDotenv } from "dotenv"
 import { fileURLToPath } from 'url'
 
 import itemRoutes from "./routes/itemRoutes.js"
+import { sendMail } from "./utils/mailer/index.mjs"
 
 const router = express.Router()
 const app = express()
@@ -27,7 +28,19 @@ const documentation = router.get("/", (req, res) => {
 
 app.use("/", documentation)
 app.use("/api", itemRoutes)
- 
+app.use("/api/sendmail", async (req, res) => {
+  const user = {
+    name: "VOO Onoja",
+    email: "onojavoo@gmail.com"
+  }
+  try {
+    const emailResponse = await sendMail(user, "Welcome to SLUReuse", "This is a test email though")
+     res.status(emailResponse.status).json({ message: emailResponse.message })
+  } catch (error) {
+    res.status(error.status)
+  }
+})
+
 connectDB()
 
 app.listen(PORT, () => {
