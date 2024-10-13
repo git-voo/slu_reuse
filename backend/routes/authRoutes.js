@@ -29,7 +29,8 @@ router.post('/register', [
     })
 ], register);
 
-router.get('/verify-email', verifyEmail);
+// Verify Email Route
+router.post('/verify-email', verifyEmail);
 
 // Login Route
 router.post('/login', [
@@ -43,7 +44,6 @@ router.post('/forgot-password', [
 ], forgotPassword);
 
 // Verify reset code route
-
 router.post('/verify-reset-code', [
     check('email', 'Valid email is required').isEmail(),
     check('verificationCode', 'Verification code is required').isLength({ min: 6, max: 6 })
@@ -51,10 +51,8 @@ router.post('/verify-reset-code', [
 
 // Reset Password Route
 router.post('/reset-password', [
-    check('email', 'Valid email is required').isEmail(),
-    check('emailVerificationCode', 'Verification code is required').exists(),
-    check('newPassword', 'Password must be at least 6 characters').isLength({ min: 6 })
+    check('email', 'Valid email is required').isEmail(), // Validate email
+    check('newPassword', 'Password must be at least 6 characters').isLength({ min: 6 }) // Validate new password
 ], resetPassword);
-
 
 export default router;

@@ -9,9 +9,7 @@ const register = async(req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-
     const { first_name, last_name, email, password, phone, isDonor, isStudent } = req.body;
-
     try {
         // Check if user already exists
         let user = await UserModel.findOne({ email });
@@ -32,20 +30,16 @@ const register = async(req, res) => {
 
         await user.save();
 
-        console.log('I am in');
         // Log environment variables to check
         console.log(`CLIENT_URL: ${process.env.CLIENT_URL}`);
         console.log(`JWT_SECRET: ${process.env.JWT_SECRET}`);
 
-        console.log(user);
         // Create JWT token with email information and expiration
         const verificationToken = jwt.sign({ email: user.email },
             process.env.JWT_SECRET, { expiresIn: '24h' } // Token expires in 21 hours
         );
-
         // Generate verification link
         const verificationLink = `${process.env.CLIENT_URL}/verify-email?token=${verificationToken}`;
-
 
         // Send verification email
         const transporter = nodemailer.createTransport({
@@ -82,8 +76,10 @@ const register = async(req, res) => {
 
 // Email Verification Handler
 const verifyEmail = async(req, res) => {
-    const { token } = req.query; // Extract token from URL query parameter
-
+    const { token } = req.body; // Extract token from request body
+    if (!token) {
+        return res.status(400).json({ msg: 'Token is required' });
+    }
     try {
         // Verify the token using the same secret
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -107,8 +103,13 @@ const verifyEmail = async(req, res) => {
 
         res.status(200).json({ msg: 'Email verified successfully' });
     } catch (err) {
-        console.error(err.message);
-        res.status(500).json({ msg: 'Server error' });
+        if (err.name === 'TokenExpiredError') {
+            return res.status(401).json({ msg: 'Token has expired' });
+        } else if (err.name === 'JsonWebTokenError') {
+            return res.status(401).json({ msg: 'Invalid token' });
+        }
+        console.error(`Error during verify email: ${err.message}`);
+        return res.status(500).json({ msg: 'Server error', error: err.message });
     }
 };
 
@@ -163,7 +164,6 @@ const login = async(req, res) => {
 
 const forgotPassword = async(req, res) => {
     const { email } = req.body;
-
     try {
         const user = await UserModel.findOne({ email });
 
@@ -196,9 +196,11 @@ const forgotPassword = async(req, res) => {
 
         res.status(200).json({ msg: 'Password reset code sent to email' });
     } catch (err) {
+        console.error(`Error during forgot password: ${err.message}`);
         res.status(500).json({ msg: 'Server error' });
     }
 };
+
 const verifyResetCode = async(req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -214,7 +216,6 @@ const verifyResetCode = async(req, res) => {
         if (!user) {
             return res.status(400).json({ msg: 'Invalid verification code' });
         }
-
         // If the code is correct, return success
         return res.status(200).json({ msg: 'Code verified successfully' });
 
@@ -225,22 +226,23 @@ const verifyResetCode = async(req, res) => {
 };
 
 const resetPassword = async(req, res) => {
-    const { email, newPassword, passwordResetCode } = req.body;
-
+    const { email, newPassword } = req.body;
     try {
-        const user = await UserModel.findOne({ email, passwordResetCode });
+        const user = await UserModel.findOne({ email });
 
         if (!user) {
-            return res.status(400).json({ msg: 'Invalid verification code' });
+            return res.status(400).json({ msg: 'User not found' });
         }
 
         user.password = await bcrypt.hash(newPassword, 10);
+
         user.passwordResetCode = '';
 
         await user.save();
 
         res.status(200).json({ msg: 'Password reset successfully' });
     } catch (err) {
+        console.error(`Error during password reset: ${err.message}`);
         res.status(500).json({ msg: 'Server error' });
     }
 };
