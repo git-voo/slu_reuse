@@ -97,3 +97,38 @@
     text-align: center;
     padding: 20px;
 }
+
+
+/* Blur the background when loading */
+
+.loading-active {
+    position: relative;
+    filter: blur(5px);
+    /* Blur the form background */
+    pointer-events: none;
+    /* Disable interaction while loading */
+}
+
+
+/* Overlay for the loading spinner */
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.7);
+    z-index: 9999;
+}
+
+
+/* Center the spinner */
+
+.loading-overlay .spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
