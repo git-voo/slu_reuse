@@ -2,7 +2,8 @@ import UserModel from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
-import nodemailer from 'nodemailer';
+import { sendMail } from "../utils/mailer/index.mjs"
+
 
 const register = async(req, res) => {
     const errors = validationResult(req);
@@ -13,11 +14,9 @@ const register = async(req, res) => {
     try {
         // Check if user already exists
         let user = await UserModel.findOne({ email });
-
         if (user) {
             return res.status(400).json({ msg: 'User already exists' });
         }
-
         user = new UserModel({
             first_name,
             last_name,
@@ -28,48 +27,30 @@ const register = async(req, res) => {
             isStudent
         });
 
-        await user.save();
-
-        // Log environment variables to check
-        console.log(`CLIENT_URL: ${process.env.CLIENT_URL}`);
-        console.log(`JWT_SECRET: ${process.env.JWT_SECRET}`);
-
         // Create JWT token with email information and expiration
         const verificationToken = jwt.sign({ email: user.email },
-            process.env.JWT_SECRET, { expiresIn: '24h' } // Token expires in 21 hours
+            process.env.JWT_SECRET, { expiresIn: '24h' } // Token expires in 24 hours
         );
         // Generate verification link
         const verificationLink = `${process.env.CLIENT_URL}/verify-email?token=${verificationToken}`;
 
-        // Send verification email
-        const transporter = nodemailer.createTransport({
-            service: 'Gmail',
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            }
-        });
-
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: 'Verify your email',
-            text: `Please verify your email by clicking the following link: ${verificationLink}`
-        };
-
-        // Send verification email
-        try {
-            await transporter.sendMail(mailOptions);
-            console.log(`Verification email sent to: ${email}`);
-        } catch (emailError) {
-            console.error(`Failed to send verification email: ${emailError.message}`);
-            return res.status(500).json({ msg: 'Failed to send verification email' });
+        // send verificaton link email
+        const userDetail = {
+            name: user.first_name + ' ' + user.last_name,
+            email: user.email
         }
-        // Return success response with token
-        res.status(201).json({ verificationToken, msg: 'User registered, verification email sent' });
+        try {
+            const emailResponse = await sendMail(userDetail,
+                "Verify your email",
+                `Please verify your email by clicking the following link: ${verificationLink}`);
+            await user.save();
+            return res.status(emailResponse.status).json({ message: emailResponse.message });
+        } catch (error) {
+            return res.status(error.status || 500).json({ msg: "Error sending email", error: error.message });
+        }
     } catch (err) {
         console.error(`Error during registration: ${err.message}`);
-        res.status(500).json({ msg: err.message });
+        return res.status(500).json({ msg: err.message });
     }
 };
 
@@ -101,14 +82,15 @@ const verifyEmail = async(req, res) => {
         user.isEmailVerified = true;
         await user.save();
 
-        res.status(200).json({ msg: 'Email verified successfully' });
+        return res.status(200).json({ msg: 'Email verified successfully' });
     } catch (err) {
         if (err.name === 'TokenExpiredError') {
             return res.status(401).json({ msg: 'Token has expired' });
         } else if (err.name === 'JsonWebTokenError') {
             return res.status(401).json({ msg: 'Invalid token' });
         }
-        console.error(`Error during verify email: ${err.message}`);
+
+        console.error(`Error during email verification for token: ${token}: ${err.message}`);
         return res.status(500).json({ msg: 'Server error', error: err.message });
     }
 };
@@ -123,7 +105,7 @@ const login = async(req, res) => {
         // Check if user exists
         if (!user) {
             console.log(`Login attempt failed: User with email ${email} not found.`);
-            return res.status(400).json({ msg: 'Invalid credentials' });
+            return res.status(401).json({ msg: 'Invalid credentials' });
         }
 
         // Check if email is verified
@@ -136,7 +118,7 @@ const login = async(req, res) => {
 
         if (!isMatch) {
             console.log(`Login attempt failed: Incorrect password for user with email ${email}.`);
-            return res.status(400).json({ msg: 'Invalid credentials' });
+            return res.status(401).json({ msg: 'Invalid credentials' });
         }
 
         // Create a JWT token payload
@@ -144,7 +126,7 @@ const login = async(req, res) => {
         // Generate JWT token
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '12h' });
         // Return token and success message
-        res.status(200).json({
+        return res.status(200).json({
             token,
             msg: 'Logged in successfully',
             user: {
@@ -157,8 +139,8 @@ const login = async(req, res) => {
             }
         });
     } catch (err) {
-        console.error(`Error during Login: ${err.message}`);
-        res.status(500).json({ msg: 'Server error' });
+        console.error(`Error during login for email: ${email}: ${err.message}`);
+        return res.status(500).json({ msg: 'Server error' });
     }
 };
 
@@ -168,36 +150,30 @@ const forgotPassword = async(req, res) => {
         const user = await UserModel.findOne({ email });
 
         if (!user) {
-            return res.status(400).json({ msg: 'User does not exist' });
+            return res.status(404).json({ msg: 'User does not exist' });
         }
 
         const resetCode = Math.floor(100000 + Math.random() * 900000); // 6-digit reset code
-        user.passwordResetCode = resetCode;
 
-        await user.save();
+        // send reset password email
+        const userDetail = {
+            name: user.first_name + ' ' + user.last_name,
+            email: user.email
+        }
+        try {
+            const emailResponse = await sendMail(userDetail,
+                'Password Reset',
+                `Your password reset code is: ${resetCode}`);
+            user.passwordResetCode = resetCode;
+            await user.save();
 
-        // Send reset code to the user's email
-        const transporter = nodemailer.createTransport({
-            service: 'Gmail',
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            }
-        });
-
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: 'Password Reset',
-            text: `Your password reset code is: ${resetCode}`
-        };
-
-        transporter.sendMail(mailOptions);
-
-        res.status(200).json({ msg: 'Password reset code sent to email' });
+            return res.status(emailResponse.status).json({ message: emailResponse.message });
+        } catch (error) {
+            return res.status(error.status || 500).json({ msg: "Error sending email", error: error.message });
+        }
     } catch (err) {
-        console.error(`Error during forgot password: ${err.message}`);
-        res.status(500).json({ msg: 'Server error' });
+        console.error(`Error during forgot password for email: ${email}: ${err.message}`);
+        return res.status(500).json({ msg: err.message });
     }
 };
 
@@ -206,21 +182,18 @@ const verifyResetCode = async(req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-
     const { email, verificationCode } = req.body;
-
     try {
         // Find user by email and verification code
         const user = await UserModel.findOne({ email, passwordResetCode: verificationCode });
-
         if (!user) {
-            return res.status(400).json({ msg: 'Invalid verification code' });
+            console.log(`Verification attempt failed: Invalid verification code for email ${email}.`);
+            return res.status(401).json({ msg: 'Invalid verification code' });
         }
         // If the code is correct, return success
         return res.status(200).json({ msg: 'Code verified successfully' });
-
     } catch (err) {
-        console.error(`Error during code verification: ${err.message}`);
+        console.error(`Error during forgot password for email: ${email}: ${err.message}`);
         return res.status(500).json({ msg: 'Server error' });
     }
 };
@@ -229,21 +202,18 @@ const resetPassword = async(req, res) => {
     const { email, newPassword } = req.body;
     try {
         const user = await UserModel.findOne({ email });
-
         if (!user) {
-            return res.status(400).json({ msg: 'User not found' });
+            console.log(`Password reset failed: User with email ${email} not found.`);
+            return res.status(404).json({ msg: 'User not found' });
         }
-
         user.password = await bcrypt.hash(newPassword, 10);
-
         user.passwordResetCode = '';
-
         await user.save();
-
-        res.status(200).json({ msg: 'Password reset successfully' });
+        console.log(`Password reset successful for email: ${email}.`);
+        return res.status(200).json({ msg: 'Password reset successfully' });
     } catch (err) {
         console.error(`Error during password reset: ${err.message}`);
-        res.status(500).json({ msg: 'Server error' });
+        return res.status(500).json({ msg: 'Server error' });
     }
 };
 
