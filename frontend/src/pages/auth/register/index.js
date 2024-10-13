@@ -114,15 +114,18 @@ export default function Register() {
     });
     
     const data = await response.json();
+    console.log(data)
     if (response.ok) {
       alert('Registration successful! Check your email for verification.');
       setIsLoading(false);
       navigate('/login');
     } else {
+      setIsLoading(false);
       alert(data.msg || 'Registration failed');
     }
     }
     catch(error){
+      setIsLoading(false);
       console.error('Error', error);
       alert('Error occurred while registration')
     }
