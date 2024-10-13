@@ -6,8 +6,8 @@ import connectDB from "./DB/connectDB.js"
 import { configDotenv } from "dotenv"
 import { fileURLToPath } from 'url'
 import itemRoutes from "./routes/itemRoutes.js"
-import { sendMail } from "./utils/mailer/index.mjs"
 import authRoutes from './routes/authRoutes.js';
+import { sendMail } from "./utils/mailer/index.mjs"
 
 const router = express.Router()
 
@@ -33,6 +33,7 @@ const documentation = router.get("/", (req, res) => {
 
 app.use("/", documentation)
 app.use("/api", itemRoutes)
+app.use('/api/auth', authRoutes);
 app.use("/api/sendmail", async(req, res) => {
     const user = {
         name: "VOO Onoja",
@@ -45,8 +46,6 @@ app.use("/api/sendmail", async(req, res) => {
         res.status(error.status)
     }
 })
-
-app.use('/api/auth', authRoutes);
 
 connectDB()
 
