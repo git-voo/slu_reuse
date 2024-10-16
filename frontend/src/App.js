@@ -8,7 +8,7 @@ import Forgot_Password from './pages/auth/forgot_password';
 import AboutUs from "./pages/aboutUs/AboutUs"
 import ProfilePage from './pages/profile/profilePage';
 
-//import Navigation from "./components/navigation";
+// import Navigation from "./components/navigation";
 // import ScrollToTop from "./utils/ScrollToTop";
 
 function App() {
