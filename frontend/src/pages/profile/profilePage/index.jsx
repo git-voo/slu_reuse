@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import ProfileForm from '../../components/profileForm/profileForm';
-import profileService from '../../services/profileService';
+import ProfileForm from '../../../components/profile/profileForm';
+import Sidebar from '../../../components/profile/sidebar';
+import profileService from '../../../services/profileService';
 import './profilePage.css';
 
 const ProfilePage = () => {
@@ -39,6 +40,7 @@ const ProfilePage = () => {
 
     return (
         <div className="profilePage">
+            <Sidebar />
             {isEditing ? (
                 <ProfileForm profile={profile} onSave={handleSave} onCancel={() => setIsEditing(false)} />
             ) : (
