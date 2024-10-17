@@ -61,7 +61,7 @@ export default function Navbar() {
 
       <ul className="navbar-links">
         <li><Link to="/about">About</Link></li>
-        <li><Link to="/donate">Donate Items</Link></li>
+        <li><Link to="/donate-item">Donate Items</Link></li>
         <li><Link to="/contact">Contact</Link></li>
         <li>
           <Link to={"/login"} className="navbar-btn">Login</Link>

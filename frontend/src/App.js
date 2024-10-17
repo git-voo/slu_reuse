@@ -7,8 +7,10 @@ import Login from './pages/auth/login';
 import Forgot_Password from './pages/auth/forgot_password';
 import AboutUs from "./pages/aboutUs/AboutUs"
 import ProfilePage from './pages/profile/profilePage';
+import ItemListPage from './pages/items/ItemListPage';
+import DonateItem from './pages/items/DonateItem';
 
-//import Navigation from "./components/navigation";
+// import Navigation from "./components/navigation";
 // import ScrollToTop from "./utils/ScrollToTop";
 
 function App() {
@@ -23,6 +25,7 @@ function App() {
             <Route path="/about" element={ < AboutUs/ > }/> 
             <Route path="/contact" element={ < Contactus/ > }/>
             <Route path="/profile" element={ < ProfilePage/ > }/>
+            <Route path="/donate-item" element={ < DonateItem/ > }/>
         </Routes> 
     </BrowserRouter> 
     )
