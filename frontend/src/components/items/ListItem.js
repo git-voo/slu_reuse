@@ -1,11 +1,13 @@
 
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap'; // Using Bootstrap for styling
+import axios from 'axios';
+
 
 const ListItem = () => {
   const [itemName, setItemName] = useState('');
   const [itemDescription, setItemDescription] = useState('');
-  const [itemImages, setItemImages] = useState(null);
+  const [itemImages, setItemImages] = useState([]);
 
   const [itemCategory, setItemCategory] = useState('');
   const [itemQuantity, setItemQuantity] = useState('');
@@ -18,26 +20,61 @@ const ListItem = () => {
   
 
   const handleImageChange = (e) => {
+    const files = e.target.files; 
     setItemImages(e.target.files);
+    setItemImages(files ? Array.from(files) : []); // Convert FileList to Array
+
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+
+    console.log('Form Data:', {
+      itemName,
+      itemDescription,
+      itemImages,
+      itemCategory,
+      itemQuantity,
+      itemPickupLocation,
+      itemTags,
+      itemDonar,
+      itemStatus,
+      itemListedOn,
+    });
     
+
     e.preventDefault();
-    // Here, you'd handle the form submission, such as sending the data to the backend
-    console.log('Item Name:', itemName);
-    console.log('Item Description:', itemDescription);
-    console.log('Item Images:', itemImages);
-
-    console.log('Item Categories:', itemCategory);
-    console.log('Item Quantity:', itemQuantity);
-    console.log('Item PickupLocation:', itemPickupLocation);
-    console.log('Item Tags:', itemTags);
-    console.log('Item Donar:', itemDonar);
-    console.log('Item Status:', itemStatus);
-    console.log('Item Listed On:', itemListedOn);
     
-  };
+    // Create a FormData object to send images and other form data
+    const formData = new FormData();
+    
+    // Append form data
+    formData.append('name', itemName);
+    formData.append('description', itemDescription);
+    for (let i = 0; i < itemImages.length; i++) {
+        formData.append('images', itemImages[i]);
+    }
+    formData.append('category', itemCategory);
+    formData.append('quantity', itemQuantity);
+    formData.append('pickupLocation', itemPickupLocation);
+    formData.append('tags', itemTags);
+    formData.append('donor', itemDonar);
+    formData.append('status', itemStatus);
+    formData.append('listedOn', itemListedOn);
+
+    try {
+        // Send the data to the API
+        const response = await axios.post('http://localhost:4300/api/items', {name:"no name", pickupLocation:"slu"}, {
+            headers: {
+                'Content-Type': 'multipart/form-data', // Set the content type
+            },
+        });
+        console.log('Response:', response.data);
+        // Handle success (e.g., show a success message, clear the form, etc.)
+    } catch (error) {
+        console.error('Error submitting form:', error);
+        // Handle error (e.g., show an error message)
+    }
+};
 
 
 
