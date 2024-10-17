@@ -6,7 +6,10 @@ const Sidebar = () => {
         <div className="sidebar">
             <ul>
                 <li>
-                    <Link to="/my-listings">My Listings</Link>
+                    <Link to="/profile">Profile</Link>
+                </li>
+                <li>
+                    <Link to="/my-listings">Listings</Link>
                 </li>
                 <li>
                     <Link to="/list-item">List an Item</Link>
@@ -16,9 +19,6 @@ const Sidebar = () => {
                 </li>
                 <li>
                     <Link to="/verify-email">Verify Email</Link>
-                </li>
-                <li>
-                    <Link to="/update-profile">Update Profile</Link>
                 </li>
             </ul>
             <ul className="bottom">
