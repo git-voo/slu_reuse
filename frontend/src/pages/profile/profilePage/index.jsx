@@ -48,7 +48,7 @@ const ProfilePage = () => {
                     <h2>{profile.name}</h2>
                     <p>Email: {profile.email}</p>
                     <p>Bio: {profile.bio}</p>
-                    <button onClick={handleEditClick}>Edit Profile</button>
+                    <button onClick={handleEditClick}>Update Profile</button>
                 </div>
             )}
         </div>
