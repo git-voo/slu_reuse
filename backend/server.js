@@ -1,12 +1,13 @@
 import express from "express"
 import bodyParser from "body-parser"
 import path from "path"
-import cors from "cors" 
+import cors from "cors"
 import connectDB from "./DB/connectDB.js"
 import { configDotenv } from "dotenv"
 import { fileURLToPath } from 'url'
 
 import itemRoutes from "./routes/itemRoutes.js"
+import { sendMail } from "./utils/mailer/index.mjs"
 import filterRoutes from "./routes/filterRoutes.js"
 const router = express.Router()
 const app = express()
