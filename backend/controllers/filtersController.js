@@ -1,43 +1,4 @@
-// itemController.js
 import Item from '../models/ItemModel.js';
-
-// Function to filter items
-// export const  filterItems = async (req, res) => {
-//     try {
-//         const { category, location, timeOrder } = req.query;
-
-//         let filterCriteria = {};
-
-//         // Add category filter if provided
-//         if (category) {
-//             filterCriteria.category = category.toLowerCase();
-//         }
-
-//         // Add location filter if provided
-//         if (location) {
-//             filterCriteria.location = location.toLowerCase();
-//         }
-
-//         // Query the database with the filter criteria
-//         let query = Item.find(filterCriteria);
-
-//         // Sort by time update if provided
-//         if (timeOrder === 'newest') {
-//             query = query.sort({ updatedAt: -1 });
-//         } else if (timeOrder === 'oldest') {
-//             query = query.sort({ updatedAt: 1 });
-//         }
-
-//         // Execute the query
-//         const items = await query.exec();
-
-//         // Return the filtered items
-//         res.json(items);
-//     } catch (error) {
-//         res.status(500).json({ message: 'Error fetching items', error });
-//     }
-// };
-
 
 export const filterItems = async (req, res) => {
     try {
