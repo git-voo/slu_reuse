@@ -1,45 +1,22 @@
 .navbar {
-  background-color: #007bff;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 1rem;
+  background-color: #007bff;
   color: white;
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 1;
 }
 
 .navbar-brand a {
   color: white;
   text-decoration: none;
   font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.search-area {
-  width: 30%;
-}
-.search-area input {
-  width: 100%;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 8px;
-  outline: none;
-  transition: all 0.3s;
-  background-color: rgb(208, 215, 216);
-  color: black;
-}
-.search-area input:focus {
-  background-color: white;
 }
 
 .navbar-links {
   list-style: none;
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .navbar-links li a {
@@ -48,19 +25,93 @@
   font-size: 1rem;
 }
 
-.navbar-links li a:hover {
-  border-bottom: 2px solid white;
-  padding-bottom: 2px;
-}
-
 .navbar-btn {
   padding: 0.5rem 1rem;
-  background-color: white;
-  color: #007bff !important;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-}
-.navbar-btn:hover {
-  background-color: #0056b3;
+  background-color: #ff9900;
   color: white;
-}/*# sourceMappingURL=navbar.css.map */
+  border: none;
+  cursor: pointer;
+}
+
+.user-avatar img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Search bar styles */
+.search-area {
+  display: flex;
+  align-items: center;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #ccc;
+  border-radius: 3px;
+  overflow: hidden;
+  background-color: white;
+}
+
+.search-category {
+  padding: 0.3rem;
+  background-color: #f3f3f3;
+  border: none;
+  outline: none;
+}
+
+.search-input {
+  border: none;
+  padding: 0.3rem;
+  outline: none;
+  flex: 1;
+}
+
+.search-btn {
+  background-color: #ff9900;
+  border: none;
+  padding: 0.7rem 0.7rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-btn svg {
+  color: white;
+}
+
+.search-btn:hover {
+  background-color: #e68a00;
+}
+
+@media (max-width: 768px) {
+  .search-container {
+    width: 100%;
+  }
+}
+
+
+/* Location Filter and Sort Styles */
+.location-filter, .sort-filter {
+  margin-left: 1rem;
+  padding: 0.3rem;
+  background-color: #f3f3f3;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  outline: none;
+}
+
+/* Adjust for mobile responsiveness */
+@media (max-width: 768px) {
+  .search-container {
+    width: 100%;
+  }
+  
+  .location-filter, .sort-filter {
+    margin-left: 0.5rem;
+    padding: 0.3rem;
+  }
+}
