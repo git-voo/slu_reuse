@@ -1,24 +1,31 @@
-import { useState } from 'react'
-import '../../styles/navBar/navbar.css'
-import { Link, useNavigate } from "react-router-dom"
-import avatar from "../../assets/images/avatar.png"
+import { useState, useEffect } from 'react';
+import '../../styles/navBar/navbar.css';
+import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios';
+import avatar from "../../assets/images/avatar.png";
 import { FaSearch } from "react-icons/fa";
 
-export default function Navbar() {
+export default function Navbar({filters, updateFilters }) {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState("All");
-  const [sortOption, setSortOption] = useState("newest");
-  const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedLocation, setSelectedLocation] = useState("All Locations");
+  const [sortOption, setSortOption] = useState("newest"); 
 
   const categories = ["All", "Electronics", "Furniture", "Accessories", "Beauty", "Kitchen", "Books", "Toys"];
-  const locations = ["All Locations","Chesterfield","Manchester","St. Louis","St. Peters","Warson Woods","Maryland Heights","Overland"];
+  const locations = ["All Locations", "Chesterfield", "Manchester", "St. Louis", "St. Peters", "Warson Woods", "Maryland Heights", "Overland"];
+  const navigate = useNavigate();
+
+  // Handle filter change and update the parent state
+  const handleCategoryChange = (e) => {
+    updateFilters({ ...filters, category: e.target.value });
+  };
 
   const handleLocationChange = (e) => {
-    setSelectedLocation(e.target.value);
+    updateFilters({ ...filters, location: e.target.value });
   };
 
   const handleSortChange = (e) => {
-    setSortOption(e.target.value);
+    updateFilters({ ...filters, sortOption: e.target.value });
   };
 
   return (
@@ -30,7 +37,7 @@ export default function Navbar() {
       {/* Search Bar */}
       <div className="search-area">
         <div className="search-container">
-          <select className="search-category">
+          <select className="search-category" value={selectedCategory} onChange={handleCategoryChange}>
             {categories.map((category, index) => (
               <option key={index} value={category.toLowerCase()}>
                 {category}
@@ -72,6 +79,19 @@ export default function Navbar() {
           </div>
         </li>
       </ul>
+
+
+
+      {/* Displaying items fetched from the backend */}
+      {/* <div className="items-container">
+        {items.map((item) => (
+          <div key={item.id} className="item-card">
+            <h3>{item.name}</h3>
+            <p>{item.category} - {item.location}</p>
+            <p>Updated At: {new Date(item.updatedAt).toLocaleDateString()}</p>
+          </div>
+        ))}
+      </div> */}
     </nav>
-  )
+  );
 }
