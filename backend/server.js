@@ -7,7 +7,7 @@ import { configDotenv } from "dotenv"
 import { fileURLToPath } from 'url'
 
 import itemRoutes from "./routes/itemRoutes.js"
-
+import filterRoutes from "./routes/filterRoutes.js"
 const router = express.Router()
 const app = express()
 const __filename = fileURLToPath(import.meta.url)
@@ -27,7 +27,9 @@ const documentation = router.get("/", (req, res) => {
 
 app.use("/", documentation)
 app.use("/api", itemRoutes)
- 
+
+app.use("/api", filterRoutes)
+
 connectDB()
 
 app.listen(PORT, () => {
