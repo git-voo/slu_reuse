@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap'; // Using Bootstrap for styling
 import axios from 'axios';
+import {useNavigate} from "react-router-dom"
 
 
 const ListItem = () => {
@@ -17,30 +18,31 @@ const ListItem = () => {
   const [itemStatus, setItemStatus] = useState('');
   const [itemListedOn, setItemListedOn] = useState('');
 
+  const navigate = useNavigate()
+
   
 
   const handleImageChange = (e) => {
-    const files = e.target.files; 
-    setItemImages(e.target.files);
+    const files = e.target.files;
     setItemImages(files ? Array.from(files) : []); // Convert FileList to Array
 
   };
 
   const handleSubmit = async (e) => {
-
-    console.log('Form Data:', {
-      itemName,
-      itemDescription,
-      itemImages,
-      itemCategory,
-      itemQuantity,
-      itemPickupLocation,
-      itemTags,
-      itemDonar,
-      itemStatus,
-      itemListedOn,
-    });
     
+    const handleCancel = () => {
+      setItemName('');
+      setItemDescription('');
+      setItemImages([]);
+      setItemCategory('');
+      setItemQuantity('');
+      setItemPickupLocation('');
+      setItemTags('');
+      setItemDonar('');
+      setItemStatus('');
+      setItemListedOn('');
+  };
+  
 
     e.preventDefault();
     
@@ -57,21 +59,27 @@ const ListItem = () => {
     formData.append('quantity', itemQuantity);
     formData.append('pickupLocation', itemPickupLocation);
     formData.append('tags', itemTags);
-    formData.append('donor', itemDonar);
-    formData.append('status', itemStatus);
-    formData.append('listedOn', itemListedOn);
+    formData.append('donor', itemDonar); 
 
+    const payload = { 
+      "name": itemName,
+      "images": JSON.stringify(itemImages),
+      "description": itemDescription,
+      "category": itemCategory,
+      "quantity": itemQuantity, 
+      "tags":itemTags,
+      "donor": itemDonar, 
+      'pickupLocation':itemPickupLocation
+    } 
     try {
-        // Send the data to the API
-        const response = await axios.post('http://localhost:4300/api/items', {name:"no name", pickupLocation:"slu"}, {
-            headers: {
-                'Content-Type': 'multipart/form-data', // Set the content type
-            },
-        });
+      const response = await axios.post('http://localhost:4300/api/items', payload)
+      alert("Item listed successfully")
+      navigate("/")
         console.log('Response:', response.data);
         // Handle success (e.g., show a success message, clear the form, etc.)
     } catch (error) {
         console.error('Error submitting form:', error);
+        alert(error.toString())
         // Handle error (e.g., show an error message)
     }
 };
@@ -205,9 +213,10 @@ const ListItem = () => {
 
         {/* Buttons */}
         <div className="d-flex justify-content-between">
-          <Button variant="secondary" type="button">
+          <Button variant="secondary" type="button" >
             Cancel
           </Button>
+
           <Button variant="primary" type="submit">
             Submit
           </Button>
