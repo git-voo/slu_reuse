@@ -11,6 +11,12 @@ const register = async(req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
     const { first_name, last_name, email, password, phone, isDonor, isStudent } = req.body;
+
+    // Ensure required environment variables are present
+    if (!process.env.JWT_SECRET || !process.env.CLIENT_URL) {
+        return res.status(500).json({ msg: 'Server configuration error. Please try again later.' });
+    }
+
     try {
         // Check if user already exists
         let user = await UserModel.findOne({ email });
@@ -26,6 +32,8 @@ const register = async(req, res) => {
             isDonor,
             isStudent
         });
+
+        await user.save();
 
         // Create JWT token with email information and expiration
         const verificationToken = jwt.sign({ email: user.email },
@@ -43,9 +51,9 @@ const register = async(req, res) => {
             const emailResponse = await sendMail(userDetail,
                 "Verify your email",
                 `Please verify your email by clicking the following link: ${verificationLink}`);
-            await user.save();
-            return res.status(emailResponse.status).json({ message: emailResponse.message });
+            return res.status(200).json({ message: 'Registration successful' });
         } catch (error) {
+            console.error('Error during email sending:', error); // Log the error to verify in tests
             return res.status(error.status || 500).json({ msg: "Error sending email", error: error.message });
         }
     } catch (err) {
