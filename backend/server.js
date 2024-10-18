@@ -50,13 +50,18 @@ app.use("/api/sendmail", async(req, res) => {
 connectDB()
 
 //lisen for requests
-const server = app.listen(PORT, () => {
-    console.log(`Running on   http://localhost:${PORT}`)
-});
+// Start the server only if not in a test environment
+let server;
+if (process.env.NODE_ENV !== 'test') {
+    const server = app.listen(PORT, () => {
+        console.log(`Running on   http://localhost:${PORT}`)
+    });
 
-server.on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-        console.log(`Port ${PORT} is already in use`);
-        process.exit(1);
-    }
-});
+    server.on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            console.log(`Port ${PORT} is already in use`);
+            process.exit(1);
+        }
+    });
+}
+export { app, server };

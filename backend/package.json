@@ -5,9 +5,16 @@
     "main": "server.js",
     "type": "module",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js",
         "start": "node server.js",
         "dev": "nodemon server.js"
+    },
+    "jest": {
+        "transform": {},
+        "testEnvironment": "node",
+        "moduleNameMapper": {
+            "^(\\.{1,2}/.*)\\.js$": "$1"
+        }
     },
     "repository": {
         "type": "git",
@@ -20,6 +27,7 @@
     },
     "homepage": "https://github.com/jsvoo/slu-reuse#readme",
     "dependencies": {
+        "bcrypt": "^5.1.1",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.20.3",
         "cors": "^2.8.5",
@@ -31,5 +39,10 @@
         "multer": "^1.4.5-lts.1",
         "nodemailer": "^6.9.15",
         "nodemon": "^2.0.20"
+    },
+    "devDependencies": {
+        "jest": "^29.7.0",
+        "mongodb-memory-server": "^10.1.2",
+        "supertest": "^7.0.0"
     }
 }
