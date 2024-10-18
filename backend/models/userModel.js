@@ -49,11 +49,5 @@ const userSchema = new Schema({
     }
 });
 
-// We will include the email sending utility to send verification code everytime email is modified
-userSchema.pre('save', function(next) {
-    // sendMail() utility to be built later
-    next();
-});
-
 const UserModel = mongoose.model("User", userSchema);
 export default UserModel;
