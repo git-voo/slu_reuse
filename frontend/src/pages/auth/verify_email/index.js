@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import '../../../styles/auth/index.css';
 import '../../../styles/auth/register/index.css';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function VerifyEmail(){
     const [message, setMessage] = useState('');

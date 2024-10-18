@@ -153,7 +153,7 @@ const forgotPassword = async(req, res) => {
             return res.status(404).json({ msg: 'User does not exist' });
         }
 
-        const resetCode = Math.floor(100000 + Math.random() * 900000); // 6-digit reset code
+        const resetCode = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit reset code
 
         // send reset password email
         const userDetail = {

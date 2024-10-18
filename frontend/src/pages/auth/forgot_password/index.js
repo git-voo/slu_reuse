@@ -4,8 +4,10 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import '../../../styles/auth/index.css';
 import { Link } from 'react-router-dom';
+import Spinner from 'react-bootstrap/Spinner'; // Bootstrap Spinner
 
 export default function ForgotPassword() {
+  const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(1); // State to manage form step
   const [email, setEmail] = useState(''); // To store the email
   const [verificationCode, setVerificationCode] = useState(''); // To store the code
@@ -27,6 +29,7 @@ export default function ForgotPassword() {
     }
 
     try {
+      setIsLoading(true);
       // Call the API to send the verification code
       const response = await fetch('http://localhost:4300/api/auth/forgot-password', {
         method: 'POST',
@@ -44,10 +47,13 @@ export default function ForgotPassword() {
         } else {
           setStep(2); // Move to step 2 (enter verification code)
         }
+        setIsLoading(false);
       } else {
+        setIsLoading(false);
         setErrorMessage(data.msg || 'Error sending verification code');
       }
     } catch (err) {
+      setIsLoading(false);
       setErrorMessage('An error occurred while sending the verification code');
     }
   };
@@ -120,6 +126,14 @@ export default function ForgotPassword() {
   };
 
     return ( 
+      <div className={`${isLoading ? 'loading-active' : ''}`}> {/* Apply loading class */}
+    {isLoading && (
+        <div className="loading-overlay"> {/* Loading spinner */}
+            <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+            </Spinner>
+        </div>
+    )}
         <div className="outer-container">
             <div className="form-container">
             {step === 1 && (
@@ -194,6 +208,7 @@ export default function ForgotPassword() {
           </Form>
         )}
             </div>
+        </div>
         </div>
     )
 }
