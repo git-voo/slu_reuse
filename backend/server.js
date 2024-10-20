@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url'
 import itemRoutes from "./routes/itemRoutes.js"
 import authRoutes from './routes/authRoutes.js';
 import { sendMail } from "./utils/mailer/index.mjs"
-
+import filterRoutes from "./routes/filterRoutes.js"
 const router = express.Router()
 
 //express app
@@ -33,6 +33,8 @@ const documentation = router.get("/", (req, res) => {
 
 app.use("/", documentation)
 app.use("/api", itemRoutes)
+
+app.use("/api", filterRoutes)
 app.use('/api/auth', authRoutes);
 app.use("/api/sendmail", async(req, res) => {
     const user = {
