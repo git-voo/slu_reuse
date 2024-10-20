@@ -8,17 +8,24 @@ export default function Navbar({ filters, updateFilters }) {
   const locations = ["All Locations", "Chesterfield", "Manchester", "St. Louis", "St. Peters", "Warson Woods", "Maryland Heights", "Overland"];
   const navigate = useNavigate();
 
-  // Handle filter change and update the parent state directly
+  // Handle changes for category and update the filters
   const handleCategoryChange = (e) => {
-    updateFilters({ ...filters, category: e.target.value });
+    updateFilters({ category: e.target.value });
   };
 
+  // Handle changes for location and update the filters
   const handleLocationChange = (e) => {
-    updateFilters({ ...filters, location: e.target.value });
+    updateFilters({ location: e.target.value });
   };
 
+  // Handle changes for sorting by time (newest or oldest) and update the filters
   const handleSortChange = (e) => {
-    updateFilters({ ...filters, sortOption: e.target.value });
+    updateFilters({ sortOption: e.target.value });
+  };
+
+  // Handle changes for search query and update the filters
+  const handleSearchChange = (e) => {
+    updateFilters({ searchQuery: e.target.value });
   };
 
   return (
@@ -32,27 +39,35 @@ export default function Navbar({ filters, updateFilters }) {
         <div className="search-container">
           <select className="search-category" value={filters.category} onChange={handleCategoryChange}>
             {categories.map((category, index) => (
-              <option key={index} value={category.toLowerCase()}>
+              <option key={index} value={category}>
                 {category}
               </option>
             ))}
           </select>
-          <input type="search" placeholder='Search SLUReuse' className="search-input" />
+
+          <input
+            type="search"
+            placeholder="Search SLUReuse"
+            className="search-input"
+            value={filters.searchQuery}
+            onChange={handleSearchChange}  // Bind search input to searchQuery
+          />
+
           <button className="search-btn">
             <FaSearch />
           </button>
         </div>
 
-        {/* Location Filter
+        {/* Location Filter */}
         <select className="location-filter" value={filters.location} onChange={handleLocationChange}>
           {locations.map((location, index) => (
             <option key={index} value={location}>
               {location}
             </option>
           ))}
-        </select> */}
+        </select>
 
-        {/* Sort By Date */}
+        {/* Sort By Date (Newest/Oldest) */}
         <select className="sort-filter" value={filters.sortOption} onChange={handleSortChange}>
           <option value="newest">Newest</option>
           <option value="oldest">Oldest</option>
@@ -65,7 +80,7 @@ export default function Navbar({ filters, updateFilters }) {
         <li><Link to="/contact">Contact</Link></li>
         <li><Link to={"/login"} className="navbar-btn">Login</Link></li>
         <li>
-          <div className='user-avatar' onClick={(e) => { e.preventDefault(); }}>
+          <div className='user-avatar'>
             <img src={avatar} alt="" onClick={() => navigate("/profile")} />
           </div>
         </li>
