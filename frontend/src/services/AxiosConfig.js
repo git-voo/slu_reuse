@@ -2,25 +2,28 @@ import axios from "axios";
 import { ErrorHandler } from "./ErrorHandler";
 
 export default function AxiosConfig() {
-  const instanceConfig = axios.create({
-    baseURL: process.env.REACT_APP_BASE_URL,
-    headers: {
-      common: {
-        Authorization: `Bearer 12|${localStorage.getItem("stucademy-tks")}`,
-      },
-    },
-  });
+    const token = localStorage.getItem("stucademy-tks");
 
-  instanceConfig.interceptors.response.use(
-    (response) => handleSuccess(response),
-    (error) => {
-      ErrorHandler(error);
+    const instanceConfig = axios.create({
+        baseURL: process.env.REACT_APP_BASE_URL,
+        headers: {
+            common: {
+                Authorization: token ? `Bearer ${token}` : null,
+            },
+        },
+    });
+
+    instanceConfig.interceptors.response.use(
+        (response) => handleSuccess(response),
+        (error) => {
+            ErrorHandler(error);
+            return Promise.reject(error); // Ensure errors are propagated
+        }
+    );
+
+    function handleSuccess(response) {
+        return response;
     }
-  );
 
-  function handleSuccess(response) {
-    return response;
-  }
-
-  return instanceConfig;
+    return instanceConfig;
 }
