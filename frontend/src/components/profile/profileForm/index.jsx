@@ -2,24 +2,43 @@ import { useState } from 'react';
 import './profileForm.css';
 
 const ProfileForm = ({ profile, onSave, onCancel }) => {
-    const [name, setName] = useState(profile.name);
-    const [email, setEmail] = useState(profile.email);
-    const [bio, setBio] = useState(profile.bio);
+    const [firstName, setFirstName] = useState(profile.first_name || '');
+    const [lastName, setLastName] = useState(profile.last_name || '');
+    const [email, setEmail] = useState(profile.email || '');
+    const [phone, setPhone] = useState(profile.phone || '');
+    const [isDonor, setIsDonor] = useState(profile.isDonor || false);
+    const [isStudent, setIsStudent] = useState(profile.isStudent || false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSave({ name, email, bio });
+        onSave({
+            first_name: firstName,
+            last_name: lastName,
+            email,
+            phone,
+            isDonor,
+            isStudent,
+        });
     };
 
     return (
         <form className="profileForm" onSubmit={handleSubmit}>
             <div className="formGroup">
-                <label htmlFor="name">Name</label>
+                <label htmlFor="firstName">First Name</label>
                 <input
                     type="text"
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    id="firstName"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                />
+            </div>
+            <div className="formGroup">
+                <label htmlFor="lastName">Last Name</label>
+                <input
+                    type="text"
+                    id="lastName"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
                 />
             </div>
             <div className="formGroup">
@@ -29,18 +48,40 @@ const ProfileForm = ({ profile, onSave, onCancel }) => {
                     id="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    disabled // Disabling email editing for security
                 />
             </div>
             <div className="formGroup">
-                <label htmlFor="bio">Bio</label>
-                <textarea
-                    id="bio"
-                    value={bio}
-                    onChange={(e) => setBio(e.target.value)}
-                ></textarea>
+                <label htmlFor="phone">Phone</label>
+                <input
+                    type="text"
+                    id="phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                />
             </div>
-            <button type="submit">Save</button>
-            <button type="button" onClick={onCancel}>Cancel</button>
+            <div className="formGroup checkboxGroup">
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={isDonor}
+                        onChange={(e) => setIsDonor(e.target.checked)}
+                    />
+                    Donor
+                </label>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={isStudent}
+                        onChange={(e) => setIsStudent(e.target.checked)}
+                    />
+                    Student
+                </label>
+            </div>
+            <div className="buttonGroup">
+                <button type="submit">Save</button>
+                <button type="button" onClick={onCancel}>Cancel</button>
+            </div>
         </form>
     );
 };
