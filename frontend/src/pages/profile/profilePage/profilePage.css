@@ -50,3 +50,26 @@
     background-color: #003f7f;
     transform: scale(0.98);
 }
+
+.profileDetails button:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+}
+
+@media (max-width: 800px) {
+    .profilePage {
+        padding: 20px;
+    }
+
+    .profileDetails h2 {
+        font-size: 20px;
+    }
+
+    .profileDetails p {
+        font-size: 14px;
+    }
+
+    .profileDetails button {
+        width: 100%;
+    }
+}
