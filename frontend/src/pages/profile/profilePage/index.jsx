@@ -26,8 +26,8 @@ const ProfilePage = () => {
 
     const handleSave = async (updatedProfile) => {
         try {
-            await profileService.updateProfile(updatedProfile);
-            setProfile(updatedProfile);
+            const savedProfile = await profileService.updateProfile(updatedProfile);
+            setProfile(savedProfile);
             setIsEditing(false);
         } catch (error) {
             console.error("Error updating profile:", error);
@@ -40,12 +40,19 @@ const ProfilePage = () => {
     return (
         <div className="profilePage">
             {isEditing ? (
-                <ProfileForm profile={profile} onSave={handleSave} onCancel={() => setIsEditing(false)} />
+                <ProfileForm
+                    profile={profile}
+                    onSave={handleSave}
+                    onCancel={() => setIsEditing(false)}
+                />
             ) : (
                 <div className="profileDetails">
-                    <h2>{profile.name}</h2>
+                    <h2>{profile.first_name} {profile.last_name}</h2>
                     <p>Email: {profile.email}</p>
-                    <p>Bio: {profile.bio}</p>
+                    <p>Phone: {profile.phone || 'N/A'}</p>
+                    <p>
+                        Role: {profile.isDonor ? 'Donor' : ''} {profile.isStudent ? 'Student' : ''}
+                    </p>
                     <button onClick={handleEditClick}>Update Profile</button>
                 </div>
             )}
