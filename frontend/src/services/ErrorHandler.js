@@ -1,8 +1,8 @@
 import { Navigate } from "react-router-dom";
-import ShowToast from "../common/Toast";
+import ShowToast from "../common/toast";
 
 export const ErrorHandler = (error) => {
-  ShowToast({ type: "error", text: error?.response?.message });
+  // ShowToast({ type: "error", text: error?.response?.message });
   const navigator = (route) => {
     Navigate(route);
   };
