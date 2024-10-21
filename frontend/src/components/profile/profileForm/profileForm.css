@@ -30,14 +30,15 @@
     border-radius: 8px;
     border: 1px solid #ccc;
     font-size: 16px;
-    transition: all 0.3s ease;
     background-color: #fff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .profileForm input:focus,
 .profileForm textarea:focus {
     border-color: #007BFF;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+    outline: none;
 }
 
 .profileForm button {
@@ -61,3 +62,20 @@
     background-color: #003f7f;
     transform: scale(0.98);
 }
+
+.profileForm button:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+}
+
+@media (max-width: 600px) {
+    .profileForm {
+        padding: 20px;
+        gap: 15px;
+    }
+
+    .profileForm button {
+        width: 100%;
+    }
+}
+                
