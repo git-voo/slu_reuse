@@ -1,3 +1,5 @@
 import AxiosConfig from "./AxiosConfig";
 
-export const axiosInstance = AxiosConfig();
+const axiosInstance = AxiosConfig();
+
+export default axiosInstance;
