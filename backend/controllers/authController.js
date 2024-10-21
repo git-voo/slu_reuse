@@ -174,10 +174,10 @@ const forgotPassword = async(req, res) => {
                 `Your password reset code is: ${resetCode}`);
             user.passwordResetCode = resetCode;
             await user.save();
-
-            return res.status(emailResponse.status).json({ message: emailResponse.message });
+            console.log('Email response:', emailResponse);
+            return res.status(emailResponse.status).json({ message: emailResponse.message || 'Email sent' });
         } catch (error) {
-            return res.status(error.status || 500).json({ msg: "Error sending email", error: error.message });
+            return res.status(error.status || 500).json({ message: `Error: ${error.message}` });
         }
     } catch (err) {
         console.error(`Error during forgot password for email: ${email}: ${err.message}`);
