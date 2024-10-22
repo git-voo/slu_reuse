@@ -1,32 +1,41 @@
-import { FaSearch } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
-import avatar from "../../assets/images/avatar.png";
-import '../../styles/navBar/navbar.css';
+import { FaSearch } from "react-icons/fa"
+import { Link, useNavigate } from "react-router-dom"
+import avatar from "../../assets/images/avatar.png"
+import '../../styles/navBar/navbar.css'
+import { useEffect, useState } from "react"
 
 export default function Navbar({ filters, updateFilters }) {
-  const categories = ["All", "Electronics", "Furniture", "Accessories", "Beauty", "Kitchen", "Books", "Toys"];
-  const locations = ["All Locations", "Chesterfield", "Manchester", "St. Louis", "St. Peters", "Warson Woods", "Maryland Heights", "Overland"];
-  const navigate = useNavigate();
+  const categories = ["All", "Electronics", "Furniture", "Accessories", "Beauty", "Kitchen", "Books", "Toys"]
+  const locations = ["All Locations", "Chesterfield", "Manchester", "St. Louis", "St. Peters", "Warson Woods", "Maryland Heights", "Overland"]
+  const navigate = useNavigate()
+
+  const [loggedUser, setLoggedUser] = useState(null)
+
+  useEffect(() => {
+    const userToken = localStorage.getItem("token")
+    if (userToken) setLoggedUser(userToken)
+
+  })
 
   // Handle changes for category and update the filters
   const handleCategoryChange = (e) => {
-    updateFilters({ category: e.target.value });
-  };
+    updateFilters({ category: e.target.value })
+  }
 
   // Handle changes for location and update the filters
   const handleLocationChange = (e) => {
-    updateFilters({ location: e.target.value });
-  };
+    updateFilters({ location: e.target.value })
+  }
 
   // Handle changes for sorting by time (newest or oldest) and update the filters
   const handleSortChange = (e) => {
-    updateFilters({ sortOption: e.target.value });
-  };
+    updateFilters({ sortOption: e.target.value })
+  }
 
   // Handle changes for search query and update the filters
   const handleSearchChange = (e) => {
-    updateFilters({ searchQuery: e.target.value });
-  };
+    updateFilters({ searchQuery: e.target.value })
+  }
 
   return (
     <nav className="navbar">
@@ -78,13 +87,20 @@ export default function Navbar({ filters, updateFilters }) {
         <li><Link to="/about">About</Link></li>
         <li><Link to="/donate">Donate Items</Link></li>
         <li><Link to="/contact">Contact</Link></li>
-        <li><Link to={"/login"} className="navbar-btn">Login</Link></li>
-        <li>
-          <div className='user-avatar'>
-            <img src={avatar} alt="" onClick={() => navigate("/profile")} />
-          </div>
-        </li>
+        {
+          !loggedUser ? (<li><Link to={"/login"} className="navbar-btn">Login</Link></li>) : <li><button onClick={() => {
+            localStorage.removeItem("token")
+            setLoggedUser(null)
+          }} className="navbar-btn">Logout</button></li>
+        }
+        {
+          loggedUser && (<li>
+            <div className='user-avatar'>
+              <img src={avatar} alt="" onClick={() => navigate("/profile")} />
+            </div>
+          </li>)
+        }
       </ul>
     </nav>
-  );
+  )
 }
