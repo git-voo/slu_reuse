@@ -147,7 +147,7 @@ const login = async(req, res) => {
             }
         });
     } catch (err) {
-        console.error(`Error during login for email: ${email}: ${err.message}`);
+        //console.error(`Error during login for email: ${email}: ${err.message}`);
         return res.status(500).json({ msg: 'Server error' });
     }
 };
