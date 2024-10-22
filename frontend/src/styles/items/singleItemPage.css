@@ -1,0 +1,129 @@
+/* Container for the entire single item page */
+.single-item-container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Item carousel (image section) */
+  .item-carousel {
+    position: relative;
+    width: 100%;
+    height: 450px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  .item-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  .carousel-controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+  }
+  
+  .carousel-controls button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .carousel-controls button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Item details section */
+  .item-details {
+    margin-bottom: 20px;
+  }
+  
+  .item-title {
+    font-size: 2.2rem;
+    color: #007bff;
+    margin-bottom: 15px;
+  }
+  
+  .item-donor {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .donor-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .item-status {
+    font-size: 1.2rem;
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+  
+  .item-status.available {
+    background-color: #28a745;
+    color: white !important;
+  }
+  
+  .item-status.pending {
+    background-color: #ffc107;
+    color: white;
+  }
+  
+  .item-status.unavailable {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .item-description {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .item-location, .item-date, .item-notes {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  
+  /* Chat and details buttons */
+  .item-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .chat-button, .contact-button {
+    background-color: #007bff;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 5px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .chat-button:hover, .contact-button:hover {
+    background-color: #0056b3;
+  }
+  
