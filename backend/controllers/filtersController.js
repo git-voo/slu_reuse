@@ -20,9 +20,7 @@ export const filterItems = async (req, res) => {
         if (searchQuery) {
             filterCriteria.name = { $regex: new RegExp(searchQuery, 'i') };
         }
-
-        console.log("Applied filter criteria:", filterCriteria); // Log filter criteria for debugging
-
+ 
         // Query the database with the filter criteria
         let query = Item.find(filterCriteria);
 

@@ -1,7 +1,7 @@
-import '../../styles/cards/itemCard.css';
-import locationIcon from "../../assets/icons/location.png";
-import { GoDotFill } from "react-icons/go";
-import { PiWechatLogoThin } from "react-icons/pi";
+import '../../styles/cards/itemCard.css'
+import locationIcon from "../../assets/icons/location.png"
+import { GoDotFill } from "react-icons/go"
+import { PiWechatLogoThin } from "react-icons/pi"
 
 const ItemCard = ({ userAvatar, userName, itemImage, title, description, location }) => {
     return (
@@ -26,7 +26,7 @@ const ItemCard = ({ userAvatar, userName, itemImage, title, description, locatio
                         <img src={locationIcon} alt="location" />
                     </div>
                     {location}
-        
+
                 </div>
                 <p> </p>
                 <p className="item-card-description">{description}</p>
@@ -34,12 +34,15 @@ const ItemCard = ({ userAvatar, userName, itemImage, title, description, locatio
 
             <div className="item-card-footer">
                 <button className="item-card-btn">View Details</button>
-                <button className="item-card-btn message-btn">
+                <button className="item-card-btn message-btn" onClick={(e)=>{
+                    e.stopPropagation()
+
+                }}>
                     <PiWechatLogoThin className='icon' /> Message {userName?.split(" ")[0]}
                 </button>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default ItemCard;
+export default ItemCard

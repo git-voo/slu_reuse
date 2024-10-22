@@ -1,6 +1,8 @@
 import express from 'express';
 import { check, body } from 'express-validator';
-import { register, verifyEmail, login, forgotPassword, verifyResetCode, resetPassword } from '../controllers/authController.js';
+import { register, verifyEmail, login, forgotPassword, verifyResetCode, resetPassword, getProfile, updateProfile } from '../controllers/authController.js';
+import { authMiddleware } from '../middlewares/authMiddleware.js';
+
 
 const router = express.Router();
 
@@ -54,5 +56,11 @@ router.post('/reset-password', [
     check('email', 'Valid email is required').isEmail(), // Validate email
     check('newPassword', 'Password must be at least 6 characters').isLength({ min: 6 }) // Validate new password
 ], resetPassword);
+
+// Get Profile Route
+router.get('/profile', authMiddleware, getProfile);
+
+// Update Profile Route
+router.put('/profile', authMiddleware, updateProfile);
 
 export default router;

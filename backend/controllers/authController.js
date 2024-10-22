@@ -225,4 +225,42 @@ const resetPassword = async(req, res) => {
     }
 };
 
-export { register, verifyEmail, login, forgotPassword, verifyResetCode, resetPassword };
+// Get Profile Handler
+const getProfile = async (req, res) => {
+    try {
+        const user = await UserModel.findById(req.user.id).select('-password'); // Exclude password
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+        return res.status(200).json(user);
+    } catch (err) {
+        console.error(`Error fetching user profile: ${err.message}`);
+        return res.status(500).json({ msg: 'Server error' });
+    }
+};
+
+// Update Profile Handler
+const updateProfile = async (req, res) => {
+    try {
+        const updatedData = req.body;
+        // Only allow certain fields to be updated
+        const allowedUpdates = ['first_name', 'last_name', 'phone', 'isDonor', 'isStudent'];
+        const updates = {};
+        for (let key of allowedUpdates) {
+            if (updatedData[key] !== undefined) {
+                updates[key] = updatedData[key];
+            }
+        }
+        const user = await UserModel.findByIdAndUpdate(req.user.id, updates, { new: true }).select('-password');
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+        return res.status(200).json(user);
+    } catch (err) {
+        console.error(`Error updating user profile: ${err.message}`);
+        return res.status(500).json({ msg: 'Server error' });
+    }
+};
+
+
+export { register, verifyEmail, login, forgotPassword, verifyResetCode, resetPassword, getProfile, updateProfile };
