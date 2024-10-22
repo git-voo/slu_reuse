@@ -19,7 +19,7 @@ export const getItems = async (req, res) => {
 // Get a single item by ID
 export const getItemById = async (req, res) => {
     try {
-        const item = await ItemModel.findById(req.params.id)
+        const item = await ItemModel.findById(req.params.id).populate("donor")
         if (!item) return res.status(404).json({ message: 'Item not found' })
         res.status(200).json(item)
     } catch (error) {
