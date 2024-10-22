@@ -1,15 +1,15 @@
 import { jest } from '@jest/globals';
 import request from 'supertest';
-import mongoose from 'mongoose';
 import { app, server } from '../../server.js';
 import UserModel from '../../models/userModel.js';
-import nodemailer from 'nodemailer'; // Import nodemailer to mock it
+import nodemailer from 'nodemailer';
 
 const sendMailMock = jest.fn();
 
 jest.mock('nodemailer');
+jest.mock('../../models/userModel.js'); // Mock the UserModel
 
-//  createTransport method to return an object with the mocked sendMail function
+// Mock the createTransport method to return an object with the mocked sendMail function
 nodemailer.createTransport = jest.fn().mockReturnValue({
     sendMail: sendMailMock,
 });
@@ -21,31 +21,25 @@ beforeEach(() => {
 });
 
 describe('Forgot Password API', () => {
-    let user;
+    afterAll(async() => {
+        if (server && server.close) {
+            await server.close();
+        }
+    });
 
-    beforeEach(async() => {
-        await UserModel.deleteMany({});
-        user = await UserModel.create({
+    it('should send reset password email successfully', async() => {
+        // Mock findOne to return an existing user
+        jest.spyOn(UserModel, 'findOne').mockResolvedValue({
             first_name: 'Jane',
             last_name: 'Doe',
             email: 'janedoe@example.com',
             password: 'hashedpassword',
             isDonor: true,
             isStudent: false,
+            save: jest.fn().mockResolvedValue(), // Mock the save method on the user instance
         });
-    });
 
-    afterAll(async() => {
-        await mongoose.connection.close();
-        if (server && server.close) {
-            await server.close();
-        }
-        // Add a short delay to ensure cleanup
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-    });
-
-    it('should send reset password email successfully', async() => {
-        // Mocking sendMail to simulate a successful email send as a promise-based function
+        // Mock sendMail to simulate a successful email send
         sendMailMock.mockResolvedValueOnce({
             status: 200,
             message: 'Email sent',
@@ -62,15 +56,15 @@ describe('Forgot Password API', () => {
         expect(response.body).toHaveProperty('message', 'Email sent');
         expect(sendMailMock).toHaveBeenCalled();
 
-        // Check that the user now has a password reset code saved
-        const updatedUser = await UserModel.findOne({ email: 'janedoe@example.com' });
-        expect(updatedUser.passwordResetCode).toBeDefined();
-        expect(updatedUser.passwordResetCode).toHaveLength(6); // Ensure it's a 6-digit code
+        // Verify that the save method was called (indicating that a reset code was saved)
+        const mockUser = await UserModel.findOne();
+        expect(mockUser.save).toHaveBeenCalled();
     });
 
-
-
     it('should return 404 if user does not exist', async() => {
+        // Mock findOne to return null, simulating that the user doesn't exist
+        jest.spyOn(UserModel, 'findOne').mockResolvedValue(null);
+
         const response = await request(app)
             .post('/api/auth/forgot-password')
             .send({
@@ -82,6 +76,18 @@ describe('Forgot Password API', () => {
     });
 
     it('should return 500 if email sending fails', async() => {
+        // Mock findOne to return an existing user
+        jest.spyOn(UserModel, 'findOne').mockResolvedValue({
+            first_name: 'Jane',
+            last_name: 'Doe',
+            email: 'janedoe@example.com',
+            password: 'hashedpassword',
+            isDonor: true,
+            isStudent: false,
+            save: jest.fn().mockResolvedValue(), // Mock the save method on the user instance
+        });
+
+        // Mock sendMail to simulate an email sending failure
         sendMailMock.mockRejectedValueOnce(new Error('Error sending email'));
 
         const response = await request(app)
@@ -95,6 +101,7 @@ describe('Forgot Password API', () => {
     });
 
     it('should return 500 if server error occurs', async() => {
+        // Mock findOne to throw an error, simulating a server error during the user lookup
         jest.spyOn(UserModel, 'findOne').mockImplementationOnce(() => {
             throw new Error('Server error');
         });

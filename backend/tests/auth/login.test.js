@@ -1,17 +1,27 @@
 import { jest } from '@jest/globals';
 import request from 'supertest';
-import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { app, server } from '../../server.js';
 import UserModel from '../../models/userModel.js';
 
-describe('Login API', () => {
-    let user;
+jest.mock('../../models/userModel.js'); // Mock the UserModel
 
-    beforeEach(async() => {
-        await UserModel.deleteMany({});
-        user = await UserModel.create({
+beforeEach(() => {
+    jest.clearAllMocks();
+});
+
+describe('Login API', () => {
+    afterAll(async() => {
+        if (server && server.close) {
+            await server.close();
+        }
+    });
+
+    it('should log in a user successfully with valid credentials', async() => {
+        // Mock findOne to return a user with a hashed password
+        jest.spyOn(UserModel, 'findOne').mockResolvedValue({
+            id: 'mockUserId123',
             first_name: 'Jane',
             last_name: 'Doe',
             email: 'janedoe@example.com',
@@ -20,18 +30,7 @@ describe('Login API', () => {
             isStudent: false,
             isEmailVerified: true,
         });
-    });
 
-    afterAll(async() => {
-        await mongoose.connection.close();
-        if (server && server.close) {
-            await server.close();
-        }
-        // A short delay to ensure cleanup
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-    });
-
-    it('should log in a user successfully with valid credentials', async() => {
         const response = await request(app)
             .post('/api/auth/login')
             .send({
@@ -43,16 +42,19 @@ describe('Login API', () => {
         expect(response.body).toHaveProperty('msg', 'Logged in successfully');
         expect(response.body).toHaveProperty('token');
         expect(response.body.user).toEqual({
-            id: user.id,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            email: user.email,
-            isDonor: user.isDonor,
-            isStudent: user.isStudent,
+            id: 'mockUserId123',
+            first_name: 'Jane',
+            last_name: 'Doe',
+            email: 'janedoe@example.com',
+            isDonor: true,
+            isStudent: false,
         });
     });
 
     it('should return 401 if user does not exist', async() => {
+        // Mock findOne to return null (user not found)
+        jest.spyOn(UserModel, 'findOne').mockResolvedValue(null);
+
         const response = await request(app)
             .post('/api/auth/login')
             .send({
@@ -65,8 +67,17 @@ describe('Login API', () => {
     });
 
     it('should return 403 if email is not verified', async() => {
-        user.isEmailVerified = false;
-        await user.save();
+        // Mock findOne to return a user with `isEmailVerified` as false
+        jest.spyOn(UserModel, 'findOne').mockResolvedValue({
+            id: 'mockUserId123',
+            first_name: 'Jane',
+            last_name: 'Doe',
+            email: 'janedoe@example.com',
+            password: await bcrypt.hash('password123', 10),
+            isDonor: true,
+            isStudent: false,
+            isEmailVerified: false,
+        });
 
         const response = await request(app)
             .post('/api/auth/login')
@@ -80,6 +91,18 @@ describe('Login API', () => {
     });
 
     it('should return 401 if password is incorrect', async() => {
+        // Mock findOne to return a user with a known hashed password
+        jest.spyOn(UserModel, 'findOne').mockResolvedValue({
+            id: 'mockUserId123',
+            first_name: 'Jane',
+            last_name: 'Doe',
+            email: 'janedoe@example.com',
+            password: await bcrypt.hash('correctpassword', 10),
+            isDonor: true,
+            isStudent: false,
+            isEmailVerified: true,
+        });
+
         const response = await request(app)
             .post('/api/auth/login')
             .send({
@@ -92,6 +115,7 @@ describe('Login API', () => {
     });
 
     it('should return 500 if server error occurs', async() => {
+        // Mock findOne to throw an error (simulating a server error)
         jest.spyOn(UserModel, 'findOne').mockImplementationOnce(() => {
             throw new Error('Server error');
         });
