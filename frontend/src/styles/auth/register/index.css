@@ -3,3 +3,20 @@
     font-weight: bold;
     text-align: center;
 }
+
+.register-as {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.info-icon {
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.info-text {
+    margin-left: 10px;
+    font-size: 14px;
+    color: #888;
+}

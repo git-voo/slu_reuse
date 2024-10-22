@@ -9,21 +9,21 @@ const Sidebar = () => {
                     <Link to="/profile">Profile</Link>
                 </li>
                 <li>
-                    <Link to="/my-listings">Listings</Link>
+                    <Link to="/profile/my-listings">Listings</Link>
                 </li>
                 <li>
-                    <Link to="/list-item">List an Item</Link>
+                    <Link to="/profile/list-item">List an Item</Link>
                 </li>
                 <li>
-                    <Link to="/conversations">Conversations</Link>
+                    <Link to="/profile/conversations">Conversations</Link>
                 </li>
                 <li>
-                    <Link to="/verify-email">Verify Email</Link>
+                    <Link to="/profile/verify-email">Verify Email</Link>
                 </li>
             </ul>
             <ul className="bottom">
                 <li className="delete-account">
-                    <Link to="/delete-account">Delete My Account</Link>
+                    <Link to="/profile/delete-account">Delete My Account</Link>
                 </li>
             </ul>
         </div>

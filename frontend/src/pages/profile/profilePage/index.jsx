@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import ProfileForm from '../../../components/profile/profileForm';
-import Sidebar from '../../../components/profile/sidebar';
 import profileService from '../../../services/profileService';
 import './profilePage.css';
 
@@ -15,7 +14,7 @@ const ProfilePage = () => {
                 setProfile(profileData);
             } catch (error) {
                 console.error("Error fetching profile:", error);
-                setProfile({ error: "Failed to load prodile data" });
+                setProfile({ error: "Failed to load profile data" });
             }
         };
         fetchProfile();
@@ -40,7 +39,6 @@ const ProfilePage = () => {
 
     return (
         <div className="profilePage">
-            <Sidebar />
             {isEditing ? (
                 <ProfileForm profile={profile} onSave={handleSave} onCancel={() => setIsEditing(false)} />
             ) : (
