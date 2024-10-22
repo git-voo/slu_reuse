@@ -1,0 +1,74 @@
+.profilePage {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background-color: #FFFFFF;
+    margin-top: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.profileDetails {
+    text-align: center;
+}
+
+.profileDetails h2 {
+    margin-bottom: 16px;
+    font-size: 28px;
+    color: #343A40; /* Dark gray */
+    font-weight: 600;
+}
+
+.profileDetails p {
+    font-size: 16px;
+    color: #6C757D; /* Medium gray */
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.profileDetails button {
+    padding: 12px 24px;
+    background-color: #20C997; /* Teal accent color */
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.profileDetails button:hover {
+    background-color: #17A2B8;
+    transform: translateY(-2px);
+}
+
+.profileDetails button:active {
+    background-color: #138496;
+    transform: scale(0.98);
+}
+
+.profileDetails button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(32, 201, 151, 0.3);
+}
+
+@media (max-width: 800px) {
+    .profilePage {
+        padding: 30px 15px;
+    }
+
+    .profileDetails h2 {
+        font-size: 24px;
+    }
+
+    .profileDetails p {
+        font-size: 14px;
+    }
+
+    .profileDetails button {
+        width: 100%;
+    }
+}
