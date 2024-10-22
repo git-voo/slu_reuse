@@ -2,28 +2,35 @@ import Item from '../models/ItemModel.js';
 
 export const filterItems = async (req, res) => {
     try {
-        const { category, location, timeOrder } = req.query;
+        const { category, location, sort, searchQuery } = req.query;
 
         let filterCriteria = {};
 
         // Add category filter if provided (case-insensitive)
-        if (category) {
+        if (category && category !== "all") {
             filterCriteria.category = { $regex: new RegExp(category, 'i') };
         }
 
         // Add location filter if provided (case-insensitive)
-        if (location) {
-            filterCriteria.location = { $regex: new RegExp(location, 'i') };
+        if (location && location !== "All Locations") {
+            filterCriteria.pickupLocation = { $regex: new RegExp(location, 'i') };
         }
+
+        // Add search query filter if provided (case-insensitive)
+        if (searchQuery) {
+            filterCriteria.name = { $regex: new RegExp(searchQuery, 'i') };
+        }
+
+        console.log("Applied filter criteria:", filterCriteria); // Log filter criteria for debugging
 
         // Query the database with the filter criteria
         let query = Item.find(filterCriteria);
 
-        // Sort by time update if provided
-        if (timeOrder === 'newest') {
-            query = query.sort({ updatedAt: -1 });
-        } else if (timeOrder === 'oldest') {
-            query = query.sort({ updatedAt: 1 });
+        // Sort by time (newest or oldest) if provided
+        if (sort === "newest") {
+            query = query.sort({ listedOn: -1 }); // Sort by listedOn date (descending)
+        } else if (sort === "oldest") {
+            query = query.sort({ listedOn: 1 });  // Sort by listedOn date (ascending)
         }
 
         // Execute the query
@@ -32,7 +39,6 @@ export const filterItems = async (req, res) => {
         // Return the filtered items
         res.json(items);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching items', error });
+        res.status(500).json({ message: "Error fetching items", error });
     }
 };
- 

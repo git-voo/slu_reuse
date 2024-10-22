@@ -1,7 +1,7 @@
 {
     "name": "slu-reuse",
     "version": "1.0.0",
-    "description": "a web app for cinema management including movies schedules, bookings, asset and user management",
+    "description": "a web app for items donation within Saint Louis University campus",
     "main": "server.js",
     "type": "module",
     "scripts": {
@@ -20,7 +20,7 @@
         "type": "git",
         "url": "git+https://github.com/jsvoo/slu-reuse.git"
     },
-    "author": "Femi Jones, Onoja Victor, Anthony Faruna, Aguguom Wisdom, Tobi Otoju",
+    "author": "Victor Onoja, Shagun Sharma, Mohammed ..., Leila ..., Vishal ...",
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/jsvoo/slu-reuse/issues"
