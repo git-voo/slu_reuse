@@ -3,16 +3,22 @@ import "../../../styles/items/singleItemPage.css"
 
 const ItemDetails = ({ item }) => {
     const [currentImage, setCurrentImage] = useState(0)
+    const DATE_OPTIONS = {
+        weekday: 'long',  
+        month: 'long', 
+        day: 'numeric',  
+        year: 'numeric' 
+    }
 
     const nextImage = () => {
         setCurrentImage((prevIndex) =>
-            prevIndex === item.images.length - 1 ? 0 : prevIndex + 1
+            prevIndex === item?.images?.length - 1 ? 0 : prevIndex + 1
         )
     }
 
     const prevImage = () => {
         setCurrentImage((prevIndex) =>
-            prevIndex === 0 ? item.images.length - 1 : prevIndex - 1
+            prevIndex === 0 ? item?.images?.length - 1 : prevIndex - 1
         )
     }
 
@@ -21,11 +27,11 @@ const ItemDetails = ({ item }) => {
             {/* Images Carousel */}
             <div className="item-carousel">
                 <img
-                    src={item.images[currentImage]}
+                    src={item?.images[currentImage]}
                     alt={item.title}
                     className="item-image"
                 />
-                {item.images.length > 1 && (
+                {item?.images?.length > 1 && (
                     <div className="carousel-controls">
                         <button onClick={prevImage}>&lt;</button>
                         <button onClick={nextImage}>&gt;</button>
@@ -45,10 +51,13 @@ const ItemDetails = ({ item }) => {
                 </p>
                 <p className="item-description">{item.description}</p>
                 <p className="item-location">
-                    <strong>Location:</strong> {item.location}
+                    <strong>Category:</strong> {item.category}
+                </p>
+                <p className="item-location">
+                    <strong>Location:</strong> {item.pickupLocation}
                 </p>
                 <p className="item-date">
-                    <strong>Listed on:</strong> {item.listedDate}
+                    <strong>Listed on:</strong> {new Date(item?.listedOn).toLocaleDateString('en-US', DATE_OPTIONS)}
                 </p>
                 {item.additionalNotes && (
                     <p className="item-notes">

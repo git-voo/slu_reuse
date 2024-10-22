@@ -39,8 +39,7 @@ const itemSchema = new Schema({
         type: [String],
     },
     donor: {
-        // type: mongoose.Schema.Types.ObjectId,
-        type:String,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: [true, msg]
     },
