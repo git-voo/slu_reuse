@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import ProfileForm from '../../../components/profile/profileForm';
-import Sidebar from '../../../components/profile/sidebar';
 import profileService from '../../../services/profileService';
 import './profilePage.css';
 
@@ -15,7 +14,7 @@ const ProfilePage = () => {
                 setProfile(profileData);
             } catch (error) {
                 console.error("Error fetching profile:", error);
-                setProfile({ error: "Failed to load prodile data" });
+                setProfile({ error: "Failed to load profile data" });
             }
         };
         fetchProfile();
@@ -27,8 +26,8 @@ const ProfilePage = () => {
 
     const handleSave = async (updatedProfile) => {
         try {
-            await profileService.updateProfile(updatedProfile);
-            setProfile(updatedProfile);
+            const savedProfile = await profileService.updateProfile(updatedProfile);
+            setProfile(savedProfile);
             setIsEditing(false);
         } catch (error) {
             console.error("Error updating profile:", error);
@@ -40,15 +39,21 @@ const ProfilePage = () => {
 
     return (
         <div className="profilePage">
-            <Sidebar />
             {isEditing ? (
-                <ProfileForm profile={profile} onSave={handleSave} onCancel={() => setIsEditing(false)} />
+                <ProfileForm
+                    profile={profile}
+                    onSave={handleSave}
+                    onCancel={() => setIsEditing(false)}
+                />
             ) : (
                 <div className="profileDetails">
-                    <h2>{profile.name}</h2>
+                    <h2>{profile.first_name} {profile.last_name}</h2>
                     <p>Email: {profile.email}</p>
-                    <p>Bio: {profile.bio}</p>
-                    <button onClick={handleEditClick}>Edit Profile</button>
+                    <p>Phone: {profile.phone || 'N/A'}</p>
+                    <p>
+                        Role: {profile.isDonor ? 'Donor' : ''} {profile.isStudent ? 'Student' : ''}
+                    </p>
+                    <button onClick={handleEditClick}>Update Profile</button>
                 </div>
             )}
         </div>
