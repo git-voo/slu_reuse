@@ -1,45 +1,48 @@
 import { jest } from '@jest/globals';
 import request from 'supertest';
-import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import { app, server } from '../../server.js'; // Import both app and server
 import UserModel from '../../models/userModel.js';
 
+jest.mock('../../models/userModel.js'); // Mock the UserModel
+
+beforeEach(() => {
+    jest.clearAllMocks();
+});
+
 describe('Verify Email API', () => {
     let verificationToken;
-    let user;
-
-    beforeEach(async() => {
-        await UserModel.deleteMany({});
-        user = await UserModel.create({
-            first_name: 'Jane',
-            last_name: 'Doe',
-            email: 'janedoe@example.com',
-            password: 'hashedpassword',
-            isDonor: true,
-            isStudent: false,
-            isEmailVerified: false,
-        });
-
-        verificationToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    });
 
     afterAll(async() => {
-        await mongoose.connection.close();
         if (server && server.close) {
             await server.close();
         }
-        // A short delay to ensure cleanup
-        await new Promise((resolve) => setTimeout(resolve, 1000));
     });
 
     it('should verify the email successfully', async() => {
+        // Mock findOne to return a user with unverified email
+        jest.spyOn(UserModel, 'findOne').mockResolvedValue({
+            first_name: 'Jane',
+            last_name: 'Doe',
+            email: 'janedoe@example.com',
+            isEmailVerified: false,
+            save: jest.fn().mockResolvedValue(), // Mock the save method on the user instance
+        });
+
+        // Generate a verification token
+        verificationToken = jwt.sign({ email: 'janedoe@example.com' }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
         const response = await request(app)
             .post('/api/auth/verify-email')
             .send({ token: verificationToken });
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('msg', 'Email verified successfully');
+
+        // Verify that save was called to update email verification status
+        const mockUser = await UserModel.findOne();
+        expect(mockUser.save).toHaveBeenCalled();
+        expect(mockUser.isEmailVerified).toBe(true);
     });
 
     it('should return 400 if token is not provided', async() => {
@@ -52,6 +55,9 @@ describe('Verify Email API', () => {
     });
 
     it('should return 400 if user does not exist', async() => {
+        // Mock findOne to return null, simulating user not found
+        jest.spyOn(UserModel, 'findOne').mockResolvedValue(null);
+
         const fakeToken = jwt.sign({ email: 'nonexistent@example.com' }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         const response = await request(app)
@@ -63,8 +69,16 @@ describe('Verify Email API', () => {
     });
 
     it('should return 400 if email is already verified', async() => {
-        user.isEmailVerified = true;
-        await user.save();
+        // Mock findOne to return a user with `isEmailVerified` as true
+        jest.spyOn(UserModel, 'findOne').mockResolvedValue({
+            first_name: 'Jane',
+            last_name: 'Doe',
+            email: 'janedoe@example.com',
+            isEmailVerified: true,
+            save: jest.fn(),
+        });
+
+        verificationToken = jwt.sign({ email: 'janedoe@example.com' }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         const response = await request(app)
             .post('/api/auth/verify-email')
@@ -75,7 +89,7 @@ describe('Verify Email API', () => {
     });
 
     it('should return 401 if token is expired', async() => {
-        const expiredToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '-1h' });
+        const expiredToken = jwt.sign({ email: 'janedoe@example.com' }, process.env.JWT_SECRET, { expiresIn: '-1h' });
 
         const response = await request(app)
             .post('/api/auth/verify-email')
@@ -95,9 +109,12 @@ describe('Verify Email API', () => {
     });
 
     it('should return 500 if server error occurs', async() => {
+        // Mock findOne to throw an error, simulating a server error
         jest.spyOn(UserModel, 'findOne').mockImplementationOnce(() => {
             throw new Error('Server error');
         });
+
+        verificationToken = jwt.sign({ email: 'janedoe@example.com' }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         const response = await request(app)
             .post('/api/auth/verify-email')
