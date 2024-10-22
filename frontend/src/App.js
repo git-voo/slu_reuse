@@ -31,6 +31,7 @@ function App() {
         <Route path="/about" element={<AboutUs />} />
         <Route path="/contact" element={<Contactus />} />
         <Route path="/item/:itemID" element={<SingleItemPage />} />
+        <Route path="/donate-item" element={<DonateItem />} />
         <Route path="/profile" element={<ProfileLayout />}>
           <Route index element={<ProfilePage />} />
           {/*
