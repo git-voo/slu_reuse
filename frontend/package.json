@@ -42,7 +42,26 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.25.9",
+    "@babel/preset-react": "^7.25.9",
+    "axios-mock-adapter": "^1.19.0",
+    "babel-jest": "^29.7.0",
     "jest": "^27.5.1",
     "supertest": "^7.0.0"
+  },
+
+  "jest": {
+  "transform": {
+    "^.+\\.jsx?$": "babel-jest"
+  },
+  "testEnvironment": "jsdom"
+  },
+
+
+   "jest": {
+  "transformIgnorePatterns": [
+    "/node_modules/(?!(axios)/)"  
+  ]
   }
+
 }
