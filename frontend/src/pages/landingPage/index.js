@@ -5,11 +5,13 @@ import { useEffect, useState } from "react";
 import ItemCard from "../../components/card/index.mjs";
 import Footer from "../../components/footer"
 import Navbar from "../../components/navigation";
-import "../../styles/landingPage/index.css";
-import axios from "axios";
+import "../../styles/landingPage/index.css"; 
+import { useNavigate } from "react-router-dom"
+import axiosInstance from "../../services/AxiosInstance"
 
 export default function LandingPage() {
     const [items, setItems] = useState([]);
+    const navigate = useNavigate()
     const [allItems, setAllItems] = useState(items);
     const [showForm, setShowForm] = useState(false);
     const [filters, setFilters] = useState({
@@ -36,7 +38,7 @@ export default function LandingPage() {
     };
     const fetchItems = async () => {
         try {
-            const response = await axios.get("http://localhost:4300/api/items");
+            const response = await axiosInstance.get("/items");
             setItems(response.data);
             setAllItems(response.data);  // Store all items initially
         } catch (error) {
@@ -48,7 +50,7 @@ export default function LandingPage() {
         const { category, location, sortOption, searchQuery } = filters;
 
         try {
-            const response = await axios.get(`http://localhost:4300/api/filter`, {
+            const response = await axiosInstance.get(`/filter`, {
                 params: {
                     category: category.toLowerCase(),
                     location: location !== "All Locations" ? location : "",
@@ -73,15 +75,17 @@ export default function LandingPage() {
                 {items.length ? (
                     items.map((item, index) => {
                         return (
-                            <ItemCard
-                                key={index}
+                          <div onClick={()=>navigate(`/item/${item._id}`)} key={item._id} className="text-decoration-none"> 
+                            <ItemCard 
                                 userAvatar={item.userAvatar}
                                 userName={item.userName}
                                 itemImage={item.images[0]} // Use the first image
                                 title={item.name}  // Changed to 'name'
                                 description={item.description}
                                 location={item.pickupLocation}  // Correct field for location
+                                
                             />
+                          </div>
                         );
                     })
                 ) : (
