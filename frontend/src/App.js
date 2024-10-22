@@ -11,6 +11,8 @@ import AboutUs from "./pages/aboutUs/AboutUs"
 import ProfilePage from './pages/profile/profilePage';
 import ItemListPage from './pages/items/ItemListPage';
 import DonateItem from './pages/items/DonateItem';
+import SingleItemPage from './pages/singleItem/SingleItemPage'
+import ProfileLayout from './layout/ProfileLayout'
 
 // import Navigation from "./components/navigation";
 // import ScrollToTop from "./utils/ScrollToTop";
