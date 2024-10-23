@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 
 export const authMiddleware = (req, res, next) => {
-    const token = req.header('Authorization')?.split(' ')[1]; // Get token from header
+    const authHeader = req.header('Authorization')?.trim(); // Trim any leading/trailing spaces
+    const token = authHeader?.split(/\s+/)[1]; // Split by any amount of spaces
 
     if (!token) {
         return res.status(401).json({ msg: 'No token, authorization denied' });
