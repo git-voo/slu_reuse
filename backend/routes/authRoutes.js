@@ -61,6 +61,10 @@ router.post('/reset-password', [
 router.get('/profile', authMiddleware, getProfile);
 
 // Update Profile Route
-router.put('/profile', authMiddleware, updateProfile);
+router.put('/profile', authMiddleware, [
+    check('first_name', 'First Name is required').optional().not().isEmpty(),
+    check('last_name', 'Last Name is required').optional().not().isEmpty(),
+    check('phone', 'A valid phone number is required').optional().matches(/^\d{10}$/)
+], updateProfile);
 
 export default router;
