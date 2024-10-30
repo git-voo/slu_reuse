@@ -29,14 +29,17 @@ export const getItemById = async (req, res) => {
 
 // Create a new item
 export const createItem = async (req, res) => {
-    const newItem = new ItemModel(req.body)
     try {
-        await newItem.save()
-        res.status(201).json(newItem)
+        const newItemData = req.body;
+        newItemData.donor = req.user.id; // Attach the donor field
+
+        const newItem = new ItemModel(newItemData);
+        await newItem.save();
+        res.status(201).json(newItem);
     } catch (error) {
-        res.status(400).json({ message: error.message })
+        res.status(400).json({ message: error.message });
     }
-}
+};
 
 // Update an existing item
 export const updateItem = async (req, res) => {
