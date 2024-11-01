@@ -27,6 +27,18 @@ export const getItemById = async (req, res) => {
     }
 }
 
+// Get user's items
+export const getMyItems = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const myItems = await ItemModel.find({ donor: userId });
+        res.status(200).json(myItems);
+    } catch (error) {
+        console.error("Error fetching user's items:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 // Create a new item
 export const createItem = async (req, res) => {
     try {
