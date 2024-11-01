@@ -12,6 +12,7 @@ import ProfilePage from './pages/profile/profilePage';
 import ItemListPage from './pages/items/ItemListPage';
 import DonateItem from './pages/items/DonateItem';
 import SingleItemPage from './pages/singleItem/SingleItemPage'
+import ListItem from './components/items/ListItem';
 import ProfileLayout from './layout/ProfileLayout'
 
 // import Navigation from "./components/navigation";
@@ -34,10 +35,11 @@ function App() {
         <Route path="/donate-item" element={<DonateItem />} />
         <Route path="/profile" element={<ProfileLayout />}>
           <Route index element={<ProfilePage />} />
+          <Route path="list-item" element={<ListItem />} />
+
           {/*
                 <Route path="conversations" element={<Conversations />} />
                 <Route path="delete-account" element={<DeleteAccount />} />
-                <Route path="list-item" element={<ListItem />} />
                 <Route path="my-listings" element={<MyListings />} />
                 <Route path="verify-email" element={<VerifyEmail />} />
                 */}
