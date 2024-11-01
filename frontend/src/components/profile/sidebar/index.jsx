@@ -1,32 +1,32 @@
 import './sidebar.css';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
     return (
         <div className="sidebar">
             <ul>
                 <li>
-                    <Link to="/">Home</Link>
+                    <NavLink to="/" end activeClassName="active">Home</NavLink>
                 </li>
                 <li>
-                    <Link to="/profile">Profile</Link>
+                    <NavLink to="/profile" end activeClassName="active">Profile</NavLink>
                 </li>
                 <li>
-                    <Link to="/profile/my-listings">Listings</Link>
+                    <NavLink to="/profile/my-listings" activeClassName="active">Listings</NavLink>
                 </li>
                 <li>
-                    <Link to="/profile/list-item">List an Item</Link>
+                    <NavLink to="/profile/list-item" activeClassName="active">List an Item</NavLink>
                 </li>
                 <li>
-                    <Link to="/profile/conversations">Conversations</Link>
+                    <NavLink to="/profile/conversations" activeClassName="active">Conversations</NavLink>
                 </li>
                 <li>
-                    <Link to="/profile/verify-email">Verify Email</Link>
+                    <NavLink to="/profile/verify-email" activeClassName="active">Verify Email</NavLink>
                 </li>
             </ul>
             <ul className="bottom">
                 <li className="delete-account">
-                    <Link to="/profile/delete-account">Delete My Account</Link>
+                    <NavLink to="/profile/delete-account" activeClassName="active">Delete My Account</NavLink>
                 </li>
             </ul>
         </div>
