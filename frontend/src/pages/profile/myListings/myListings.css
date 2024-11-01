@@ -1,0 +1,27 @@
+.my-listings-container {
+    padding: 20px;
+}
+
+.my-items-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.my-item-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    width: 300px;
+    position: relative;
+}
+
+.item-card-clickable {
+    cursor: pointer;
+}
+
+.my-item-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}

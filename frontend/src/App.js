@@ -9,6 +9,7 @@ import ForgotPassword from './pages/auth/forgot_password'
 import ResetPassword from './pages/auth/reset_password'
 import AboutUs from "./pages/aboutUs/AboutUs"
 import ProfilePage from './pages/profile/profilePage';
+import MyListings from './pages/profile/myListings';
 import ItemListPage from './pages/items/ItemListPage';
 import DonateItem from './pages/items/DonateItem';
 import SingleItemPage from './pages/singleItem/SingleItemPage'
@@ -36,11 +37,10 @@ function App() {
         <Route path="/profile" element={<ProfileLayout />}>
           <Route index element={<ProfilePage />} />
           <Route path="list-item" element={<ListItem />} />
-
+          <Route path="my-listings" element={<MyListings />} />
           {/*
                 <Route path="conversations" element={<Conversations />} />
                 <Route path="delete-account" element={<DeleteAccount />} />
-                <Route path="my-listings" element={<MyListings />} />
                 <Route path="verify-email" element={<VerifyEmail />} />
                 */}
         </Route>
