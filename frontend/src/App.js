@@ -8,13 +8,14 @@ import Login from './pages/auth/login'
 import ForgotPassword from './pages/auth/forgot_password'
 import ResetPassword from './pages/auth/reset_password'
 import AboutUs from "./pages/aboutUs/AboutUs"
+import ProfileLayout from './layout/ProfileLayout'
 import ProfilePage from './pages/profile/profilePage';
 import MyListings from './pages/profile/myListings';
+import DeleteAccount from './pages/profile/deleteAccount';
 import ItemListPage from './pages/items/ItemListPage';
 import DonateItem from './pages/items/DonateItem';
 import SingleItemPage from './pages/singleItem/SingleItemPage'
 import ListItem from './components/items/ListItem';
-import ProfileLayout from './layout/ProfileLayout'
 
 // import Navigation from "./components/navigation";
 // import ScrollToTop from "./utils/ScrollToTop";
@@ -38,9 +39,9 @@ function App() {
           <Route index element={<ProfilePage />} />
           <Route path="list-item" element={<ListItem />} />
           <Route path="my-listings" element={<MyListings />} />
+          <Route path="delete-account" element={<DeleteAccount />} />
           {/*
                 <Route path="conversations" element={<Conversations />} />
-                <Route path="delete-account" element={<DeleteAccount />} />
                 <Route path="verify-email" element={<VerifyEmail />} />
                 */}
         </Route>
