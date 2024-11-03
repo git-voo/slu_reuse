@@ -7,6 +7,7 @@ const DeleteAccount = () => {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
+    const [password, setPassword] = useState(''); // State to hold the password input
 
     const handleDeleteClick = () => {
         setIsConfirming(true);
@@ -17,12 +18,24 @@ const DeleteAccount = () => {
     };
 
     const handleConfirmDelete = async () => {
+        // Validate that password is entered
+        if (!password) {
+            setError('Please enter your password to confirm.');
+            return;
+        }
+
         setLoading(true);
         setMessage('');
         setError('');
 
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('token'); // Ensure token is stored correctly
+            if (!token) {
+                setError('User is not authenticated.');
+                setLoading(false);
+                return;
+            }
+
             const config = {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -30,17 +43,26 @@ const DeleteAccount = () => {
                 }
             };
 
-            const response = await axios.delete('http://localhost:4300/api/user/delete', config);
+            // Send the DELETE request with the password in the request body
+            const response = await axios.delete('http://localhost:4300/api/user/delete', {
+                headers: config.headers,
+                data: { password } // Axios allows sending data with DELETE
+            });
+
             setMessage(response.data.message);
 
-            // Redirect the user to the homepage or logout
+            // Redirect the user after successful deletion
             setTimeout(() => {
-                // Redirect logic here
                 localStorage.removeItem('token');
                 window.location.href = '/';
             }, 3000);
         } catch (err) {
-            setError(err.response?.data?.message || 'An error occurred');
+            // Handle specific error messages from the backend
+            if (err.response && err.response.data && err.response.data.message) {
+                setError(err.response.data.message);
+            } else {
+                setError('An error occurred while deleting your account.');
+            }
         } finally {
             setLoading(false);
             setIsConfirming(false);
@@ -59,6 +81,13 @@ const DeleteAccount = () => {
             ) : (
                 <div className="confirmation-dialog">
                     <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+                    <input
+                        type="password"
+                        placeholder="Enter your password to confirm"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="password-input"
+                    />
                     <button className="confirm-button" onClick={handleConfirmDelete} disabled={loading}>
                         {loading ? 'Deleting...' : 'Yes, Delete'}
                     </button>
