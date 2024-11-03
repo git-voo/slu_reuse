@@ -1,7 +1,7 @@
 /**
  * Model for user creation and management
  * 
- * @author Victor
+ * @author Victor Onoja
  * https://github.com/git-voo 
  */
 
