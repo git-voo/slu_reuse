@@ -15,7 +15,6 @@ const ListItem = () => {
   const [itemQuantity, setItemQuantity] = useState('')
   const [itemPickupLocation, setItemPickupLocation] = useState('')
   const [itemTags, setItemTags] = useState('')
-  const [itemDonar, setItemDonar] = useState('')
   const [itemStatus, setItemStatus] = useState('')
   const [setItemListedOn] = useState('')
 
@@ -39,7 +38,6 @@ const ListItem = () => {
       setItemQuantity('')
       setItemPickupLocation('')
       setItemTags('')
-      setItemDonar('')
       setItemStatus('')
       setItemListedOn('')
     }
@@ -64,7 +62,6 @@ const ListItem = () => {
       "category": itemCategory,
       "quantity": itemQuantity,
       "tags": itemTags,
-      "donor":  "67170ee76ae1f40b4785e448",
       'pickupLocation': itemPickupLocation
     }
     try {
