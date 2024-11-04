@@ -9,6 +9,8 @@ import itemRoutes from "./routes/itemRoutes.js"
 import authRoutes from './routes/authRoutes.js';
 import { sendMail } from "./utils/mailer/index.mjs"
 import filterRoutes from "./routes/filterRoutes.js"
+import analyzeImageRoutes from "./routes/analyzeImageRoutes.js";
+
 const router = express.Router()
 
 //express app
@@ -19,7 +21,8 @@ const __filename = fileURLToPath(
 
 const __dirname = path.dirname(__filename)
 
-configDotenv()
+configDotenv();
+console.log("OpenAI API Key:", process.env.OPENAI_API_KEY);
 const PORT = process.env.PORT || 4300
 
 app.use(bodyParser.json())
@@ -33,9 +36,10 @@ const documentation = router.get("/", (req, res) => {
 
 app.use("/", documentation)
 app.use("/api", itemRoutes)
-
 app.use("/api", filterRoutes)
 app.use('/api/auth', authRoutes);
+app.use("/api/analyze-image", analyzeImageRoutes);
+
 app.use("/api/sendmail", async(req, res) => {
     const user = {
         name: "VOO Onoja",
