@@ -6,7 +6,7 @@ import requests
 
 app = Flask(__name__)
 
-# Load the BLIP model and processor
+# Load the BLIP model and processor 
 processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
 model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
 
