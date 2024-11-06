@@ -41,7 +41,7 @@ function App() {
         <Route path="/item/:itemID" element={<SingleItemPage />} />
         <Route path="/donate-item" element={<DonateItem />} />
         <Route path="/profile" element={<ProfileLayout />} />
-        <Route index element={<ProfilePage />} />
+        {/* <Route index element={<ProfilePage />} /> */}
 
         <Route path="/profile/conversations" element={<Conversations initialMessages={initialMessages} userId={userId}  />}>
           {/*
