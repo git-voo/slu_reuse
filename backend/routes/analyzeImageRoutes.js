@@ -5,7 +5,7 @@ dotenv.config();
 
 const router = express.Router();
 
-async function getCaptionFromBLIP(imageUrl) {
+export async function getCaptionFromBLIP(imageUrl) {
     try {
         const response = await axios.post('http://127.0.0.1:4301/caption', { imageUrl });
         return response.data.caption;
