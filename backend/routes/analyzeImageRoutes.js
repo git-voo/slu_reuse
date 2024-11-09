@@ -7,7 +7,7 @@ const router = express.Router();
 
 async function getCaptionFromBLIP(imageUrl) {
     try {
-        const response = await axios.post('http://192.168.1.83:5000/caption', { imageUrl });
+        const response = await axios.post('http://127.0.0.1:4301/caption', { imageUrl });
         return response.data.caption;
     } catch (error) {
         console.error("Error fetching caption from BLIP API:", error);
