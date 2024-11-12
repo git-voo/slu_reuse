@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/profile/sidebar';
+import './ProfileLayout.css';
 
 const ProfileLayout = () => {
     return (
