@@ -40,3 +40,7 @@
 .sidebar .bottom {
     margin-top: auto;
 }
+
+.sidebar a.active {
+    color: #007bff;
+}
