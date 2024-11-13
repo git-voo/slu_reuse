@@ -1,0 +1,21 @@
+.profile-layout {
+    display: flex; /* Use flexbox to place the sidebar and content side by side */
+}
+
+.sidebar {
+    width: 250px; /* Set the width of the sidebar */
+    background-color: #f8f9fa; /* Optional background */
+    position: fixed; /* Keeps the sidebar fixed */
+    height: 100vh; /* Makes the sidebar full height */
+    top: 0;
+    left: 0;
+    padding: 20px;
+    overflow-y: auto; /* Allows scrolling if content is too long */
+}
+
+.profile-content {
+    margin-left: 250px; /* Matches the width of the sidebar */
+    padding: 20px;
+    flex: 1; /* Takes the remaining space */
+    overflow-x: hidden; /* Prevents horizontal scrolling */
+}

@@ -8,12 +8,23 @@ import Login from './pages/auth/login'
 import ForgotPassword from './pages/auth/forgot_password'
 import ResetPassword from './pages/auth/reset_password'
 import AboutUs from "./pages/aboutUs/AboutUs"
+<<<<<<< HEAD
 import ProfilePage from './pages/profile/profilePage'
 import ItemListPage from './pages/items/ItemListPage'
 import DonateItem from './pages/items/DonateItem'
 import SingleItemPage from './pages/singleItem/SingleItemPage'
 import ProfileLayout from './layout/ProfileLayout'
 import Conversations from './components/conversations'
+=======
+import ProfileLayout from './layout/ProfileLayout'
+import ProfilePage from './pages/profile/profilePage';
+import MyListings from './pages/profile/myListings';
+import DeleteAccount from './pages/profile/deleteAccount';
+import ItemListPage from './pages/items/ItemListPage';
+import DonateItem from './pages/items/DonateItem';
+import SingleItemPage from './pages/singleItem/SingleItemPage'
+import ListItem from './components/items/ListItem';
+>>>>>>> f2a6362d4b056acaf9274b5d9c737a7607d9e6f1
 
 // import Navigation from "./components/navigation";
 // import ScrollToTop from "./utils/ScrollToTop";
@@ -40,15 +51,20 @@ function App() {
         <Route path="/contact" element={<Contactus />} />
         <Route path="/item/:itemID" element={<SingleItemPage />} />
         <Route path="/donate-item" element={<DonateItem />} />
+<<<<<<< HEAD
         <Route path="/profile" element={<ProfileLayout />} />
         {/* <Route index element={<ProfilePage />} /> */}
 
         <Route path="/profile/conversations" element={<Conversations initialMessages={initialMessages} userId={userId}  />}>
+=======
+        <Route path="/profile" element={<ProfileLayout />}>
+          <Route index element={<ProfilePage />} />
+          <Route path="list-item" element={<ListItem />} />
+          <Route path="my-listings" element={<MyListings />} />
+          <Route path="delete-account" element={<DeleteAccount />} />
+>>>>>>> f2a6362d4b056acaf9274b5d9c737a7607d9e6f1
           {/*
                 <Route path="conversations" element={<Conversations />} />
-                <Route path="delete-account" element={<DeleteAccount />} />
-                <Route path="list-item" element={<ListItem />} />
-                <Route path="my-listings" element={<MyListings />} />
                 <Route path="verify-email" element={<VerifyEmail />} />
                 */}
         </Route>

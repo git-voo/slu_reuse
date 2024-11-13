@@ -1,32 +1,32 @@
 import './sidebar.css';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
     return (
         <div className="sidebar">
             <ul>
                 <li>
-                    <Link to="/">Home</Link>
+                    <NavLink to="/" end className={({ isActive }) => isActive ? "active" : ""}>Home</NavLink>
                 </li>
                 <li>
-                    <Link to="/profile">Profile</Link>
+                    <NavLink to="/profile" end className={({ isActive }) => isActive ? "active" : ""}>Profile</NavLink>
                 </li>
                 <li>
-                    <Link to="/profile/my-listings">Listings</Link>
+                    <NavLink to="/profile/my-listings" className={({ isActive }) => isActive ? "active" : ""}>My Listings</NavLink>
                 </li>
                 <li>
-                    <Link to="/profile/list-item">List an Item</Link>
+                    <NavLink to="/profile/list-item" className={({ isActive }) => isActive ? "active" : ""}>List an Item</NavLink>
                 </li>
                 <li>
-                    <Link to="/profile/conversations">Conversations</Link>
+                    <NavLink to="/profile/conversations" className={({ isActive }) => isActive ? "active" : ""}>Conversations</NavLink>
                 </li>
                 <li>
-                    <Link to="/profile/verify-email">Verify Email</Link>
+                    <NavLink to="/profile/verify-email" className={({ isActive }) => isActive ? "active" : ""}>Verify Email</NavLink>
                 </li>
             </ul>
             <ul className="bottom">
                 <li className="delete-account">
-                    <Link to="/profile/delete-account">Delete My Account</Link>
+                    <NavLink to="/profile/delete-account" className={({ isActive }) => isActive ? "active" : ""}>Delete My Account</NavLink>
                 </li>
             </ul>
         </div>
