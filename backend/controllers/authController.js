@@ -12,6 +12,11 @@ const register = async(req, res) => {
     }
     const { first_name, last_name, email, password, phone, isDonor, isStudent } = req.body;
 
+    // Ensure email is an SLU email
+    if (!email.endsWith("@slu.edu")) {
+        return res.status(400).json({ msg: "Only SLU email addresses are allowed." });
+    }
+
     // Ensure required environment variables are present
     if (!process.env.JWT_SECRET || !process.env.CLIENT_URL) {
         return res.status(500).json({ msg: 'Server configuration error. Please try again later.' });
