@@ -10,6 +10,7 @@ import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { sendMail } from "./utils/mailer/index.mjs"
 import filterRoutes from "./routes/filterRoutes.js"
+import imageRoutes from './routes/imageRoutes.js';
 const router = express.Router()
 
 //express app
@@ -28,15 +29,14 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, "public")))
 app.use(cors())
 
-const documentation = router.get("/", (req, res) => {
-    res.send("API Documentation page")
-})
-
-app.use("/", documentation)
+app.get("/", (req, res) => {
+    res.send("API Documentation page");
+});
 app.use("/api", itemRoutes)
 app.use("/api", filterRoutes)
 app.use('/api/auth', authRoutes);
 app.use("/api/user", userRoutes);
+app.use('/api/images', imageRoutes);
 app.use("/api/sendmail", async(req, res) => {
     const user = {
         name: "VOO Onoja",
