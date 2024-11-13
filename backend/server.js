@@ -7,12 +7,13 @@ import { configDotenv } from "dotenv"
 import { fileURLToPath } from 'url'
 import itemRoutes from "./routes/itemRoutes.js"
 import authRoutes from './routes/authRoutes.js'
-import userRoutes from './routes/userRoutes.js';
+import userRoutes from './routes/userRoutes.js'
 import { sendMail } from "./utils/mailer/index.mjs"
 import filterRoutes from "./routes/filterRoutes.js"
 import http from 'http'
 import WebSocket, { WebSocketServer } from 'ws'
 import Conversation from "./models/conversationsModel.js"
+import conversationRoutes from "./routes/conversationRoutes.js"
 
 const router = express.Router()
 const app = express()
@@ -38,9 +39,10 @@ const documentation = router.get("/", (req, res) => {
 
 app.use("/", documentation)
 app.use("/api", itemRoutes)
-app.use("/api/user", userRoutes);
+app.use("/api/user", userRoutes)
 app.use("/api", filterRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/api/conversation', conversationRoutes)
 
 // Connect to the database
 connectDB()
@@ -77,7 +79,7 @@ wss.on('connection', (ws) => {
             }
 
             // Push the new message into the conversation's messages array
-            conversation.messages.push({ text, senderId, recipientId, timestamp })
+            conversation.messages.push({ text, senderId, recipientId })
             await conversation.save()
 
             // Broadcast message to all connected clients

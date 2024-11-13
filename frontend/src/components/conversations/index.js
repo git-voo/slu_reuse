@@ -1,9 +1,11 @@
 import axiosInstance from '../../services/AxiosInstance'
+import profileService from '../../services/profileService'
 import '../../styles/conversations/index.css'
 import { useState, useEffect, useRef } from 'react'
 
-const Conversations = ({ userId, donorId, onClose }) => {
+const Conversations = ({ donorId, onClose }) => {
     const [messages, setMessages] = useState([])
+    const [userId, setUserId] = useState(null)
     const [newMessage, setNewMessage] = useState('')
     const ws = useRef(null)
 
@@ -12,8 +14,9 @@ const Conversations = ({ userId, donorId, onClose }) => {
         getProfile()
         const initiateConversation = async () => {
             try {
-                const response = await axiosInstance.post('/conversation/initiate', { userId, donorId })
-                const data = await response.json()
+                const {data} = await axiosInstance.post('/conversation/initiate', { userId, donorId })
+         
+                console.log(data)
 
                 // Set the conversation messages
                 setMessages(data.messages)
@@ -66,9 +69,8 @@ const Conversations = ({ userId, donorId, onClose }) => {
 
     const getProfile = async () => {
         try {
-            const response = await axiosInstance.get('/auth/profile')
-            console.log(response)
-            return response.data
+            const loggedUser = await profileService.getProfile()
+            setUserId(loggedUser._id)
         } catch (error) {
             console.error('Error fetching profile:', error)
             throw error

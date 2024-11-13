@@ -1,10 +1,10 @@
 import express from 'express' 
-import Conversation from '../models/conversationsModel'
+import Conversation from '../models/conversationsModel.js'
 
 const router = express.Router()
 
 // Endpoint to fetch conversation messages
-router.get('/conversation/:userId/:otherUserId', async (req, res) => {
+router.get('/:userId/:otherUserId', async (req, res) => {
     const { userId, otherUserId } = req.params
 
     try {
@@ -26,7 +26,7 @@ router.get('/conversation/:userId/:otherUserId', async (req, res) => {
 
 // Add this endpoint to your conversation API routes
 
-router.post('/conversation/initiate', async (req, res) => {
+router.post('/initiate', async (req, res) => {
     const { userId, donorId } = req.body;
   
     try {

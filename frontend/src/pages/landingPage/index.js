@@ -82,7 +82,7 @@ export default function LandingPage() {
 
                                 />
                                 {selectedItemId === item._id && (
-                                    <Conversations userId={"userId"} donorId={item.owner} onClose={(e) => {
+                                    <Conversations donorId={item.owner} onClose={(e) => {
                                         e.stopPropagation()
                                         setSelectedItemId(null)
                                     }} />
