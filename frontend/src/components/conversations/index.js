@@ -9,21 +9,16 @@ const Conversations = ({ userId, donorId, onClose }) => {
 
     // Initiate or retrieve conversation on component mount
     useEffect(() => {
+        getProfile()
         const initiateConversation = async () => {
             try {
-                const response = await fetch('/api/conversation/initiate', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ userId, donorId }),
-                })
+                const response = await axiosInstance.post('/conversation/initiate', { userId, donorId })
                 const data = await response.json()
 
                 // Set the conversation messages
                 setMessages(data.messages)
             } catch (error) {
-                console.error('Error initiating conversation:', error)
+                console.log('Error initiating conversation:', error)
             }
         }
 
@@ -66,6 +61,17 @@ const Conversations = ({ userId, donorId, onClose }) => {
             // Update the UI with the new message
             setMessages((prevMessages) => [...prevMessages, message])
             setNewMessage('')
+        }
+    }
+
+    const getProfile = async () => {
+        try {
+            const response = await axiosInstance.get('/auth/profile')
+            console.log(response)
+            return response.data
+        } catch (error) {
+            console.error('Error fetching profile:', error)
+            throw error
         }
     }
 

@@ -11,6 +11,7 @@ import { sendMail } from "./utils/mailer/index.mjs"
 import filterRoutes from "./routes/filterRoutes.js"
 import http from 'http'
 import WebSocket, { WebSocketServer } from 'ws'
+import Conversation from "./models/conversationsModel.js"
 
 const router = express.Router()
 const app = express()
@@ -53,18 +54,38 @@ wss.on('connection', (ws) => {
     console.log('New WebSocket connection')
     clients.add(ws)
 
-    ws.on('message', (data) => {
-        try {
-            const message = JSON.parse(data)
+    ws.on('message', async (data) => {
+        const message = JSON.parse(data)
 
-            // Broadcast message to all connected clients except sender
+        // Save the message to the database
+        try {
+            const { text, senderId, recipientId, timestamp } = message
+
+            // Find or create the conversation between the sender and recipient
+            let conversation = await Conversation.findOne({
+                users: { $all: [senderId, recipientId] }, // Match conversation by users
+            })
+
+            if (!conversation) {
+                // Create a new conversation if it doesn't exist
+                conversation = new Conversation({
+                    users: [senderId, recipientId],
+                    messages: [],
+                })
+            }
+
+            // Push the new message into the conversation's messages array
+            conversation.messages.push({ text, senderId, recipientId, timestamp })
+            await conversation.save()
+
+            // Broadcast message to all connected clients
             clients.forEach((client) => {
-                if (client !== ws && client.readyState === WebSocket.OPEN) {
+                if (client.readyState === WebSocket.OPEN) {
                     client.send(JSON.stringify(message))
                 }
             })
         } catch (error) {
-            console.error('Error parsing message:', error)
+            console.error('Error saving message:', error)
         }
     })
 
