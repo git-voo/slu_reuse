@@ -1,3 +1,8 @@
+import dotenv from 'dotenv';
+dotenv.config();
+console.log('GOOGLE_PROJECT_ID:', process.env.GOOGLE_PROJECT_ID);
+
+
 import express from "express"
 import bodyParser from "body-parser"
 import path from "path"
@@ -10,6 +15,7 @@ import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { sendMail } from "./utils/mailer/index.mjs"
 import filterRoutes from "./routes/filterRoutes.js"
+import imageRoutes from './routes/imageRoutes.js';
 import analyzeImageRoutes from "./routes/analyzeImageRoutes.js";
 
 const router = express.Router()
@@ -31,17 +37,16 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, "public")))
 app.use(cors())
 
-const documentation = router.get("/", (req, res) => {
-    res.send("API Documentation page")
-})
-
-app.use("/", documentation)
+app.get("/", (req, res) => {
+    res.send("API Documentation page");
+});
 app.use("/api", itemRoutes)
 app.use("/api", filterRoutes)
 app.use('/api/auth', authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/analyze-image", analyzeImageRoutes);
 
+app.use('/api/images', imageRoutes);
 app.use("/api/sendmail", async(req, res) => {
     const user = {
         name: "VOO Onoja",
