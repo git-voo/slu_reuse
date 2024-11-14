@@ -13,7 +13,7 @@ describe('Profile Sidebar Component', () => {
         // Check if all links are present
         expect(screen.getByText('Home')).toBeInTheDocument();
         expect(screen.getByText('Profile')).toBeInTheDocument();
-        expect(screen.getByText('Listings')).toBeInTheDocument();
+        expect(screen.getByText('My Listings')).toBeInTheDocument();
         expect(screen.getByText('List an Item')).toBeInTheDocument();
         expect(screen.getByText('Conversations')).toBeInTheDocument();
         expect(screen.getByText('Verify Email')).toBeInTheDocument();
