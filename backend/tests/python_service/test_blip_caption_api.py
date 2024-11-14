@@ -15,6 +15,10 @@ def test_caption_image_valid_url(client, mocker):
     img_bytes = BytesIO()
     img.save(img_bytes, format='JPEG')
     img_bytes.seek(0)  # Reset the pointer to the start of the BytesIO object
+<<<<<<< HEAD
+=======
+    
+>>>>>>> eb9a2d3d5c0625bcff54ec8dbece882d940c9352
     # Mock external requests and image processing
     mocker.patch("python_service.blip_caption_api.requests.get", return_value=Mock(raw=img_bytes))
     mocker.patch("python_service.blip_caption_api.processor.decode", return_value="A sample caption")
