@@ -41,8 +41,9 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "jest": "^27.5.1",
-    "supertest": "^7.0.0"
+  "jest": {
+    "transformIgnorePatterns": [
+      "/node_modules/(?!(axios)/)"
+    ]
   }
 }

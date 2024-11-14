@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';  
-import ItemCard from '../../components/card/index.mjs';
+import ItemCard from '../../components/card/index.js';
 
 
 const ItemListPage = () => {
