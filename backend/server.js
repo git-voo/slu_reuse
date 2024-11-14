@@ -1,3 +1,8 @@
+import dotenv from 'dotenv';
+dotenv.config();
+console.log('GOOGLE_PROJECT_ID:', process.env.GOOGLE_PROJECT_ID);
+
+
 import express from "express"
 import bodyParser from "body-parser"
 import path from "path"

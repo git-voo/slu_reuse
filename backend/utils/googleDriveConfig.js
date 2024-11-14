@@ -1,35 +1,39 @@
 import { google } from 'googleapis';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
 
-// Convert `import.meta.url` to a path and get the directory
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+dotenv.config();
 
-// Path to your Google credentials file
-const KEY_PATH = path.join(__dirname, '../config/google_credentials.json');
+const requiredVars = [
+  'GOOGLE_PROJECT_ID',
+  'GOOGLE_PRIVATE_KEY_ID',
+  'GOOGLE_PRIVATE_KEY',
+  'GOOGLE_CLIENT_EMAIL',
+  'GOOGLE_CLIENT_ID'
+];
 
-// Define variables to be exported
-let drive;
-let auth;
+requiredVars.forEach((envVar) => {
+  if (!process.env[envVar]) {
+    throw new Error(`Environment variable ${envVar} is missing`);
+  }
+});
 
-try {
-  // Read and parse the credentials file
-  const rawCredentials = fs.readFileSync(KEY_PATH, 'utf-8');
-  console.log('Credentials file content:', rawCredentials); // Debug log
-  const credentials = JSON.parse(rawCredentials);
+console.log('Environment Variables:', {
+  GOOGLE_PROJECT_ID: process.env.GOOGLE_PROJECT_ID,
+  GOOGLE_CLIENT_EMAIL: process.env.GOOGLE_CLIENT_EMAIL,
+  GOOGLE_PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY ? 'Exists' : 'Missing'
+});
 
-  auth = new google.auth.GoogleAuth({
-    credentials,
-    scopes: ['https://www.googleapis.com/auth/drive'],
-  });
+const auth = new google.auth.GoogleAuth({
+  credentials: {
+    project_id: process.env.GOOGLE_PROJECT_ID,
+    private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
+    private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    client_email: process.env.GOOGLE_CLIENT_EMAIL,
+    client_id: process.env.GOOGLE_CLIENT_ID,
+  },
+  scopes: ['https://www.googleapis.com/auth/drive'],
+});
 
-  drive = google.drive({ version: 'v3', auth });
-} catch (error) {
-  console.error('Failed to load Google credentials:', error);
-  throw error; // Re-throw to prevent app from running with missing credentials
-}
-
-// Export the variables
+const drive = google.drive({ version: 'v3', auth });
 export { drive, auth };
+
