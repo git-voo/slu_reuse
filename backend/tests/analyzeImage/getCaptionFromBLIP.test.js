@@ -50,4 +50,5 @@ describe('Image Captioning API', () => {
         expect(response.body).toHaveProperty('error', 'Error analyzing image');
         expect(axios.post).toHaveBeenCalledWith('http://127.0.0.1:4301/caption', { imageUrl: 'http://example.com/sample.jpg' });
     });
+
 });

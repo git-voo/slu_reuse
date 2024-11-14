@@ -27,7 +27,6 @@ def caption_image():
         # Load the image from the URL
         print("Fetching image from URL:", image_url)
         image = Image.open(requests.get(image_url, stream=True).raw)
-
         # Process the image and generate a caption
         print("Processing the image...")
         inputs = processor(image, return_tensors="pt")
