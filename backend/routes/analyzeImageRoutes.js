@@ -22,7 +22,6 @@ router.post("/", async(req, res) => {
     if (!imageUrl) {
         return res.status(400).json({ error: "Image URL is required" });
     }
-
     try {
         // Call the Python microservice to get the caption
         const caption = await getCaptionFromBLIP(imageUrl);

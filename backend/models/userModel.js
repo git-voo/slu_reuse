@@ -49,5 +49,7 @@ const userSchema = new Schema({
     }
 });
 
-const UserModel = mongoose.model("User", userSchema);
+// Prevent model recompilation by checking if it already exists
+const UserModel = mongoose.models.User || mongoose.model("User", userSchema);
+
 export default UserModel;

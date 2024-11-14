@@ -81,7 +81,7 @@ const ListItem = () => {
     try {
       const response = await axiosInstance.post('/items', payload)
       alert("Item listed successfully")
-      navigate("/")
+      navigate("/profile/my-listings")
       console.log('Response:', response.data)
       // Handle success (e.g., show a success message, clear the form, etc.)
     } catch (error) {

@@ -1,0 +1,84 @@
+.delete-account-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #fdfdfd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.delete-account-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+}
+
+.delete-button,
+.confirm-button,
+.cancel-button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.delete-button {
+    background-color: #e74c3c;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #c0392b;
+}
+
+.confirm-button {
+    background-color: #c0392b;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.confirm-button:hover {
+    background-color: #a93226;
+}
+
+.cancel-button {
+    background-color: #bdc3c7;
+    color: #2c3e50;
+    transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+    background-color: #95a5a6;
+}
+
+.success-message {
+    color: green;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.confirmation-dialog p {
+    margin-bottom: 20px;
+    color: #555;
+    font-size: 16px;
+}
+
+.password-input {
+    padding: 10px;
+    width: 80%;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
