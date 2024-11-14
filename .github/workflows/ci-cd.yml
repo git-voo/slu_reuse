@@ -1,0 +1,68 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test-backend:
+    name: Test Backend
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x]  # Specify Node.js versions
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Setup Node.js environment in the backend directory
+      - name: Setup Node.js ${{ matrix.node-version }} for Backend
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json  # Explicitly point to backend lock file
+
+      # Install dependencies and run tests in the backend directory
+      - name: Install and Test Backend
+        working-directory: backend
+        env:
+          MONGODB_URL: ${{ secrets.MONGODB_URL }}  # Use MongoDB secret
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}    # Use JWT secret
+          NODE_OPTIONS: --no-deprecation          # Suppress deprecation warnings globally
+        run: |
+          npm install
+          npm test
+
+  test-frontend:
+    name: Test Frontend
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x]  # Ensure consistency with backend
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Setup Node.js environment in the frontend directory
+      - name: Setup Node.js ${{ matrix.node-version }} for Frontend
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json  # Explicitly point to frontend lock file
+
+      # Install dependencies and run tests in the frontend directory
+      - name: Install and Test Frontend
+        working-directory: frontend
+        env:
+          NODE_OPTIONS: --no-deprecation  # Suppress deprecation warnings globally
+        run: |
+          npm install
+          npm test
