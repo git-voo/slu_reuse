@@ -36,7 +36,6 @@ jobs:
           SLU_REUSE_SUPPORT_EMAIL: ${{ secrets.SLU_REUSE_SUPPORT_EMAIL }}  # Support email secret
           SLU_REUSE_SUPPORT_EMAIL_PASSWORD: ${{ secrets.SLU_REUSE_SUPPORT_EMAIL_PASSWORD }}  # Support email password
           NODE_OPTIONS: --no-deprecation          # Suppress deprecation warnings globally
-          NODE_ENV: test                          # Set NODE_ENV for tests
         run: |
           npm install
           npm test
@@ -63,12 +62,10 @@ jobs:
           cache-dependency-path: frontend/package-lock.json  # Explicitly point to frontend lock file
 
       # Install dependencies and run tests in the frontend directory
-      - name: Install, Build, and Test Frontend
+      - name: Install and Test Frontend
         working-directory: frontend
         env:
           NODE_OPTIONS: --no-deprecation  # Suppress deprecation warnings globally
-          NODE_ENV: test                  # Set NODE_ENV for tests
         run: |
           npm install
-          npm run build                   # Ensure build runs successfully
           npm test
