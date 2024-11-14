@@ -2,10 +2,39 @@ import '../../styles/cards/itemCard.css'
 import locationIcon from "../../assets/icons/location.png"
 import { GoDotFill } from "react-icons/go"
 import { PiWechatLogoThin } from "react-icons/pi"
-import { useState } from 'react'
-import Conversations from '../conversations/index.js'
+import { useState, useEffect } from 'react'
+import profileService from '../../services/profileService.js'
 
-const ItemCard = ({ item, userId, onChatClick  }) => {
+const ItemCard = ({ item, onChatClick }) => {
+    const [isDonor, setIsDonor] = useState(false)
+    const [isRequester, setIsRequester] = useState(false)
+    const [userId, setUserId] = useState(null)
+
+    // Determine if the logged-in user is the donor or requester
+    useEffect(() => {
+        const getProfile = async () => {
+            try {
+                const loggedUser = await profileService.getProfile()
+                setUserId(loggedUser._id)
+                if (loggedUser._id === item.ownerId) {
+                    setIsDonor(true)  // User is the donor
+                } else {
+                    setIsRequester(true)  // User is the requester
+                }
+            } catch (error) {
+                console.error('Error fetching profile:', error)
+            }
+        }
+
+        getProfile()
+    }, [item])
+
+    // Handler when the "Message" button is clicked
+    const handleMessageClick = (e) => {
+        e.stopPropagation()
+        // Pass the correct role to open the conversation for either donor or requester
+        onChatClick(item._id, isDonor, isRequester)
+    }
 
     return (
         <div className="item-card">
@@ -29,7 +58,6 @@ const ItemCard = ({ item, userId, onChatClick  }) => {
                         <img src={locationIcon} alt="location" />
                     </div>
                     {item.location}
-
                 </div>
                 <p> </p>
                 <p className="item-card-description">{item.description}</p>
@@ -37,16 +65,20 @@ const ItemCard = ({ item, userId, onChatClick  }) => {
 
             <div className="item-card-footer">
                 <button className="item-card-btn">View Details</button>
-                <button className="item-card-btn message-btn" onClick={(e) => {
-                    e.stopPropagation()
-                    onChatClick()
 
-                }}>
-                    <PiWechatLogoThin className='icon' /> Message {item.userName?.split(" ")[0]}
-                </button>
+                {/* Conditionally render the message button based on user role */}
+                {isRequester && (
+                    <button className="item-card-btn message-btn" onClick={handleMessageClick}>
+                        <PiWechatLogoThin className='icon' /> Message {item.userName?.split(" ")[0]}
+                    </button>
+                )}
+
+                {isDonor && (
+                    <button className="item-card-btn message-btn" onClick={handleMessageClick}>
+                        <PiWechatLogoThin className='icon' /> Chat with Requester
+                    </button>
+                )}
             </div>
-
-        
         </div>
     )
 }

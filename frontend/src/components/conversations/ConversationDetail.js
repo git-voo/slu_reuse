@@ -1,34 +1,24 @@
-import axiosInstance from '../../services/AxiosInstance'
-import profileService from '../../services/profileService'
-import '../../styles/conversations/index.css'
 import { useState, useEffect, useRef } from 'react'
+import axiosInstance from '../../services/AxiosInstance'
+import '../../styles/conversations/index.css'
 
-const Conversations = ({ donorId, itemId, onClose }) => {
+const ConversationDetail = ({ conversation, donorId, onClose }) => {
     const [messages, setMessages] = useState([])
-    const [userId, setUserId] = useState(null)
     const [newMessage, setNewMessage] = useState('')
     const ws = useRef(null)
+    const userId = conversation.userId
 
-    // Fetch user profile and initiate or retrieve conversation on component mount
     useEffect(() => {
-        getProfile()
-        
-        const initiateConversation = async () => {
+        const fetchMessages = async () => {
             try {
-                const { data } = await axiosInstance.post('/conversation/initiate', {
-                    userId,
-                    donorId,
-                    itemId 
-                })
-                console.log(messages)
-
-                setMessages(data.messages)
+                const { data } = await axiosInstance.get(`/conversation/messages?conversationId=${conversation._id}`)
+                setMessages(data)
             } catch (error) {
-                console.error('Error initiating conversation:', error)
+                console.error('Error fetching messages:', error)
             }
         }
 
-        initiateConversation()
+        fetchMessages()
 
         // Establish WebSocket connection
         ws.current = new WebSocket('ws://localhost:4300')
@@ -39,9 +29,7 @@ const Conversations = ({ donorId, itemId, onClose }) => {
 
         ws.current.onmessage = (event) => {
             const message = JSON.parse(event.data)
-            
-            // Filter messages for the specific itemId
-            if (message.itemId === itemId) {
+            if (message.conversationId === conversation._id) {
                 setMessages((prevMessages) => [...prevMessages, message])
             }
         }
@@ -53,44 +41,33 @@ const Conversations = ({ donorId, itemId, onClose }) => {
         return () => {
             ws.current.close()
         }
-    }, [userId, donorId, itemId])
+    }, [conversation._id])
 
     const handleSendMessage = () => {
         if (newMessage.trim()) {
             const message = {
-                id: Date.now(),
                 text: newMessage,
-                senderId: userId,
-                recipientId: donorId,
-                itemId, // Include itemId in each message
+                senderId: donorId, // Donor or user ID
+                recipientId: userId,
+                conversationId: conversation._id,
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             }
 
-            // Send the message to the WebSocket server
             ws.current.send(JSON.stringify(message))
-            setMessages((prevMessages) => [...prevMessages, message]);
             setNewMessage('')
-        }
-    }
-
-    const getProfile = async () => {
-        try {
-            const loggedUser = await profileService.getProfile()
-            setUserId(loggedUser._id)
-        } catch (error) {
-            console.error('Error fetching profile:', error)
         }
     }
 
     return (
         <div className="conversation-bg" onClick={(e) => e.stopPropagation()}>
             <div className="conversations-container">
+                <button onClick={onClose}>Back to Conversations List</button>
+                
                 <div className="messages-display">
-                    <button onClick={onClose}>Close</button>
                     {messages.map((message) => (
                         <div
                             key={message._id}
-                            className={`message-bubble ${message.senderId === userId ? 'user' : 'donor'}`}
+                            className={`message-bubble ${message.senderId === donorId ? 'donor' : 'user'}`}
                         >
                             <p className="message-text">{message.text}</p>
                             <span className="message-timestamp">{message.timestamp}</span>
@@ -115,4 +92,4 @@ const Conversations = ({ donorId, itemId, onClose }) => {
     )
 }
 
-export default Conversations
+export default ConversationDetail
