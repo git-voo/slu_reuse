@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useState, useEffect} from 'react'
 import { Button, Form } from 'react-bootstrap' // Using Bootstrap for styling
 import axios from 'axios'
 import { useNavigate } from "react-router-dom"
@@ -19,7 +19,21 @@ const ListItem = () => {
   const [setItemListedOn] = useState('')
 
   const navigate = useNavigate()
+  const imageUrl = "https://drive.google.com/uc?export=view&id=1NMAXe9QFB910oXc4RGqlUowIezwj0vvR";
 
+  const fetchImageDescription = async () => {
+    try {
+      const response = await axios.post('/api/analyze-image', { imageUrl }); // Use your backend endpoint
+      setItemDescription(response.data.description); // Set the fetched description
+    } catch (error) {
+      console.error('Error fetching image description:', error);
+      alert('Failed to fetch description for the image.');
+    }
+  };
+
+  useEffect(() => {
+    fetchImageDescription();
+  }, []);
 
   // Handle Image Selection
   const handleImageChange = (e) => {
