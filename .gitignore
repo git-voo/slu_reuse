@@ -28,3 +28,5 @@ yarn-error.log*
 
 #Other
 .vs/
+
+backend/python_service/venv/
