@@ -1,11 +1,35 @@
 import { google } from 'googleapis';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const oauth2Client = new google.auth.OAuth2(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET,
-  process.env.GOOGLE_REDIRECT_URI
-);
+// Convert `import.meta.url` to a path and get the directory
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const drive = google.drive({ version: 'v3', auth: oauth2Client });
+// Path to your Google credentials file
+const KEY_PATH = path.join(__dirname, '../config/google_credentials.json');
 
-export { drive, oauth2Client };
+// Define variables to be exported
+let drive;
+let auth;
+
+try {
+  // Read and parse the credentials file
+  const rawCredentials = fs.readFileSync(KEY_PATH, 'utf-8');
+  console.log('Credentials file content:', rawCredentials); // Debug log
+  const credentials = JSON.parse(rawCredentials);
+
+  auth = new google.auth.GoogleAuth({
+    credentials,
+    scopes: ['https://www.googleapis.com/auth/drive'],
+  });
+
+  drive = google.drive({ version: 'v3', auth });
+} catch (error) {
+  console.error('Failed to load Google credentials:', error);
+  throw error; // Re-throw to prevent app from running with missing credentials
+}
+
+// Export the variables
+export { drive, auth };
