@@ -5,8 +5,8 @@ const getProfile = async () => {
         const response = await axiosInstance.get('/auth/profile')
         return response.data
     } catch (error) {
-        console.error('Error fetching profile:', error)
-        throw error
+        console.log('Error fetching profile:', error)
+        // throw error
     }
 }
 
@@ -15,8 +15,8 @@ const updateProfile = async (profileData) => {
         const response = await axiosInstance.put('/auth/profile', profileData)
         return response.data
     } catch (error) {
-        console.error('Error updating profile:', error)
-        throw error
+        console.log('Error updating profile:', error)
+        // throw error
     }
 }
 
