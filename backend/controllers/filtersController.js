@@ -1,4 +1,4 @@
-import Item from '../models/ItemModel.js';
+import Item from '../models/itemModel.js';
 
 export const filterItems = async (req, res) => {
     try {

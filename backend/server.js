@@ -23,12 +23,13 @@ import conversationRoutes from "./routes/conversationRoutes.js"
 import imageRoutes from './routes/imageRoutes.js';
 import analyzeImageRoutes from "./routes/analyzeImageRoutes.js";
 
-const router = express.Router()
-const app = express()
+const router = express.Router();
 
-// For ES Module __dirname and __filename
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+//express app
+const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Load environment variables
 configDotenv()
@@ -120,8 +121,8 @@ server.listen(PORT, () => {
     console.log(`Running on http://localhost:${PORT}`)
 })
 
-    server.on('error', (err) => {
-        if (err.code === 'EADDRINUSE') {
+    server.on("error", (err) => {
+        if (err.code === "EADDRINUSE") {
             console.log(`Port ${PORT} is already in use`);
             process.exit(1);
         }
