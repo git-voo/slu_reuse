@@ -17,6 +17,7 @@ export async function getCaptionFromBLIP(imageUrl) {
 
 // Route to analyze image
 router.post("/", async(req, res) => {
+    console.log(req.body)
     const { imageUrl } = req.body;
 
     if (!imageUrl) {

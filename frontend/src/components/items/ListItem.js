@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useState, useEffect} from 'react'
 import { Button, Form } from 'react-bootstrap' // Using Bootstrap for styling
 import axios from 'axios'
 import { useNavigate } from "react-router-dom"
@@ -10,16 +10,37 @@ import axiosInstance from '../../services/AxiosInstance'
 const ListItem = () => {
   const [itemName, setItemName] = useState('')
   const [itemDescription, setItemDescription] = useState('')
-  const [itemImages, setItemImages] = useState([])
+  const [itemImages, setItemImages] = useState(null)
   const [itemCategory, setItemCategory] = useState('')
   const [itemQuantity, setItemQuantity] = useState('')
   const [itemPickupLocation, setItemPickupLocation] = useState('')
   const [itemTags, setItemTags] = useState('')
   const [itemStatus, setItemStatus] = useState('')
   const [setItemListedOn] = useState('')
+  const [analyzed, setAnalyzed] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
 
   const navigate = useNavigate()
 
+  const fetchImageDescription = async () => {
+    setIsLoading(true)
+    try {
+      const imageUrl = await uploadToCloud(itemImages)
+      console.log( imageUrl)
+      const response = await axiosInstance.post('/analyze-image', { imageUrl }); // Use your backend endpoint
+      setItemImages(imageUrl)
+      setAnalyzed(true)
+      setItemDescription(response.data.description); // Set the fetched description
+    } catch (error) {
+      console.error('Error fetching image description:', error);
+      alert('Failed to fetch description for the image.');
+    }
+  };
+
+  useEffect(() => {
+    // fetchImageDescription();
+  }, []);
 
   // Handle Image Selection
   const handleImageChange = (e) => {
@@ -28,6 +49,31 @@ const ListItem = () => {
 
   }
 
+  async function uploadToCloud(imageFile) {
+    let imageUrl;
+    if (!itemImages) {
+      console.error("No image selected");
+      return;
+    }
+  console.log("analyzing image")
+    const formData = new FormData();
+    formData.append('image', imageFile); 
+  
+ try {
+  const {data} = await axiosInstance.post('/images/upload', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+  return data.url;
+ } catch (error) {
+  console.log(error)
+  
+ }
+
+    return imageUrl;
+  }
+  
   const handleSubmit = async (e) => {
 
     const handleCancel = () => {
@@ -83,20 +129,29 @@ const ListItem = () => {
   return (
     <div className="container mt-5" style={{ maxWidth: '600px' }}>
       <h2 className="text-center mb-4">Donate an Item</h2>
+
       <Form onSubmit={handleSubmit}>
         {/* Item Images */}
         <Form.Group controlId="formItemImages" className="mb-3">
-          <Form.Label><strong>Item Images</strong></Form.Label>
+          <Form.Label><strong>Item Image</strong></Form.Label>
           <Form.Control
             type="file"
-            onChange={handleImageChange}
-            multiple
+            onChange={(e)=>setItemImages(e.target.files[0])}
+            // multiple
             className="p-2"
           />
         </Form.Group>
 
-        {/* Item Name */}
-        <Form.Group controlId="formItemName" className="mb-3">
+          {
+            !analyzed && <Button variant="primary"
+            disabled={isLoading}
+             onClick={()=>fetchImageDescription(itemImages)}>{isLoading?"analyzing...":"Save"}</Button>
+          }
+
+   {
+    analyzed && <>
+         {/* Item Name */}
+         <Form.Group controlId="formItemName" className="mb-3">
           <Form.Label><strong>Item Name</strong></Form.Label>
           <Form.Control
             type="text"
@@ -180,6 +235,8 @@ const ListItem = () => {
             Submit
           </Button>
         </div>
+    </>
+   }
       </Form>
     </div>
   )
