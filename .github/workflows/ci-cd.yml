@@ -35,6 +35,7 @@ jobs:
           CLIENT_URL: ${{ secrets.CLIENT_URL }}    # Use CLIENT_URL secret
           SLU_REUSE_SUPPORT_EMAIL: ${{ secrets.SLU_REUSE_SUPPORT_EMAIL }}  # Support email secret
           SLU_REUSE_SUPPORT_EMAIL_PASSWORD: ${{ secrets.SLU_REUSE_SUPPORT_EMAIL_PASSWORD }}  # Support email password
+          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
           NODE_OPTIONS: --no-deprecation          # Suppress deprecation warnings globally
         run: |
           npm install
