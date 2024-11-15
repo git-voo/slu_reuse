@@ -17,7 +17,7 @@ export const uploadImage = async (req, res) => {
     // Set metadata for the file in Google Drive
     const fileMetadata = {
       name: req.file.originalname,
-      parents: ['Your Google Drive Folder ID'], // Replace with your actual folder ID
+      parents: ['Your Google Drive Folder ID'], 
     };
 
     // Prepare the media content using the buffer from the uploaded file
