@@ -100,12 +100,12 @@ export default function Navbar({ filters, updateFilters }) {
           }} className="navbar-btn">Logout</button></li>
         }
         {
-          loggedUser && (<center>
+          loggedUser && (<li className="avatar-section">
             <div className='user-avatar'>
               <img src={avatar} alt="" onClick={() => navigate("/profile")} />
             </div>
             {userProfile?.first_name}
-          </center>)
+          </li>)
         }
       </ul>
     </nav>
