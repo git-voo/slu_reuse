@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import avatar from "../../assets/images/avatar.png"
 import '../../styles/navBar/navbar.css'
 import { useEffect, useState } from "react"
+import profileService from "../../services/profileService"
 
 export default function Navbar({ filters, updateFilters }) {
   const categories = ["All", "Electronics", "Furniture", "Accessories", "Beauty", "Kitchen", "Books", "Toys"]
@@ -10,12 +11,17 @@ export default function Navbar({ filters, updateFilters }) {
   const navigate = useNavigate()
 
   const [loggedUser, setLoggedUser] = useState(null)
+  const [userProfile, setUserProfile] = useState({})
 
   useEffect(() => {
     const userToken = localStorage.getItem("token")
     if (userToken) setLoggedUser(userToken)
-
-  })
+    getLoggedUser()
+  },[])
+  async function getLoggedUser() {
+    const loggedUser = await profileService.getProfile()
+    setUserProfile(loggedUser)
+  }
 
   // Handle changes for category and update the filters
   const handleCategoryChange = (e) => {
@@ -94,11 +100,12 @@ export default function Navbar({ filters, updateFilters }) {
           }} className="navbar-btn">Logout</button></li>
         }
         {
-          loggedUser && (<li>
+          loggedUser && (<center>
             <div className='user-avatar'>
               <img src={avatar} alt="" onClick={() => navigate("/profile")} />
             </div>
-          </li>)
+            {userProfile?.first_name}
+          </center>)
         }
       </ul>
     </nav>
