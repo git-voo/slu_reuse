@@ -26,14 +26,12 @@ yarn-error.log*
 # Compiled from Scss
 /frontend/*.css.map
 
-#Other
+# Other
 .vs/
-
 backend/python_service/venv/
-#Other
 .vs/backend/tests/cloudStorage/
-
 backend/tests/cloudStorage/
+__pycache__/
 
-#to avoid accidentally committing sensitive credentials to a public repository
+# To avoid accidentally committing sensitive credentials to a public repository
 google_credentials.json
