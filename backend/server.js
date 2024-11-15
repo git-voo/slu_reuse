@@ -1,3 +1,8 @@
+import dotenv from 'dotenv';
+dotenv.config();
+console.log('GOOGLE_PROJECT_ID:', process.env.GOOGLE_PROJECT_ID);
+
+
 import express from "express"
 import bodyParser from "body-parser"
 import path from "path"
@@ -14,6 +19,9 @@ import http from 'http'
 import WebSocket, { WebSocketServer } from 'ws'
 import Conversation from "./models/conversationsModel.js"
 import conversationRoutes from "./routes/conversationRoutes.js"
+
+import imageRoutes from './routes/imageRoutes.js';
+import analyzeImageRoutes from "./routes/analyzeImageRoutes.js";
 
 const router = express.Router()
 const app = express()
@@ -43,6 +51,9 @@ app.use("/api/user", userRoutes)
 app.use("/api", filterRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/conversation', conversationRoutes)
+app.use("/api/analyze-image", analyzeImageRoutes);
+
+app.use('/api/images', imageRoutes);
 
 // Connect to the database
 connectDB()
@@ -109,11 +120,11 @@ server.listen(PORT, () => {
     console.log(`Running on http://localhost:${PORT}`)
 })
 
-server.on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-        console.log(`Port ${PORT} is already in use`)
-        process.exit(1)
-    }
-})
+    server.on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            console.log(`Port ${PORT} is already in use`);
+            process.exit(1);
+        }
+    });
 
-export { app, server }
+export { app, server };
