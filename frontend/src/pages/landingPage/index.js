@@ -2,13 +2,13 @@ import { FaInstagram, FaFacebookF } from "react-icons/fa"
 import { Button, Form } from 'react-bootstrap'
 import { FaXTwitter } from 'react-icons/fa6'
 import { useEffect, useState } from "react"
-import ItemCard from "../../components/card/index.mjs"
 import Footer from "../../components/footer"
 import Navbar from "../../components/navigation"
 import "../../styles/landingPage/index.css"
 import { useNavigate } from "react-router-dom"
 import axiosInstance from "../../services/AxiosInstance"
 import Conversations from "../../components/conversations"
+import ItemCard from "../../components/card"
 
 export default function LandingPage() {
     const [items, setItems] = useState([])
