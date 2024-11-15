@@ -1,4 +1,4 @@
-import ItemModel from "../models/ItemModel.js"
+import ItemModel from "../models/itemModel.js"
 /**
  * Route controllers for all /items routes
  * 
