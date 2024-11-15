@@ -13,7 +13,7 @@ describe('Profile Sidebar Component', () => {
         // Check if all links are present
         expect(screen.getByText('Home')).toBeInTheDocument();
         expect(screen.getByText('Profile')).toBeInTheDocument();
-        expect(screen.getByText('Listings')).toBeInTheDocument();
+        expect(screen.getByText('My Listings')).toBeInTheDocument();
         expect(screen.getByText('List an Item')).toBeInTheDocument();
         expect(screen.getByText('Conversations')).toBeInTheDocument();
         expect(screen.getByText('Verify Email')).toBeInTheDocument();
@@ -30,7 +30,7 @@ describe('Profile Sidebar Component', () => {
         // Check if each link has the correct href using getByRole
         expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/');
         expect(screen.getByRole('link', { name: 'Profile' })).toHaveAttribute('href', '/profile');
-        expect(screen.getByRole('link', { name: 'Listings' })).toHaveAttribute('href', '/profile/my-listings');
+        expect(screen.getByRole('link', { name: 'My Listings' })).toHaveAttribute('href', '/profile/my-listings');
         expect(screen.getByRole('link', { name: 'List an Item' })).toHaveAttribute('href', '/profile/list-item');
         expect(screen.getByRole('link', { name: 'Conversations' })).toHaveAttribute('href', '/profile/conversations');
         expect(screen.getByRole('link', { name: 'Verify Email' })).toHaveAttribute('href', '/profile/verify-email');

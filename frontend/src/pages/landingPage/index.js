@@ -2,7 +2,7 @@ import { FaInstagram, FaFacebookF } from "react-icons/fa";
 import { Button, Form } from 'react-bootstrap';
 import { FaXTwitter } from 'react-icons/fa6'; 
 import { useEffect, useState } from "react";
-import ItemCard from "../../components/card/index.mjs";
+import ItemCard from "../../components/card/index.js";
 import Footer from "../../components/footer"
 import Navbar from "../../components/navigation";
 import "../../styles/landingPage/index.css"; 

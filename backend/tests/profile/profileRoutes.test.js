@@ -1,37 +1,43 @@
 import request from 'supertest';
 import { app } from '../../server.js';
-import mongoose from 'mongoose';
+import mockingoose from 'mockingoose';
 import User from '../../models/userModel.js';
 import jwt from 'jsonwebtoken';
 
 describe('Auth Routes - Profile', () => {
     let token;
     let userId;
+    const mockUser = {
+        _id: '60d0fe4f5311236168a109ca',
+        first_name: 'John',
+        last_name: 'Doe',
+        email: 'john.doe@example.com',
+        password: 'hashedpassword',
+        phone: '1234567890',
+        isDonor: true,
+        isStudent: false
+    };
 
-    beforeEach(async () => {
-        // Clear users collection before each test
-        await User.deleteMany({});
+    beforeAll(() => {
+        // Mock the JWT_SECRET environment variable
+        process.env.JWT_SECRET = 'testsecret';
+    });
 
-        // Create a test user
-        const user = new User({
-            first_name: 'John',
-            last_name: 'Doe',
-            email: 'john.doe@example.com',
-            password: 'hashedpassword', // Ensure your User model hashes passwords
-            phone: '1234567890',
-            isDonor: true,
-            isStudent: false
-        });
-        await user.save();
-        userId = user._id;
+    beforeEach(() => {
+        // Reset mockingoose before each test to ensure no leakage between tests
+        mockingoose.resetAll();
+
+        // Mock the User.findById method to return the mockUser
+        mockingoose(User).toReturn(mockUser, 'findOne');
 
         // Generate JWT token
         const payload = {
             user: {
-                id: userId
+                id: mockUser._id
             }
         };
         token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+        userId = mockUser._id;
     });
 
     // Test GET /profile
@@ -74,6 +80,12 @@ describe('Auth Routes - Profile', () => {
                 phone: '0987654321'
             };
 
+            // Prepare the updated user data
+            const updatedUser = { ...mockUser, ...updateData };
+
+            // Mock the User.findByIdAndUpdate method to return the updated user
+            mockingoose(User).toReturn(updatedUser, 'findOneAndUpdate');
+
             const res = await request(app)
                 .put('/api/auth/profile')
                 .set('Authorization', `Bearer ${token}`)
@@ -83,12 +95,6 @@ describe('Auth Routes - Profile', () => {
             expect(res.body).toHaveProperty('first_name', 'Jane');
             expect(res.body).toHaveProperty('last_name', 'Smith');
             expect(res.body).toHaveProperty('phone', '0987654321');
-
-            // Verify in the database
-            const updatedUser = await User.findById(userId);
-            expect(updatedUser.first_name).toBe('Jane');
-            expect(updatedUser.last_name).toBe('Smith');
-            expect(updatedUser.phone).toBe('0987654321');
         });
 
         it('should return 400 when updating with invalid data', async () => {

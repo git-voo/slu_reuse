@@ -1,5 +1,5 @@
 import UserModel from "../models/userModel.js";
-import ItemModel from "../models/ItemModel.js";
+import ItemModel from "../models/itemModel.js";
 import bcrypt from 'bcryptjs';
 
 /**
