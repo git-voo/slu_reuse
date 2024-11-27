@@ -10,6 +10,10 @@ app = Flask(__name__)
 processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
 model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
 
+@app.route('/', methods=['GET'])
+def root():
+    return "Health Check: Service is running"
+
 @app.route('/caption', methods=['POST'])
 def caption_image():
     print("Received a request on /caption endpoint")
