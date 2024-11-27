@@ -10,7 +10,7 @@ import axiosInstance from '../../services/AxiosInstance'
 const ListItem = () => {
   const [itemName, setItemName] = useState('')
   const [itemDescription, setItemDescription] = useState('')
-  const [itemImages, setItemImages] = useState(null)
+  const [itemImages, setItemImages] = useState()
   const [itemCategory, setItemCategory] = useState('')
   const [itemQuantity, setItemQuantity] = useState('')
   const [itemPickupLocation, setItemPickupLocation] = useState('')
@@ -28,7 +28,7 @@ const ListItem = () => {
     try {
       const imageUrl = await uploadToCloud(itemImages)
       console.log( imageUrl)
-      const response = await axiosInstance.post('/analyze-image', { imageUrl }); // Use your backend endpoint
+      const response = await axiosInstance.post('/analyze-image', { imageUrl:imageUrl }); // Use your backend endpoint
       setItemImages(imageUrl)
       setAnalyzed(true)
       setItemDescription(response.data.description); // Set the fetched description
@@ -103,7 +103,7 @@ const ListItem = () => {
 
     const payload = {
       "name": itemName,
-      "images": JSON.stringify(itemImages),
+      "images": itemImages,
       "description": itemDescription,
       "category": itemCategory,
       "quantity": itemQuantity,

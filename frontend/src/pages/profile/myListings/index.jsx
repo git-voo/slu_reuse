@@ -55,23 +55,17 @@ const MyListings = () => {
             </div>
         );
     }
-
+console.log(myItems)
     return (
         <div className="my-listings-container">
             <h2>My Listings</h2>
-            {myItems.length > 0 ? (
+            {myItems.length > 0 ? ( 
                 <div className="my-items-list">
                     {myItems.map(item => (
+                        
                         <div key={item._id} className="my-item-card">
                             <div onClick={() => handleItemClick(item._id)} className="item-card-clickable">
-                                <ItemCard 
-                                    userAvatar={item.userAvatar}
-                                    userName={item.userName}
-                                    itemImage={item.images[0]} 
-                                    title={item.name}
-                                    description={item.description}
-                                    location={item.pickupLocation}
-                                />
+                                <ItemCard item={item}/>
                             </div>
                             <div className="my-item-actions">
                                 <Button variant="warning" onClick={() => handleEdit(item._id)}>Edit</Button>

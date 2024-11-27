@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import profileService from '../../services/profileService.js'
 
 const ItemCard = ({ item, onChatClick }) => {
+    console.log(item)
     const [isDonor, setIsDonor] = useState(false)
     const [isRequester, setIsRequester] = useState(false)
     const [userId, setUserId] = useState(null)
@@ -40,27 +41,26 @@ const ItemCard = ({ item, onChatClick }) => {
         <div className="item-card">
             <div className="item-card-user">
                 <div className="user-avatar">
-                    <img src={item.userAvatar} alt={item.userName} />
+                    <img src={item?.userAvatar} alt={item?.userName} />
                 </div>
-                <h4 className="user-name">{item.userName}</h4>
+                <h4 className="user-name">{item?.userName}</h4>
             </div>
 
             <div className="item-card-body">
                 <p className='available status'> <GoDotFill /> Available</p>
                 <div className="item-card-image">
-                    <img src={item.images[0]} alt={item.title} />
+                    <img src={item?.images[0]} alt={item?.title} />
                 </div>
-
-                <h3 className="item-card-title">{item.title}</h3>
+                <h3 className="item-card-title">{item?.title}</h3>
 
                 <div className='location'>
                     <div className="icon">
                         <img src={locationIcon} alt="location" />
                     </div>
-                    {item.location}
+                    {item?.location}
                 </div>
                 <p> </p>
-                <p className="item-card-description">{item.description}</p>
+                <p className="item-card-description">{item?.description}</p>
             </div>
 
             <div className="item-card-footer">
