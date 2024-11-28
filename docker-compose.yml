@@ -3,7 +3,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      image: onojavoo/slu_reuse_frontend:latest
+    image: onojavoo/slu_reuse_frontend:latest
     ports:
       - "3000:3000"
     depends_on:
@@ -12,15 +12,17 @@ services:
   backend:
     build:
       context: ./backend
-      image: onojavoo/slu_reuse_backend:latest
+    image: onojavoo/slu_reuse_backend:latest
     ports:
       - "4300:4300"
     depends_on:
       - python_service
+    environment:
+      - PYTHON_SERVICE_URL=http://python_service:4301
 
   python_service:
     build:
       context: ./backend/python_service
-      image: onojavoo/slu_reuse_caption_service:latest
+    image: onojavoo/slu_reuse_caption_service:latest
     ports:
       - "4301:4301"
