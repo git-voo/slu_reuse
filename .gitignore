@@ -37,3 +37,6 @@ backend/tests/cloudStorage/
 
 #to avoid accidentally committing sensitive credentials to a public repository
 google_credentials.json
+
+__pycache__/
+*.pyc
