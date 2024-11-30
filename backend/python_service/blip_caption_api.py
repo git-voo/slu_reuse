@@ -1,44 +1,42 @@
-# blip_caption_api.py
 from flask import Flask, request, jsonify
-from transformers import BlipProcessor, BlipForConditionalGeneration
+from transformers import BlipProcessor, BlipForConditionalGeneration, pipeline
 from PIL import Image
 import requests
 
 app = Flask(__name__)
 
-# Load the BLIP model and processor 
+# Load the BLIP model and processor for captioning
 processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
 model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
 
-@app.route('/caption', methods=['POST'])
-def caption_image():
-    print("Received a request on /caption endpoint")
-    
+# Load an image classification model from Hugging Face
+classifier = pipeline("image-classification", model="google/vit-base-patch16-224")
+
+@app.route('/caption_and_category', methods=['POST'])
+def caption_and_category():
     data = request.get_json()
-    print("Request data:", data)
-    
     image_url = data.get('imageUrl')
 
     if not image_url:
-         print("Image URL is missing in the request")
-         return jsonify({"error": "Image URL is required"}), 400
+        return jsonify({"error": "Image URL is required"}), 400
 
     try:
         # Load the image from the URL
-        print("Fetching image from URL:", image_url)
         image = Image.open(requests.get(image_url, stream=True).raw)
 
-        # Process the image and generate a caption
-        print("Processing the image...")
+        # Generate a caption using BLIP
         inputs = processor(image, return_tensors="pt")
         out = model.generate(**inputs)
         caption = processor.decode(out[0], skip_special_tokens=True)
-        
-        print("Generated caption:", caption)
-        return jsonify({"caption": caption})
+
+        # Generate category using the image classification model
+        image_for_classification = image.convert("RGB")  # Ensure image is in RGB mode
+        classification_results = classifier(image_for_classification)
+        category = classification_results[0]['label'] if classification_results else "unknown"
+
+        return jsonify({"caption": caption, "category": category, "name": category})
 
     except Exception as e:
-        print("Error during processing:", str(e))
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
