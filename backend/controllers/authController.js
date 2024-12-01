@@ -23,6 +23,9 @@ const register = async(req, res) => {
         if (user) {
             return res.status(400).json({ msg: 'User already exists' });
         }
+        // Check if the email is an SLU email
+        const isSluEmail = email.endsWith('slu.edu');
+
         user = new UserModel({
             first_name,
             last_name,
@@ -30,7 +33,8 @@ const register = async(req, res) => {
             password: await bcrypt.hash(password, 10), // Hashing the password
             phone,
             isDonor,
-            isStudent
+            isStudent,
+            isSluEmail
         });
 
         await user.save();
@@ -226,7 +230,7 @@ const resetPassword = async(req, res) => {
 };
 
 // Get Profile Handler
-const getProfile = async (req, res) => {
+const getProfile = async(req, res) => {
     try {
         const user = await UserModel.findById(req.user.id).select('-password');
         if (!user) {
@@ -240,7 +244,7 @@ const getProfile = async (req, res) => {
 };
 
 // Update Profile Handler
-const updateProfile = async (req, res) => {
+const updateProfile = async(req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
