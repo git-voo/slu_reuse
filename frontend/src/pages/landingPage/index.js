@@ -3,16 +3,16 @@ import { Button, Form } from 'react-bootstrap';
 import { FaXTwitter } from 'react-icons/fa6'; 
 import { useEffect, useState } from "react";
 import ItemCard from "../../components/card/index.mjs";
-import Footer from "../../components/footer"
+import Footer from "../../components/footer";
 import Navbar from "../../components/navigation";
 import "../../styles/landingPage/index.css"; 
-import { useNavigate } from "react-router-dom"
-import axiosInstance from "../../services/AxiosInstance"
+import "../../styles/chatbot/chatbot.css";  // Import chatbot-specific styles
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../services/AxiosInstance";
 
 export default function LandingPage() {
     const [items, setItems] = useState([]);
-    const navigate = useNavigate()
-    const [allItems, setAllItems] = useState(items);
+    const navigate = useNavigate();
     const [showForm, setShowForm] = useState(false);
     const [filters, setFilters] = useState({
         category: "All",
@@ -20,13 +20,18 @@ export default function LandingPage() {
         sortOption: "newest",
         searchQuery: "",
     });
+    const [isChatOpen, setIsChatOpen] = useState(false);  // Chatbot open state
+    const [chatMessages, setChatMessages] = useState([
+        { sender: "bot", text: "Hello! How can I assist you today?" }
+    ]);
+    const [userInput, setUserInput] = useState("");
 
     useEffect(() => {
-        fetchItems();  // Fetch all items initially
+        fetchItems();
     }, []);
 
     useEffect(() => {
-        filterItemsByCategory();  // Apply filters whenever they change
+        filterItemsByCategory();
     }, [filters]);
     
     const handleFormOpen = () => {
@@ -36,11 +41,11 @@ export default function LandingPage() {
     const handleFormClose = () => {
         setShowForm(false);
     };
+
     const fetchItems = async () => {
         try {
             const response = await axiosInstance.get("/items");
             setItems(response.data);
-            setAllItems(response.data);  // Store all items initially
         } catch (error) {
             console.error("Error fetching items:", error);
         }
@@ -48,7 +53,6 @@ export default function LandingPage() {
 
     const filterItemsByCategory = async () => {
         const { category, location, sortOption, searchQuery } = filters;
-
         try {
             const response = await axiosInstance.get(`/filter`, {
                 params: {
@@ -58,7 +62,7 @@ export default function LandingPage() {
                     searchQuery,
                 },
             });
-            setItems(response.data); // Set the filtered items
+            setItems(response.data);
         } catch (error) {
             console.error("Error fetching filtered items:", error);
         }
@@ -68,33 +72,52 @@ export default function LandingPage() {
         setFilters({ ...filters, ...newFilters });
     };
 
+    // Chatbot Functions
+    const toggleChatbot = () => {
+        setIsChatOpen((prevIsOpen) => !prevIsOpen);
+    };
+
+    const handleInputChange = (event) => {
+        setUserInput(event.target.value);
+    };
+
+    const handleSendMessage = () => {
+        if (userInput.trim()) {
+            setChatMessages([...chatMessages, { sender: "user", text: userInput }]);
+            setUserInput("");
+
+            setTimeout(() => {
+                setChatMessages((prevMessages) => [
+                    ...prevMessages,
+                    { sender: "bot", text: "Thank you for your message! We will get back to you shortly." },
+                ]);
+            }, 1000);
+        }
+    };
+
     return (
         <div className="landing-page-container">
             <Navbar filters={filters} updateFilters={updateFilters} />
             <div className="items-list">
                 {items.length ? (
-                    items.map((item, index) => {
-                        return (
-                          <div onClick={()=>navigate(`/item/${item._id}`)} key={item._id} className="text-decoration-none"> 
+                    items.map((item) => (
+                        <div onClick={() => navigate(`/item/${item._id}`)} key={item._id} className="text-decoration-none">
                             <ItemCard 
                                 userAvatar={item.userAvatar}
                                 userName={item.userName}
-                                itemImage={item.images[0]} // Use the first image
-                                title={item.name}  // Changed to 'name'
+                                itemImage={item.images[0]} 
+                                title={item.name}
                                 description={item.description}
-                                location={item.pickupLocation}  // Correct field for location
-                                
+                                location={item.pickupLocation}
                             />
-                          </div>
-                        );
-                    })
+                        </div>
+                    ))
                 ) : (
                     <p>No items found</p>
                 )}
             </div>
 
             <div className="footer-section">
-                {/* Social Media Links */}
                 <div className="social-media-section">
                     <a href="https://www.facebook.com" className="social-icon" target="_blank" rel="noopener noreferrer">
                         <FaFacebookF />
@@ -106,14 +129,11 @@ export default function LandingPage() {
                         <FaInstagram />
                     </a>
                 </div>
-
-                {/* Contact Us Button */}
                 <div className="contact-button-container">
                     <Button className="contact-button" onClick={handleFormOpen}>Contact Us</Button>
                 </div>
             </div>
 
-            {/* Contact Us Modal */}
             {showForm && (
                 <div className="modal-overlay">
                     <div className="modal-content">
@@ -141,14 +161,41 @@ export default function LandingPage() {
                                 <Form.Control as="textarea" rows={3} placeholder="Enter your message" required />
                             </Form.Group>
 
-                            <Button variant="primary" type="submit">
-                                Send
-                            </Button>
+                            <Button variant="primary" type="submit">Send</Button>
                         </Form>
                     </div>
                 </div>
             )}
+
+            {/* Chatbot pop-up in the bottom right */}
+            <div className={`chatbot-container ${isChatOpen ? "open" : ""}`}>
+                <div className="chatbot-header">
+                    Chat with Us
+                    <button className="minimize-button" onClick={toggleChatbot}>
+                        {isChatOpen ? "–" : "+"}
+                    </button>
+                </div>
+                {isChatOpen && (
+                    <div className="chatbot-body">
+                        <div className="messages">
+                            {chatMessages.map((message, index) => (
+                                <div key={index} className={`message ${message.sender}`}>
+                                    {message.text}
+                                </div>
+                            ))}
+                        </div>
+                        <Form className="chatbot-input" onSubmit={(e) => e.preventDefault()}>
+                            <Form.Control
+                                type="text"
+                                placeholder="Type your question..."
+                                value={userInput}
+                                onChange={handleInputChange}
+                            />
+                            <Button variant="primary" onClick={handleSendMessage}>Send</Button>
+                        </Form>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
-        
