@@ -16,10 +16,10 @@ beforeEach(() => {
 });
 
 describe('Image Captioning API', () => {
-    it('should return a caption, category, and name when a valid image URL is provided', async() => {
+    it('should return a caption, category, and tags when a valid image URL is provided', async() => {
         // Mock axios.post directly to return a successful response
         axios.post = jest.fn().mockResolvedValue({
-            data: { caption: 'A sample caption from the BLIP model', category: 'sample category', name: 'sample category' },
+            data: { caption: 'A sample caption from the BLIP model', category: 'sample category', tags: 'sample category' },
         });
 
         const response = await request(app)
@@ -29,7 +29,7 @@ describe('Image Captioning API', () => {
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('description', 'A sample caption from the BLIP model');
         expect(response.body).toHaveProperty('category', 'sample category');
-        expect(response.body).toHaveProperty('name', 'sample category');
+        expect(response.body).toHaveProperty('tags', 'sample category');
         expect(axios.post).toHaveBeenCalledWith('http://127.0.0.1:4301/caption_and_category', { imageUrl: 'http://example.com/sample.jpg' });
     });
 

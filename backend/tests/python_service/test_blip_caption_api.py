@@ -25,7 +25,7 @@ def test_caption_and_category_valid_url(client, mocker):
     response = client.post('/caption_and_category', json={'imageUrl': 'http://example.com/sample.jpg'})
     
     assert response.status_code == 200
-    assert response.json == {"caption": "A sample caption", "category": "sample category", "name": "sample category"}
+    assert response.json == {"caption": "A sample caption", "category": "sample category", "tags": "sample category"}
 
 def test_caption_and_category_missing_url(client):
     response = client.post('/caption_and_category', json={})
