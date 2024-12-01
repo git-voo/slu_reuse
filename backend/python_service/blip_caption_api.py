@@ -34,7 +34,7 @@ def caption_and_category():
         classification_results = classifier(image_for_classification)
         category = classification_results[0]['label'] if classification_results else "unknown"
 
-        return jsonify({"caption": caption, "category": category, "name": category})
+        return jsonify({"caption": caption, "category": category, "tags": category})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

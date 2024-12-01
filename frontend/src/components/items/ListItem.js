@@ -33,8 +33,9 @@ const ListItem = () => {
       setItemImages(imageUrl)
       setAnalyzed(true)
       setItemDescription(response.data.description); 
+      setItemQuantity(1);
       setItemCategory(response.data.category); 
-      setItemName(response.data.name);
+      setItemTags(response.data.tags);
     } catch (error) {
       console.error('Error fetching image description:', error);
       alert('Failed to fetch description for the image.');

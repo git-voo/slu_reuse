@@ -25,8 +25,8 @@ router.post("/", async(req, res) => {
     }
     try {
         // Call the Python microservice to get the caption and category
-        const { caption, category, name } = await getCaptionAndCategoryFromBLIP(imageUrl);
-        res.json({ description: caption, category: category, name: name });
+        const { caption, category, tags } = await getCaptionAndCategoryFromBLIP(imageUrl);
+        res.json({ description: caption, category: category, tags: tags });
     } catch (error) {
         console.error("Error analyzing image:", error);
         res.status(500).json({ error: "Error analyzing image" });
