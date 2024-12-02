@@ -85,7 +85,9 @@ export default function Navbar({ filters, updateFilters }) {
 
       <ul className="navbar-links">
         <li><Link to="/about">About</Link></li>
-        <li><Link to="/donate-item">Donate Items</Link></li>
+        {
+          loggedUser && (<li><Link to="/donate-item">Donate Items</Link></li>)
+        }
         <li><Link to="/contact">Contact</Link></li>
         {
           !loggedUser ? (<li><Link to={"/login"} className="navbar-btn">Login</Link></li>) : <li><button onClick={() => {
