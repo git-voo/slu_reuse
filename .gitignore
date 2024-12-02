@@ -40,4 +40,7 @@ google_credentials.json
 
 __pycache__/
 *.pyc
-yolov5/*.pt
+
+# Ignore all YOLOv5 weights
+**/yolov5
+**/yolov5*.pt
