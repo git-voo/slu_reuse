@@ -32,6 +32,7 @@ const ListItem = () => {
       console.log(response)
       setItemImages(imageUrl)
       setAnalyzed(true)
+      setItemName(response.data.name)
       setItemDescription(response.data.description); 
       setItemQuantity(1);
       setItemCategory(response.data.category); 
