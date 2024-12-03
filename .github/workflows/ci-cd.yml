@@ -41,6 +41,7 @@ jobs:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_EMAIL: ${{ secrets.GOOGLE_CLIENT_EMAIL }}
           GOOGLE_CLIENT_CERT_URL: ${{ secrets.GOOGLE_CLIENT_CERT_URL }}
+          PYTHON_SERVICE_URL: ${{ secrets.PYTHON_SERVICE_URL }}
           NODE_OPTIONS: --no-deprecation          # Suppress deprecation warnings globally
         run: |
           npm install
