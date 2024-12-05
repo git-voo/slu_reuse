@@ -9,12 +9,12 @@ import { useNavigate } from "react-router-dom"
 import axiosInstance from "../../services/AxiosInstance"
 import Conversations from "../../components/conversations"
 import ItemCard from "../../components/card"
-import profileService from '../../services/profileService';
+import profileService from '../../services/profileService'
 
 export default function LandingPage() {
     const [items, setItems] = useState([])
     const [selectedItemId, setSelectedItemId] = useState(1234)
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(null)
     const navigate = useNavigate()
     const [allItems, setAllItems] = useState(items)
     const [showForm, setShowForm] = useState(false)
@@ -28,20 +28,19 @@ export default function LandingPage() {
     useEffect(() => {
         fetchItems()  // Fetch all items initially
 
-         // Check if user is logged in
-         const userToken = localStorage.getItem("token");
-         console.log('userToken', userToken)
-         if (userToken) {
-             // Fetch user profile details if a token is present
-             profileService.getProfile()
-             .then(response => {
-                console.log('response', response)
-                 setUser(response); // Set the user data to state
-             })
-             .catch(error => {
-                 console.error("Error fetching user details:", error);
-             });
-         }
+        // Check if user is logged in
+        const userToken = localStorage.getItem("token")
+        if (userToken) {
+            // Fetch user profile details if a token is present
+            profileService.getProfile()
+                .then(response => {
+                    console.log('response', response)
+                    setUser(response) // Set the user data to state
+                })
+                .catch(error => {
+                    console.error("Error fetching user details:", error)
+                })
+        }
 
     }, [])
 
@@ -95,20 +94,15 @@ export default function LandingPage() {
                 {items.length ? (
                     items.map((item, index) => {
                         return (
-                          <div onClick={()=>navigate(`/item/${item._id}`)} key={item._id} className="text-decoration-none"> 
-                            <ItemCard 
-                                userAvatar={item.userAvatar}
-                                userName={item.userName}
-                                itemImage={item.images[0]} // Use the first image
-                                title={item.name}  // Changed to 'name'
-                                description={item.description}
-                                location={item.pickupLocation}  // Correct field for location
-                                isLoggedIn={!!user}  // Check if user is logged in
-                                isSluEmail={user?.isSluEmail}  // Check if the email is an SLU email
-                            />
-                            
-                          </div>
-                        );
+                            <div onClick={() => navigate(`/item/${item._id}`)} key={item._id} className="text-decoration-none">
+                                <ItemCard
+                                    item={item}
+                                    isLoggedIn={!!user}  // Check if user is logged in
+                                    isSluEmail={user?.isSluEmail}  // Check if the email is an SLU email
+                                />
+
+                            </div>
+                        )
                     })
                 ) : (
                     <p>No items found</p>

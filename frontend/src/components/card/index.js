@@ -3,7 +3,7 @@ import locationIcon from "../../assets/icons/location.png"
 import { GoDotFill } from "react-icons/go"
 import { PiWechatLogoThin } from "react-icons/pi"
 
-const ItemCard = ({ userAvatar, userName, itemImage, title, description, location, isLoggedIn, isSluEmail }) => {
+const ItemCard = ({ item, userAvatar, userName, itemImage, title, description, location, isLoggedIn, isSluEmail }) => {
     return (
         <div className="item-card">
             <div className="item-card-user">
