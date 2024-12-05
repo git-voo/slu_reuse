@@ -66,47 +66,6 @@ const register = async(req, res) => {
     }
 };
 
-
-// Email Verification Handler
-const verifyEmail = async(req, res) => {
-    const { token } = req.body; // Extract token from request body
-    if (!token) {
-        return res.status(400).json({ msg: 'Token is required' });
-    }
-    try {
-        // Verify the token using the same secret
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const { email } = decoded; // Extract email from the token
-
-        // Find the user by email
-        const user = await UserModel.findOne({ email });
-
-        if (!user) {
-            return res.status(400).json({ msg: 'Invalid token or user does not exist.' });
-        }
-
-        // Check if the email is already verified
-        if (user.isEmailVerified) {
-            return res.status(400).json({ msg: 'Email is already verified' });
-        }
-
-        // Mark email as verified
-        user.isEmailVerified = true;
-        await user.save();
-
-        return res.status(200).json({ msg: 'Email verified successfully' });
-    } catch (err) {
-        if (err.name === 'TokenExpiredError') {
-            return res.status(401).json({ msg: 'Token has expired' });
-        } else if (err.name === 'JsonWebTokenError') {
-            return res.status(401).json({ msg: 'Invalid token' });
-        }
-
-        console.error(`Error during email verification for token: ${token}: ${err.message}`);
-        return res.status(500).json({ msg: 'Server error', error: err.message });
-    }
-};
-
 const login = async(req, res) => {
     const { email, password } = req.body;
 
@@ -269,38 +228,30 @@ const updateProfile = async (req, res) => {
     }
 };
 
-// Resend Verification Email Controller
+// Email Verification Handler
 const verifyEmail = async (req, res) => {
-    const { token } = req.body; // Extract token from request body
+    const { token } = req.body;
     if (!token) {
         return res.status(400).json({ msg: 'Token is required' });
     }
     try {
-        // Verify the token using the same secret
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const { email } = decoded; // Extract email from the token
+        const { email } = decoded;
 
-        // Find the user by email
         const user = await UserModel.findOne({ email });
-
         if (!user) {
             return res.status(400).json({ msg: 'Invalid token or user does not exist.' });
         }
 
-        // Check if the email is already verified
         if (user.isEmailVerified) {
             return res.status(400).json({ msg: 'Email is already verified' });
         }
 
-        // Mark email as verified
         user.isEmailVerified = true;
 
-        // **Minimal Change Start**
-        // Automatically assign 'isStudent' role if the email is an SLU email
         if (user.isSluEmail) {
             user.isStudent = true;
         }
-        // **Minimal Change End**
 
         await user.save();
 
@@ -313,6 +264,43 @@ const verifyEmail = async (req, res) => {
         }
 
         console.error(`Error during email verification for token: ${token}: ${err.message}`);
+        return res.status(500).json({ msg: 'Server error', error: err.message });
+    }
+};
+
+// Resend Verification Email Controller
+const resendVerificationEmail = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const user = await UserModel.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        if (user.isEmailVerified) {
+            return res.status(400).json({ msg: 'Email is already verified.' });
+        }
+
+        // Generate a new verification token
+        const verificationToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '24h' });
+        const verificationLink = `${process.env.CLIENT_URL}/verify-email?token=${verificationToken}`;
+
+        // Send verification email
+        const userDetail = {
+            name: `${user.first_name} ${user.last_name}`,
+            email: user.email
+        };
+
+        await sendMail(
+            userDetail,
+            "Verify your email",
+            `Please verify your email by clicking the following link: ${verificationLink}`
+        );
+
+        return res.status(200).json({ msg: 'Verification email has been resent successfully.' });
+    } catch (err) {
+        console.error(`Error resending verification email: ${err.message}`);
         return res.status(500).json({ msg: 'Server error', error: err.message });
     }
 };
