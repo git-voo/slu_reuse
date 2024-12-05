@@ -3,7 +3,7 @@ import locationIcon from "../../assets/icons/location.png"
 import { GoDotFill } from "react-icons/go"
 import { PiWechatLogoThin } from "react-icons/pi"
 
-const ItemCard = ({ userAvatar, userName, itemImage, title, description, location }) => {
+const ItemCard = ({ userAvatar, userName, itemImage, title, description, location, isLoggedIn, isSluEmail }) => {
     return (
         <div className="item-card">
             <div className="item-card-user">
@@ -34,12 +34,14 @@ const ItemCard = ({ userAvatar, userName, itemImage, title, description, locatio
 
             <div className="item-card-footer">
                 <button className="item-card-btn">View Details</button>
+                {isLoggedIn && isSluEmail && (
                 <button className="item-card-btn message-btn" onClick={(e)=>{
                     e.stopPropagation()
 
                 }}>
                     <PiWechatLogoThin className='icon' /> Message {userName?.split(" ")[0]}
                 </button>
+            )}
             </div>
         </div>
     )

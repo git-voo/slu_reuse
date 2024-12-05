@@ -8,9 +8,11 @@ import Navbar from "../../components/navigation";
 import "../../styles/landingPage/index.css"; 
 import { useNavigate } from "react-router-dom"
 import axiosInstance from "../../services/AxiosInstance"
+import profileService from '../../services/profileService';
 
 export default function LandingPage() {
     const [items, setItems] = useState([]);
+    const [user, setUser] = useState(null);
     const navigate = useNavigate()
     const [allItems, setAllItems] = useState(items);
     const [showForm, setShowForm] = useState(false);
@@ -23,6 +25,22 @@ export default function LandingPage() {
 
     useEffect(() => {
         fetchItems();  // Fetch all items initially
+
+         // Check if user is logged in
+         const userToken = localStorage.getItem("token");
+         console.log('userToken', userToken)
+         if (userToken) {
+             // Fetch user profile details if a token is present
+             profileService.getProfile()
+             .then(response => {
+                console.log('response', response)
+                 setUser(response); // Set the user data to state
+             })
+             .catch(error => {
+                 console.error("Error fetching user details:", error);
+             });
+         }
+
     }, []);
 
     useEffect(() => {
@@ -36,6 +54,17 @@ export default function LandingPage() {
     const handleFormClose = () => {
         setShowForm(false);
     };
+
+    const fetchUser = async () => {
+        try {
+            const response = await axiosInstance.get("/users");
+            setItems(response.data);
+            setAllItems(response.data);  // Store all items initially
+        } catch (error) {
+            console.error("Error fetching items:", error);
+        }
+    };
+
     const fetchItems = async () => {
         try {
             const response = await axiosInstance.get("/items");
@@ -83,7 +112,8 @@ export default function LandingPage() {
                                 title={item.name}  // Changed to 'name'
                                 description={item.description}
                                 location={item.pickupLocation}  // Correct field for location
-                                
+                                isLoggedIn={!!user}  // Check if user is logged in
+                                isSluEmail={user?.isSluEmail}  // Check if the email is an SLU email
                             />
                           </div>
                         );

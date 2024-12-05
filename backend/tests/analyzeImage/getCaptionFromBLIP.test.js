@@ -16,10 +16,10 @@ beforeEach(() => {
 });
 
 describe('Image Captioning API', () => {
-    it('should return a caption when a valid image URL is provided', async() => {
+    it('should return a caption, category, and tags when a valid image URL is provided', async() => {
         // Mock axios.post directly to return a successful response
         axios.post = jest.fn().mockResolvedValue({
-            data: { caption: 'A sample caption from the BLIP model' },
+            data: { caption: 'A sample caption from the BLIP model', category: 'sample category', tags: 'sample category' },
         });
 
         const response = await request(app)
@@ -28,7 +28,9 @@ describe('Image Captioning API', () => {
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('description', 'A sample caption from the BLIP model');
-        expect(axios.post).toHaveBeenCalledWith('http://127.0.0.1:4301/caption', { imageUrl: 'http://example.com/sample.jpg' });
+        expect(response.body).toHaveProperty('category', 'sample category');
+        expect(response.body).toHaveProperty('tags', 'sample category');
+        expect(axios.post).toHaveBeenCalledWith('http://127.0.0.1:4301/caption_and_category', { imageUrl: 'http://example.com/sample.jpg' });
     });
 
     it('should return 400 if imageUrl is missing', async() => {
@@ -40,7 +42,7 @@ describe('Image Captioning API', () => {
 
     it('should return 500 if the captioning service fails', async() => {
         // Mock axios.post directly to simulate a failure
-        axios.post = jest.fn().mockRejectedValue(new Error('Failed to get caption'));
+        axios.post = jest.fn().mockRejectedValue(new Error('Failed to get caption and category'));
 
         const response = await request(app)
             .post('/')
@@ -48,6 +50,6 @@ describe('Image Captioning API', () => {
 
         expect(response.status).toBe(500);
         expect(response.body).toHaveProperty('error', 'Error analyzing image');
-        expect(axios.post).toHaveBeenCalledWith('http://127.0.0.1:4301/caption', { imageUrl: 'http://example.com/sample.jpg' });
+        expect(axios.post).toHaveBeenCalledWith('http://127.0.0.1:4301/caption_and_category', { imageUrl: 'http://example.com/sample.jpg' });
     });
 });
