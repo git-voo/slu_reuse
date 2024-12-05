@@ -1,82 +1,72 @@
-import { FaInstagram, FaFacebookF } from "react-icons/fa";
-import { Button, Form } from 'react-bootstrap';
-import { FaXTwitter } from 'react-icons/fa6'; 
-import { useEffect, useState } from "react";
-import ItemCard from "../../components/card/index.js";
+import { FaInstagram, FaFacebookF } from "react-icons/fa"
+import { Button, Form } from 'react-bootstrap'
+import { FaXTwitter } from 'react-icons/fa6'
+import { useEffect, useState } from "react"
 import Footer from "../../components/footer"
-import Navbar from "../../components/navigation";
-import "../../styles/landingPage/index.css"; 
+import Navbar from "../../components/navigation"
+import "../../styles/landingPage/index.css"
 import { useNavigate } from "react-router-dom"
 import axiosInstance from "../../services/AxiosInstance"
-import profileService from '../../services/profileService';
+import Conversations from "../../components/conversations"
+import ItemCard from "../../components/card"
+import profileService from '../../services/profileService'
 
 export default function LandingPage() {
-    const [items, setItems] = useState([]);
-    const [user, setUser] = useState(null);
+    const [items, setItems] = useState([])
+    const [selectedItemId, setSelectedItemId] = useState(1234)
+    const [user, setUser] = useState(null)
     const navigate = useNavigate()
-    const [allItems, setAllItems] = useState(items);
-    const [showForm, setShowForm] = useState(false);
+    const [allItems, setAllItems] = useState(items)
+    const [showForm, setShowForm] = useState(false)
     const [filters, setFilters] = useState({
         category: "All",
         location: "All Locations",
         sortOption: "newest",
         searchQuery: "",
-    });
+    })
 
     useEffect(() => {
-        fetchItems();  // Fetch all items initially
+        fetchItems()  // Fetch all items initially
 
-         // Check if user is logged in
-         const userToken = localStorage.getItem("token");
-         console.log('userToken', userToken)
-         if (userToken) {
-             // Fetch user profile details if a token is present
-             profileService.getProfile()
-             .then(response => {
-                console.log('response', response)
-                 setUser(response); // Set the user data to state
-             })
-             .catch(error => {
-                 console.error("Error fetching user details:", error);
-             });
-         }
-
-    }, []);
-
-    useEffect(() => {
-        filterItemsByCategory();  // Apply filters whenever they change
-    }, [filters]);
-    
-    const handleFormOpen = () => {
-        setShowForm(true);
-    };
-    
-    const handleFormClose = () => {
-        setShowForm(false);
-    };
-
-    const fetchUser = async () => {
-        try {
-            const response = await axiosInstance.get("/users");
-            setItems(response.data);
-            setAllItems(response.data);  // Store all items initially
-        } catch (error) {
-            console.error("Error fetching items:", error);
+        // Check if user is logged in
+        const userToken = localStorage.getItem("token")
+        if (userToken) {
+            // Fetch user profile details if a token is present
+            profileService.getProfile()
+                .then(response => {
+                    console.log('response', response)
+                    setUser(response) // Set the user data to state
+                })
+                .catch(error => {
+                    console.error("Error fetching user details:", error)
+                })
         }
-    };
 
+    }, [])
+
+    useEffect(() => {
+        filterItemsByCategory()  // Apply filters whenever they change
+    }, [filters])
+
+    const handleFormOpen = () => {
+        setShowForm(true)
+    }
+
+    const handleFormClose = () => {
+        setShowForm(false)
+    }
     const fetchItems = async () => {
         try {
-            const response = await axiosInstance.get("/items");
-            setItems(response.data);
-            setAllItems(response.data);  // Store all items initially
+            const response = await axiosInstance.get("/items")
+            setItems(response.data)
+            setAllItems(response.data)  // Store all items initially
         } catch (error) {
-            console.error("Error fetching items:", error);
+            console.error("Error fetching items:", error)
         }
-    };
+    }
 
     const filterItemsByCategory = async () => {
-        const { category, location, sortOption, searchQuery } = filters;
+        const { category, location, sortOption, searchQuery } = filters
 
         try {
             const response = await axiosInstance.get(`/filter`, {
@@ -86,16 +76,16 @@ export default function LandingPage() {
                     sort: sortOption,
                     searchQuery,
                 },
-            });
-            setItems(response.data); // Set the filtered items
+            })
+            setItems(response.data) // Set the filtered items
         } catch (error) {
-            console.error("Error fetching filtered items:", error);
+            console.error("Error fetching filtered items:", error)
         }
-    };
+    }
 
     const updateFilters = (newFilters) => {
-        setFilters({ ...filters, ...newFilters });
-    };
+        setFilters({ ...filters, ...newFilters })
+    }
 
     return (
         <div className="landing-page-container">
@@ -104,24 +94,22 @@ export default function LandingPage() {
                 {items.length ? (
                     items.map((item, index) => {
                         return (
-                          <div onClick={()=>navigate(`/item/${item._id}`)} key={item._id} className="text-decoration-none"> 
-                            <ItemCard 
-                                userAvatar={item.userAvatar}
-                                userName={item.userName}
-                                itemImage={item.images[0]} // Use the first image
-                                title={item.name}  // Changed to 'name'
-                                description={item.description}
-                                location={item.pickupLocation}  // Correct field for location
-                                isLoggedIn={!!user}  // Check if user is logged in
-                                isSluEmail={user?.isSluEmail}  // Check if the email is an SLU email
-                            />
-                          </div>
-                        );
+                            <div onClick={() => navigate(`/item/${item._id}`)} key={item._id} className="text-decoration-none">
+                                <ItemCard
+                                    item={item}
+                                    isLoggedIn={!!user}  // Check if user is logged in
+                                    isSluEmail={user?.isSluEmail}  // Check if the email is an SLU email
+                                />
+
+                            </div>
+                        )
                     })
                 ) : (
                     <p>No items found</p>
                 )}
             </div>
+
+
 
             <div className="footer-section">
                 {/* Social Media Links */}
@@ -179,6 +167,6 @@ export default function LandingPage() {
                 </div>
             )}
         </div>
-    );
+    )
 }
-        
+

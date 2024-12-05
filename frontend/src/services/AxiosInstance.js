@@ -49,7 +49,7 @@ function handleError(error) {
     if (error.response && error.response.code === 401) {
         Navigate({ to: "/login", replace: true })
     }
-    throw error
+    console.log(error)
 }
 
 export default axiosInstance
