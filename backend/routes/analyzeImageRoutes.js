@@ -9,7 +9,7 @@ export async function getCaptionAndCategoryFromBLIP(imageUrl) {
     const PYTHON_SERVICE_URL = process.env.PYTHON_SERVICE_URL 
     try {
         const response = await axios.post(`${PYTHON_SERVICE_URL}/caption_and_category`, { imageUrl })
-        return response.data.caption
+        return response.data
     } catch (error) {
         console.error("Error fetching caption and category from BLIP API:", error);
         throw new Error("Failed to get caption and category");
