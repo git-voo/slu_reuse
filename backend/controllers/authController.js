@@ -244,14 +244,14 @@ const getProfile = async(req, res) => {
 };
 
 // Update Profile Handler
-const updateProfile = async(req, res) => {
+const updateProfile = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
     try {
         const updatedData = req.body;
-        const allowedUpdates = ['first_name', 'last_name', 'phone', 'isDonor', 'isStudent'];
+        const allowedUpdates = ['first_name', 'last_name', 'phone'];
         const updates = {};
         for (let key of allowedUpdates) {
             if (updatedData[key] !== undefined) {
@@ -268,5 +268,6 @@ const updateProfile = async(req, res) => {
         return res.status(500).json({ msg: 'Server error' });
     }
 };
+
 
 export { register, verifyEmail, login, forgotPassword, verifyResetCode, resetPassword, getProfile, updateProfile };
