@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import "../../../styles/items/singleItemPage.css"
 
-const ItemDetails = ({ item, user }) => {
+const ItemDetails = ({ item }) => {
     const [currentImage, setCurrentImage] = useState(0)
     const DATE_OPTIONS = {
         weekday: 'long',  
@@ -68,12 +68,8 @@ const ItemDetails = ({ item, user }) => {
 
             {/* Chat and Other Actions */}
             <div className="item-actions">
-            {user && user.isSluEmail && (
-                    <>
                 <button className="chat-button">Chat with Donor</button>
                 <button className="contact-button">Contact Donor</button>
-                </>
-                )}
             </div>
         </div>
     )

@@ -46,10 +46,6 @@ const userSchema = new Schema({
     passwordResetCode: {
         type: String,
         required: false
-    },
-    isSluEmail: {
-        type: Boolean,
-        default: false,
     }
 });
 

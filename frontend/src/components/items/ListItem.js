@@ -29,14 +29,9 @@ const ListItem = () => {
       const imageUrl = await uploadToCloud(itemImages)
       console.log( imageUrl)
       const response = await axiosInstance.post('/analyze-image', { imageUrl }); // Use your backend endpoint
-      console.log(response)
       setItemImages(imageUrl)
       setAnalyzed(true)
-      setItemName(response.data.name)
-      setItemDescription(response.data.description); 
-      setItemQuantity(1);
-      setItemCategory(response.data.category); 
-      setItemTags(response.data.tags);
+      setItemDescription(response.data.description); // Set the fetched description
     } catch (error) {
       console.error('Error fetching image description:', error);
       alert('Failed to fetch description for the image.');

@@ -37,10 +37,3 @@ backend/tests/cloudStorage/
 
 #to avoid accidentally committing sensitive credentials to a public repository
 google_credentials.json
-
-__pycache__/
-*.pyc
-
-# Ignore all YOLOv5 weights
-**/yolov5
-**/yolov5*.pt
