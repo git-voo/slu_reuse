@@ -16,8 +16,8 @@ export async function getCaptionFromBLIP(imageUrl) {
 }
 
 // Route to analyze image
-router.post("/", async(req, res) => {
-    console.log(req.body)
+router.post("/", async (req, res) => {
+    console.log(req.body);
     const { imageUrl } = req.body;
 
     if (!imageUrl) {
@@ -26,7 +26,15 @@ router.post("/", async(req, res) => {
     try {
         // Call the Python microservice to get the caption
         const caption = await getCaptionFromBLIP(imageUrl);
-        res.json({ description: caption });
+
+        // Simulate AI-generated details for the item
+        const details = {
+            name: "Auto-Generated Name",
+            description: caption || "Auto-Generated Description",
+            category: "Auto-Generated Category",
+        };
+
+        res.json(details);
     } catch (error) {
         console.error("Error analyzing image:", error);
         res.status(500).json({ error: "Error analyzing image" });
