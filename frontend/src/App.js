@@ -1,6 +1,4 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import "./App.css";
 import Contactus from "./pages/contactus";
 import LandingPage from "./pages/landingPage";
@@ -44,9 +42,7 @@ function App() {
                     <Route path="my-listings" element={<MyListings />} />
                     <Route path="delete-account" element={<DeleteAccount />} />
                     <Route path="verify-email" element={<VerifyEmail />} />
-                    {/*
-                <Route path="conversations" element={<Conversations />} />
-                */}
+                {/* <Route path="conversations" element={<Conversations />} /> */}
                 </Route>
             </Routes>
         </BrowserRouter>
