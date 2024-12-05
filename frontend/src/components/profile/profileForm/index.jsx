@@ -6,8 +6,6 @@ const ProfileForm = ({ profile, onSave, onCancel }) => {
     const [lastName, setLastName] = useState(profile.last_name || '');
     const [email, setEmail] = useState(profile.email || '');
     const [phone, setPhone] = useState(profile.phone || '');
-    const [isDonor, setIsDonor] = useState(profile.isDonor || false);
-    const [isStudent, setIsStudent] = useState(profile.isStudent || false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -16,9 +14,21 @@ const ProfileForm = ({ profile, onSave, onCancel }) => {
             last_name: lastName,
             email,
             phone,
-            isDonor,
-            isStudent,
+            // Remove isDonor and isStudent from the save payload
         });
+    };
+
+    // Determine user status based on isDonor and isStudent
+    const getStatus = () => {
+        if (profile.isDonor && profile.isStudent) {
+            return 'Donor & Student';
+        } else if (profile.isDonor) {
+            return 'Donor';
+        } else if (profile.isStudent) {
+            return 'Student';
+        } else {
+            return 'None';
+        }
     };
 
     return (
@@ -60,23 +70,8 @@ const ProfileForm = ({ profile, onSave, onCancel }) => {
                     onChange={(e) => setPhone(e.target.value)}
                 />
             </div>
-            <div className="formGroup checkboxGroup">
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={isDonor}
-                        onChange={(e) => setIsDonor(e.target.checked)}
-                    />
-                    Donor
-                </label>
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={isStudent}
-                        onChange={(e) => setIsStudent(e.target.checked)}
-                    />
-                    Student
-                </label>
+            <div className="formGroup">
+                <label>Status: {getStatus()}</label>
             </div>
             <div className="buttonGroup">
                 <button type="submit">Save</button>

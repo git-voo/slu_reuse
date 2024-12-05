@@ -16,7 +16,7 @@ describe('Profile Sidebar Component', () => {
         expect(screen.getByText('My Listings')).toBeInTheDocument();
         expect(screen.getByText('List an Item')).toBeInTheDocument();
         expect(screen.getByText('Conversations')).toBeInTheDocument();
-        expect(screen.getByText('Verify Email')).toBeInTheDocument();
+        expect(screen.getByText('Change Email')).toBeInTheDocument();
         expect(screen.getByText('Delete My Account')).toBeInTheDocument();
     });
 
@@ -33,7 +33,7 @@ describe('Profile Sidebar Component', () => {
         expect(screen.getByRole('link', { name: 'My Listings' })).toHaveAttribute('href', '/profile/my-listings');
         expect(screen.getByRole('link', { name: 'List an Item' })).toHaveAttribute('href', '/profile/list-item');
         expect(screen.getByRole('link', { name: 'Conversations' })).toHaveAttribute('href', '/profile/conversations');
-        expect(screen.getByRole('link', { name: 'Verify Email' })).toHaveAttribute('href', '/profile/verify-email');
+        expect(screen.getByRole('link', { name: 'Change Email' })).toHaveAttribute('href', '/profile/verify-email');
         expect(screen.getByRole('link', { name: 'Delete My Account' })).toHaveAttribute('href', '/profile/delete-account');
     });
 

@@ -21,7 +21,7 @@ const Sidebar = () => {
                     <NavLink to="/profile/conversations" className={({ isActive }) => isActive ? "active" : ""}>Conversations</NavLink>
                 </li>
                 <li>
-                    <NavLink to="/profile/verify-email" className={({ isActive }) => isActive ? "active" : ""}>Verify Email</NavLink>
+                    <NavLink to="/profile/verify-email" className={({ isActive }) => isActive ? "active" : ""}>Change Email</NavLink>
                 </li>
             </ul>
             <ul className="bottom">
