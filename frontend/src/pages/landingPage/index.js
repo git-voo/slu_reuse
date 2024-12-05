@@ -85,23 +85,44 @@ export default function LandingPage() {
         if (userInput.trim()) {
             setChatMessages([...chatMessages, { sender: "user", text: userInput }]);
             setUserInput("");
-
-            try {
-                // Send user input to the backend for AI response
-                const response = await axios.post("/api/chatbot", { message: userInput });
-                setChatMessages((prevMessages) => [
-                    ...prevMessages,
-                    { sender: "bot", text: response.data.response }
-                ]);
-            } catch (error) {
-                console.error("Error sending message to chatbot:", error);
-                setChatMessages((prevMessages) => [
-                    ...prevMessages,
-                    { sender: "bot", text: "Sorry, something went wrong." }
-                ]);
+    
+            // Hardcoded responses for common phrases
+            let botResponse = "";
+            switch (userInput.trim().toLowerCase()) {
+                case "hi":
+                case "hello":
+                    botResponse = "Hello! how can i help you?";
+                    break;
+                case "how are you?":
+                    botResponse = "I am doing great, thank you for asking! How can I help you today?";
+                    break;
+                case "who do i contact?":
+                    botResponse = "For inquiries, please fill in the contact form in the footer section.";
+                    break;
+                case "what is this website?":
+                    botResponse = "This is an online platform where you can donate and get items. How can I assist you further?";
+                    break;
+                case "thank you":
+                    botResponse = "You're welcome! Let me know if you need anything else.";
+                    break;
+                default:
+                    try {
+                        const response = await axios.post("/api/chatbot", { message: userInput });
+                        botResponse = response.data.response;
+                    } catch (error) {
+                        console.error("Error sending message to chatbot:", error);
+                        botResponse = "Sorry, something went wrong.";
+                    }
+                    break;
             }
+    
+            setChatMessages((prevMessages) => [
+                ...prevMessages,
+                { sender: "bot", text: botResponse }
+            ]);
         }
     };
+    
 
     return (
         <div className="landing-page-container">
