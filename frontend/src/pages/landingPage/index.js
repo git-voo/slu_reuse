@@ -1,14 +1,14 @@
-import { FaInstagram, FaFacebookF } from "react-icons/fa";
-import { Button, Form } from 'react-bootstrap';
-import { FaXTwitter } from 'react-icons/fa6'; 
 import { useEffect, useState } from "react";
+import { Button, Form } from 'react-bootstrap';
+import { FaInstagram, FaFacebookF } from "react-icons/fa";
+import { FaXTwitter } from 'react-icons/fa6'; 
 import ItemCard from "../../components/card/index.mjs";
 import Footer from "../../components/footer";
 import Navbar from "../../components/navigation";
 import "../../styles/landingPage/index.css"; 
 import "../../styles/chatbot/chatbot.css";  // Import chatbot-specific styles
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "../../services/AxiosInstance";
+import axios from 'axios';  // Use Axios to make API requests
 
 export default function LandingPage() {
     const [items, setItems] = useState([]);
@@ -33,18 +33,18 @@ export default function LandingPage() {
     useEffect(() => {
         filterItemsByCategory();
     }, [filters]);
-    
+
     const handleFormOpen = () => {
         setShowForm(true);
     };
-    
+
     const handleFormClose = () => {
         setShowForm(false);
     };
 
     const fetchItems = async () => {
         try {
-            const response = await axiosInstance.get("/items");
+            const response = await axios.get("/api/items");
             setItems(response.data);
         } catch (error) {
             console.error("Error fetching items:", error);
@@ -54,7 +54,7 @@ export default function LandingPage() {
     const filterItemsByCategory = async () => {
         const { category, location, sortOption, searchQuery } = filters;
         try {
-            const response = await axiosInstance.get(`/filter`, {
+            const response = await axios.get("/api/filter", {
                 params: {
                     category: category.toLowerCase(),
                     location: location !== "All Locations" ? location : "",
@@ -81,17 +81,25 @@ export default function LandingPage() {
         setUserInput(event.target.value);
     };
 
-    const handleSendMessage = () => {
+    const handleSendMessage = async () => {
         if (userInput.trim()) {
             setChatMessages([...chatMessages, { sender: "user", text: userInput }]);
             setUserInput("");
 
-            setTimeout(() => {
+            try {
+                // Send user input to the backend for AI response
+                const response = await axios.post("/api/chatbot", { message: userInput });
                 setChatMessages((prevMessages) => [
                     ...prevMessages,
-                    { sender: "bot", text: "Thank you for your message! We will get back to you shortly." },
+                    { sender: "bot", text: response.data.response }
                 ]);
-            }, 1000);
+            } catch (error) {
+                console.error("Error sending message to chatbot:", error);
+                setChatMessages((prevMessages) => [
+                    ...prevMessages,
+                    { sender: "bot", text: "Sorry, something went wrong." }
+                ]);
+            }
         }
     };
 
@@ -117,6 +125,7 @@ export default function LandingPage() {
                 )}
             </div>
 
+            {/* Social media and Contact Us section */}
             <div className="footer-section">
                 <div className="social-media-section">
                     <a href="https://www.facebook.com" className="social-icon" target="_blank" rel="noopener noreferrer">
@@ -139,28 +148,23 @@ export default function LandingPage() {
                     <div className="modal-content">
                         <Button className="close-button" variant="light" onClick={handleFormClose}>X</Button>
                         <h2>Contact Us</h2>
-                        <p>Thank you for considering our services. This is a donation website, SLU Reuse, pertaining to SLU users. We will get back to you within 48 hours.</p>
                         <Form className="contact-form">
                             <Form.Group controlId="formName">
                                 <Form.Label>Name*</Form.Label>
                                 <Form.Control type="text" placeholder="Enter your name" required />
                             </Form.Group>
-
                             <Form.Group controlId="formEmail">
                                 <Form.Label>Email address*</Form.Label>
                                 <Form.Control type="email" placeholder="Enter your email" required />
                             </Form.Group>
-
                             <Form.Group controlId="formPhone">
                                 <Form.Label>Phone number</Form.Label>
                                 <Form.Control type="tel" placeholder="Enter your phone number" required />
                             </Form.Group>
-
                             <Form.Group controlId="formMessage">
                                 <Form.Label>What would you like to let us know?*</Form.Label>
                                 <Form.Control as="textarea" rows={3} placeholder="Enter your message" required />
                             </Form.Group>
-
                             <Button variant="primary" type="submit">Send</Button>
                         </Form>
                     </div>
