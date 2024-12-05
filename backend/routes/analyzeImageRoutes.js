@@ -8,11 +8,11 @@ const router = express.Router()
 export async function getCaptionFromBLIP(imageUrl) {
     const PYTHON_SERVICE_URL = process.env.PYTHON_SERVICE_URL 
     try {
-        const response = await axios.post(`${PYTHON_SERVICE_URL}/caption`, { imageUrl })
+        const response = await axios.post(`${PYTHON_SERVICE_URL}/caption_and_category`, { imageUrl })
         return response.data.caption
     } catch (error) {
-        console.error("Error fetching caption from BLIP API:", error)
-        throw new Error("Failed to get caption")
+        console.error("Error fetching caption and category from BLIP API:", error);
+        throw new Error("Failed to get caption and category");
     }
 }
 
@@ -25,9 +25,9 @@ router.post("/", async (req, res) => {
         return res.status(400).json({ error: "Image URL is required" })
     }
     try {
-        // Call the Python microservice to get the caption
-        const caption = await getCaptionFromBLIP(imageUrl)
-        res.json({ description: caption })
+        // Call the Python microservice to get the caption and category
+        const { name, caption, category, tags } = await getCaptionAndCategoryFromBLIP(imageUrl);
+        res.json({ name: name, description: caption, category: category, tags: tags });
     } catch (error) {
         console.error("Error analyzing image:", error)
         res.status(500).json({ error: "Error analyzing image" })
