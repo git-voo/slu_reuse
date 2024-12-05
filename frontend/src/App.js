@@ -21,33 +21,40 @@ import ListItem from './components/items/ListItem';
 // import ScrollToTop from "./utils/ScrollToTop";
 
 function App() {
-  return (
-    <BrowserRouter>
-      {/* <ScrollToTop /> */}
-      <Routes >
-        <Route path="/register" element={<Register />} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/contact" element={<Contactus />} />
-        <Route path="/item/:itemID" element={<SingleItemPage />} />
-        <Route path="/donate-item" element={<DonateItem />} />
-        <Route path="/profile" element={<ProfileLayout />}>
-          <Route index element={<ProfilePage />} />
-          <Route path="list-item" element={<ListItem />} />
-          <Route path="my-listings" element={<MyListings />} />
-          <Route path="delete-account" element={<DeleteAccount />} />
-          {/*
+    const initialMessages = [
+        { id: 1, senderId: 101, text: "Hello, I’m interested in your donation item!", timestamp: "10:01 AM" },
+        { id: 2, senderId: 102, text: "Hi! Sure, it's still available.", timestamp: "10:02 AM" },
+        { id: 3, senderId: 101, text: "Great! When would be a good time to pick it up?", timestamp: "10:05 AM" },
+    ]
+    const userId = 101 // Set the current user's ID
+
+    return (
+        <BrowserRouter>
+            {/* <ScrollToTop /> */}
+            <Routes >
+                <Route path="/register" element={<Register />} />
+                <Route path="/verify-email" element={<VerifyEmail />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/about" element={<AboutUs />} />
+                <Route path="/contact" element={<Contactus />} />
+                <Route path="/item/:itemID" element={<SingleItemPage />} />
+                <Route path="/donate-item" element={<DonateItem />} />
+                <Route path="/profile" element={<ProfileLayout />}>
+                    <Route index element={<ProfilePage />} />
+                    <Route path="list-item" element={<ListItem />} />
+                    <Route path="my-listings" element={<MyListings />} />
+                    <Route path="delete-account" element={<DeleteAccount />} />
+                    {/*
                 <Route path="conversations" element={<Conversations />} />
                 <Route path="verify-email" element={<VerifyEmail />} />
                 */}
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  )
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    )
 }
 
 export default App

@@ -12,6 +12,10 @@ app = Flask(__name__)
 processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
 model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
 
+@app.route('/', methods=['GET'])
+def root():
+    return "Health Check: Service is running"
+
 # Load an image classification model from Hugging Face
 classifier = pipeline("image-classification", model="google/vit-base-patch16-224")
 

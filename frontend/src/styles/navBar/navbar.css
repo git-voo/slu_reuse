@@ -1,5 +1,5 @@
 body {
-  font-family: 'Nunito Sans','Roboto', sans-serif;
+  font-family: 'Nunito Sans', 'Roboto', sans-serif;
 }
 
 .navbar {
@@ -39,7 +39,8 @@ body {
   overflow: hidden;
   background-color: white;
   flex: 1;
-  max-width: 400px; /* Set a reasonable max width */
+  max-width: 400px;
+  /* Set a reasonable max width */
 }
 
 .search-category {
@@ -77,8 +78,10 @@ body {
 }
 
 /* Dropdown Filters */
-.location-filter, .sort-filter {
-  padding: 0.4rem 1rem;  /* Ensure consistent padding */
+.location-filter,
+.sort-filter {
+  padding: 0.4rem 1rem;
+  /* Ensure consistent padding */
   background-color: #f3f3f3;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -94,7 +97,8 @@ body {
   gap: 1.5rem;
   margin-left: 1.5rem;
   margin-top: 1rem;
-  list-style: none;  /* Remove the dots (bullets) */
+  list-style: none;
+  /* Remove the dots (bullets) */
   padding: 0;
 }
 
@@ -102,9 +106,11 @@ body {
   color: white;
   text-decoration: none;
   font-size: 1rem;
-  padding: 0.5rem;  /* Add padding to vertically align with filters */
+  padding: 0.5rem;
+  /* Add padding to vertically align with filters */
   display: flex;
-  align-items: center;  /* Vertically align the text */
+  align-items: center;
+  /* Vertically align the text */
 }
 
 /* Flex container for the login button and user avatar */
@@ -115,7 +121,8 @@ body {
 }
 
 .navbar-btn {
-  padding: 0.5rem 1rem;  /* Increase padding for larger button size */
+  padding: 0.5rem 1rem;
+  /* Increase padding for larger button size */
   background-color: #ff9900;
   color: white;
   border: none;
@@ -128,6 +135,19 @@ body {
 
 .navbar-btn:hover {
   background-color: #ff7f00;
+}
+
+.avatar-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.avatar-section .user-avatar img {
+ margin: 0;
 }
 
 /* Avatar styles */
@@ -143,7 +163,8 @@ body {
     width: 100%;
   }
 
-  .location-filter, .sort-filter {
+  .location-filter,
+  .sort-filter {
     margin-left: 0.25rem;
     padding: 0.3rem;
   }
@@ -177,22 +198,27 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 1.5rem;
-  background-color: #003f8a; /* Original deep blue background */
+  background-color: #003f8a;
+  /* Original deep blue background */
   color: white;
   height: auto;
   flex-wrap: wrap;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  /* Smooth transitions */
 }
 
 /* Transparent Navbar when scrolled */
 .navbar.transparent {
-  background-color: rgba(0, 63, 138, 0.6); /* Transparent background */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Add slight shadow on scroll */
+  background-color: rgba(0, 63, 138, 0.6);
+  /* Transparent background */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  /* Add slight shadow on scroll */
 }
 
 /* Footer is hidden initially */
 .footer {
-  display: none; /* Initially hidden */
+  display: none;
+  /* Initially hidden */
   justify-content: space-between;
   align-items: center;
   background-color: #003f8a;
@@ -206,7 +232,8 @@ body {
 
 /* Footer becomes visible when reaching the bottom */
 .footer.visible {
-  display: flex; /* Show the footer */
+  display: flex;
+  /* Show the footer */
 }
 
 /* Social icons */
