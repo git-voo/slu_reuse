@@ -1,0 +1,75 @@
+.outer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background-color: #f0f2f5;
+}
+
+.form-container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+.center-text {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.successMessage {
+    color: green;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.errorMessage {
+    color: red;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.resend-button,
+.change-email-button,
+.submit-button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+    .resend-button:disabled,
+    .change-email-button:disabled,
+    .submit-button:disabled {
+        background-color: #6c757d;
+        cursor: not-allowed;
+    }
+
+.changeEmailSection {
+    margin-top: 30px;
+}
+
+.changeEmailForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.email-input {
+    padding: 8px;
+    width: 80%;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.submit-button {
+    width: 50%;
+}

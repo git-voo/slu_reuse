@@ -269,5 +269,122 @@ const updateProfile = async (req, res) => {
     }
 };
 
+// Resend Verification Email Controller
+const verifyEmail = async (req, res) => {
+    const { token } = req.body; // Extract token from request body
+    if (!token) {
+        return res.status(400).json({ msg: 'Token is required' });
+    }
+    try {
+        // Verify the token using the same secret
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const { email } = decoded; // Extract email from the token
 
-export { register, verifyEmail, login, forgotPassword, verifyResetCode, resetPassword, getProfile, updateProfile };
+        // Find the user by email
+        const user = await UserModel.findOne({ email });
+
+        if (!user) {
+            return res.status(400).json({ msg: 'Invalid token or user does not exist.' });
+        }
+
+        // Check if the email is already verified
+        if (user.isEmailVerified) {
+            return res.status(400).json({ msg: 'Email is already verified' });
+        }
+
+        // Mark email as verified
+        user.isEmailVerified = true;
+
+        // **Minimal Change Start**
+        // Automatically assign 'isStudent' role if the email is an SLU email
+        if (user.isSluEmail) {
+            user.isStudent = true;
+        }
+        // **Minimal Change End**
+
+        await user.save();
+
+        return res.status(200).json({ msg: 'Email verified successfully' });
+    } catch (err) {
+        if (err.name === 'TokenExpiredError') {
+            return res.status(401).json({ msg: 'Token has expired' });
+        } else if (err.name === 'JsonWebTokenError') {
+            return res.status(401).json({ msg: 'Invalid token' });
+        }
+
+        console.error(`Error during email verification for token: ${token}: ${err.message}`);
+        return res.status(500).json({ msg: 'Server error', error: err.message });
+    }
+};
+
+// Change Email Controller
+const changeEmail = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    const { newEmail } = req.body;
+
+    try {
+        const userId = req.user.id;
+        const user = await UserModel.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        // Check if the new email is already in use
+        const existingUser = await UserModel.findOne({ email: newEmail });
+        if (existingUser) {
+            return res.status(400).json({ msg: 'Email is already in use.' });
+        }
+
+        // **Minimal Change Start**
+        // Update the user's email
+        user.email = newEmail;
+        // Update 'isSluEmail' based on the new email domain
+        user.isSluEmail = newEmail.endsWith('slu.edu');
+        // Automatically assign 'isStudent' role if the new email is an SLU email
+        user.isStudent = user.isSluEmail;
+        // **Minimal Change End**
+
+        // Set 'isEmailVerified' to false since the email has changed
+        user.isEmailVerified = false;
+
+        await user.save();
+
+        // Generate a new verification token for the new email
+        const verificationToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '24h' });
+        const verificationLink = `${process.env.CLIENT_URL}/verify-email?token=${verificationToken}`;
+
+        // Send verification email to the new email
+        const userDetail = {
+            name: `${user.first_name} ${user.last_name}`,
+            email: user.email
+        };
+
+        await sendMail(
+            userDetail,
+            "Verify your new email",
+            `Please verify your new email by clicking the following link: ${verificationLink}`
+        );
+
+        return res.status(200).json({ msg: 'Email changed successfully. Please verify your new email address.' });
+    } catch (err) {
+        console.error(`Error changing email: ${err.message}`);
+        return res.status(500).json({ msg: 'Server error', error: err.message });
+    }
+};
+
+export {
+    register,
+    verifyEmail,
+    login,
+    forgotPassword,
+    verifyResetCode,
+    resetPassword,
+    getProfile,
+    updateProfile,
+    resendVerificationEmail,
+    changeEmail
+};
