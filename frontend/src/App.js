@@ -24,7 +24,6 @@ function App() {
     return (
         <BrowserRouter>
             {/* <ScrollToTop /> */}
-            <ToastContainer /> {/* Add ToastContainer here */}
             <Routes>
                 <Route path="/register" element={<Register />} />
                 <Route path="/verify-email" element={<VerifyEmail />} />
