@@ -4,6 +4,9 @@ import { GoDotFill } from "react-icons/go"
 import { PiWechatLogoThin } from "react-icons/pi"
 
 const ItemCard = ({ userAvatar, userName, itemImage, title, description, location }) => {
+    // Debugging: Log the props passed to ItemCard
+    console.log("ItemCard Props:", { userAvatar, userName, itemImage, title, description, location });
+    
     return (
         <div className="item-card">
             <div className="item-card-user">
@@ -16,9 +19,13 @@ const ItemCard = ({ userAvatar, userName, itemImage, title, description, locatio
             <div className="item-card-body">
                 <p className='available status'> <GoDotFill /> Available</p>
                 <div className="item-card-image">
-                    <img src={itemImage} alt={title} />
-                </div>
-
+                     
+                        <img
+                        src={itemImage || "https://via.placeholder.com/150"}
+                        alt={title || "Image not available"}
+                        />
+            </div>
+                
                 <h3 className="item-card-title">{title}</h3>
 
                 <div className='location'>

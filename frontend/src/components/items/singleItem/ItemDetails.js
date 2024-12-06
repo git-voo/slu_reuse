@@ -1,34 +1,41 @@
-import { useState } from 'react'
-import "../../../styles/items/singleItemPage.css"
+import { useState } from 'react';
+import "../../../styles/items/singleItemPage.css";
 
 const ItemDetails = ({ item }) => {
-    const [currentImage, setCurrentImage] = useState(0)
+    const [currentImage, setCurrentImage] = useState(0);
     const DATE_OPTIONS = {
-        weekday: 'long',  
-        month: 'long', 
-        day: 'numeric',  
-        year: 'numeric' 
-    }
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+    };
 
     const nextImage = () => {
         setCurrentImage((prevIndex) =>
             prevIndex === item?.images?.length - 1 ? 0 : prevIndex + 1
-        )
-    }
+        );
+    };
 
     const prevImage = () => {
         setCurrentImage((prevIndex) =>
             prevIndex === 0 ? item?.images?.length - 1 : prevIndex - 1
-        )
-    }
+        );
+    };
+
+    // Debugging: Log the image URL being used
+    console.log("Image URL for carousel:", item?.images?.[currentImage]);
 
     return (
         <div className="single-item-container">
             {/* Images Carousel */}
             <div className="item-carousel">
                 <img
-                    src={item?.images[currentImage]}
-                    alt={item.title}
+                    src={
+                        item?.images && item?.images[currentImage] // Check if images and the current image exist
+                            ? item.images[currentImage] // Use the current image
+                            : "https://via.placeholder.com/150" // Use a placeholder if no image is available
+                    }
+                    alt={item.title || "Item Image"} // Fallback alt text
                     className="item-image"
                 />
                 {item?.images?.length > 1 && (
@@ -72,7 +79,7 @@ const ItemDetails = ({ item }) => {
                 <button className="contact-button">Contact Donor</button>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default ItemDetails
+export default ItemDetails;
