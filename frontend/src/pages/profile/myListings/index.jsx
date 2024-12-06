@@ -17,6 +17,7 @@ const MyListings = () => {
     const fetchMyItems = async () => {
         try {
             const response = await axiosInstance.get('/my-items');
+            console.log('Fetched items:', response.data); // Log the fetched data
             setMyItems(response.data);
         } catch (error) {
             console.error('Error fetching my items:', error);
@@ -61,24 +62,25 @@ const MyListings = () => {
             <h2>My Listings</h2>
             {myItems.length > 0 ? (
                 <div className="my-items-list">
-                    {myItems.map(item => (
-                        <div key={item._id} className="my-item-card">
-                            <div onClick={() => handleItemClick(item._id)} className="item-card-clickable">
-                                <ItemCard 
-                                    userAvatar={item.userAvatar}
-                                    userName={item.userName}
-                                    itemImage={item.images[0]} 
-                                    title={item.name}
-                                    description={item.description}
-                                    location={item.pickupLocation}
-                                />
+                    {myItems.map(item => {
+                        console.log("Item Data in MyListings:", item); // Added log here
+                        return (
+                            <div key={item._id} className="my-item-card">
+                                <div onClick={() => handleItemClick(item._id)} className="item-card-clickable">
+                                    <ItemCard
+                                        itemImage={item.images[0]?.replace(/^"|"$/g, '')} // Remove extra quotes if present
+                                        title={item.name}
+                                        description={item.description}
+                                        location={item.pickupLocation}
+                                    />   
+                                </div>
+                                <div className="my-item-actions">
+                                    <Button variant="warning" onClick={() => handleEdit(item._id)}>Edit</Button>
+                                    <Button variant="danger" onClick={() => handleDelete(item._id)}>Delete</Button>
+                                </div>
                             </div>
-                            <div className="my-item-actions">
-                                <Button variant="warning" onClick={() => handleEdit(item._id)}>Edit</Button>
-                                <Button variant="danger" onClick={() => handleDelete(item._id)}>Delete</Button>
-                            </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             ) : (
                 <p>You have not listed any items yet.</p>
