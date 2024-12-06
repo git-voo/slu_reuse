@@ -8,7 +8,7 @@ import mongoose, { Schema } from "mongoose";
  
 const msg = "Field is required";
 
-const itemSchema = new Schema({
+const itemSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, msg]

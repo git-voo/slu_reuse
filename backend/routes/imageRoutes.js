@@ -30,6 +30,9 @@ router.post('/upload', upload.single('image'), async (req, res) => {
     // Step 2: Manually construct the URL in the required format
     const viewURL = `https://drive.google.com/uc?export=view&id=${fileId}`;
 
+    // Add the console log here to check the generated URL
+    console.log("Generated Image URL:", viewURL);
+
     // Step 3: Send back the constructed URL as the response
     res.status(200).json({ url: viewURL });
 

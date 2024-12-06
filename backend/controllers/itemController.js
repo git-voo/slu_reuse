@@ -44,8 +44,16 @@ export const createItem = async (req, res) => {
     try {
         const newItemData = req.body;
         newItemData.donor = req.user.id; // Attach the donor field
+        console.log("Item Images in createItem:", req.body.images);
 
-        const newItem = new ItemModel(newItemData);
+        // Clean up the images field (remove extra quotes)
+        if (newItemData.images) {
+         newItemData.images = newItemData.images.map(image => 
+        typeof image === 'string' ? image.replace(/^"|"$/g, '') : image
+    );
+}
+
+const newItem = new ItemModel(newItemData);
         await newItem.save();
         res.status(201).json(newItem);
     } catch (error) {
